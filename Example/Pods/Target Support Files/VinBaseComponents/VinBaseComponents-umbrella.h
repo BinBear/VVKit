@@ -18,9 +18,6 @@
 #import "NSDecimalNumber+BinAdd.h"
 #import "NSObject+BinAdd.h"
 #import "NSString+BinAdd.h"
-#import "UIControl+BinAdd.h"
-#import "UIGestureRecognizer+BinAdd.h"
-#import "UIImage+BinAdd.h"
 #import "UIView+FrameExtention.h"
 #import "HTAppDotNetAPIClient.h"
 #import "HTJSON.h"
@@ -37,10 +34,10 @@
 #import "RACCommand+Extension.h"
 #import "RACSignal+Extension.h"
 #import "RACSubject+Extension.h"
-#import "HCMapValueManager.h"
-#import "HCRealmOperation.h"
-#import "HCRealmStore.h"
-#import "HCRealmWriteTransaction.h"
+#import "HTMapValueManager.h"
+#import "HTRealmOperation.h"
+#import "HTRealmStore.h"
+#import "HTRealmWriteTransaction.h"
 
 FOUNDATION_EXPORT double VinBaseComponentsVersionNumber;
 FOUNDATION_EXPORT const unsigned char VinBaseComponentsVersionString[];

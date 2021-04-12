@@ -19,10 +19,7 @@
 #import "NSDecimalNumber+BinAdd.h"
 
 // UIKit
-#import "UIGestureRecognizer+BinAdd.h"
-#import "UIImage+BinAdd.h"
 #import "UIView+FrameExtention.h"
-#import "UIControl+BinAdd.h"
 
 
 
