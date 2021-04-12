@@ -25,20 +25,20 @@ PODS:
     - Realm/Headers (= 10.7.2)
   - Realm/Headers (10.7.2)
   - UICKeyChainStore (2.2.1)
-  - VinBaseComponents (0.1.1):
-    - VinBaseComponents/CocoaExtentions (= 0.1.1)
-    - VinBaseComponents/NetWorking (= 0.1.1)
-    - VinBaseComponents/RACExtentions (= 0.1.1)
-    - VinBaseComponents/StorageLib (= 0.1.1)
-  - VinBaseComponents/CocoaExtentions (0.1.1)
-  - VinBaseComponents/NetWorking (0.1.1):
+  - VinBaseComponents (0.1.2):
+    - VinBaseComponents/CocoaExtentions (= 0.1.2)
+    - VinBaseComponents/NetWorking (= 0.1.2)
+    - VinBaseComponents/RACExtentions (= 0.1.2)
+    - VinBaseComponents/StorageLib (= 0.1.2)
+  - VinBaseComponents/CocoaExtentions (0.1.2)
+  - VinBaseComponents/NetWorking (0.1.2):
     - AFNetworking
     - CocoaLumberjack
     - VinBaseComponents/RACExtentions
     - YYCache
-  - VinBaseComponents/RACExtentions (0.1.1):
+  - VinBaseComponents/RACExtentions (0.1.2):
     - ReactiveObjC
-  - VinBaseComponents/StorageLib (0.1.1):
+  - VinBaseComponents/StorageLib (0.1.2):
     - MMKV
     - Realm
     - UICKeyChainStore
@@ -70,7 +70,7 @@ SPEC CHECKSUMS:
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  VinBaseComponents: 9ddb9c691923ccaa30932420baeb9d67e4912b23
+  VinBaseComponents: a6042642c088ae9c4181d048b2f1b0ffc8eece60
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
 PODFILE CHECKSUM: ff1a9c6a20a48c2c8c68ef4ed2edf2dccaa90bc8
