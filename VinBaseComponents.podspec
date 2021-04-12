@@ -9,34 +9,42 @@
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
   s.version          = '0.1.0'
-  s.summary          = 'A short description of VinBaseComponents.'
+  s.summary          = '基础组件库'
 
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
 
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
                        DESC
 
   s.homepage         = 'https://github.com/BinBear/VinBaseComponents'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'BinBear' => 'vin404@outlook.com' }
   s.source           = { :git => 'https://github.com/BinBear/VinBaseComponents.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '10.0'
 
-  s.source_files = 'VinBaseComponents/Classes/**/*'
-  
-  # s.resource_bundles = {
-  #   'VinBaseComponents' => ['VinBaseComponents/Assets/*.png']
-  # }
+  s.subspec 'CocoaExtentions' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/**/*'
+  end
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.subspec 'NetWorking' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/NetWorking/**/*'
+    ss.dependency "AFNetworking"
+    ss.dependency "YYCache"
+    ss.dependency "CocoaLumberjack"
+    ss.dependency 'VinBaseComponents/RACExtentions'
+  end
+
+  s.subspec 'RACExtentions' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/RACExtentions/**/*'
+    ss.dependency "ReactiveObjC"
+  end
+
+  s.subspec 'StorageLib' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/StorageLib/**/*'
+    ss.dependency 'Realm'
+    ss.dependency 'UICKeyChainStore'
+    ss.dependency 'MMKV'
+  end
+
 end
