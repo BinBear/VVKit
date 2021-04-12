@@ -18,6 +18,11 @@ it, simply add the following line to your Podfile:
 
 ```ruby
 pod 'VinBaseComponents'
+
+pod 'VinBaseComponents/CocoaExtentions'
+pod 'VinBaseComponents/NetWorking'
+pod 'VinBaseComponents/RACExtentions'
+pod 'VinBaseComponents/StorageLib'
 ```
 
 ## Author
