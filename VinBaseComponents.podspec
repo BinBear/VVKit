@@ -25,7 +25,7 @@ TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
 
   s.subspec 'CocoaExtentions' do |ss|
 
-    ss.public_header_files = 'VinBaseComponents/Classes/CocoaExtentions/CommonElement.h'
+    ss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/CommonElement.h'
 
     ss.subspec 'Foundation' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/Foundation/**/*'
