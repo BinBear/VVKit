@@ -372,7 +372,6 @@
     
     return outStr;
 }
-
 - (instancetype)vv_stringByAppendingString:(NSString *)format {
     
     NSString *outStr = @"";
@@ -431,28 +430,32 @@
 
 + (NSString *)stringFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits
 {
-
-    NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-    [numberFormatter setMaximumFractionDigits:fractionDigits];
-    [numberFormatter setMinimumFractionDigits:fractionDigits];
-    numberFormatter.roundingMode = NSNumberFormatterRoundDown;
-    numberFormatter.minimumIntegerDigits = 1;
-    numberFormatter.groupingSeparator = @"";
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    numberFormatter.decimalSeparator = @".";
+    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
+                                                                         roundingMode:NSNumberFormatterRoundDown];
     return [numberFormatter stringFromNumber:number];
 }
 + (NSString *)stringRoundPlainFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits
 {
-    NSNumberFormatter *numberFormatter = [NSNumberFormatter new];
-    [numberFormatter setMaximumFractionDigits:fractionDigits];
-    [numberFormatter setMinimumFractionDigits:fractionDigits];
-    numberFormatter.roundingMode = NSNumberFormatterRoundCeiling;
-    numberFormatter.minimumIntegerDigits = 1;
-    numberFormatter.groupingSeparator = @"";
-    numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-    numberFormatter.decimalSeparator = @".";
+    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
+                                                                         roundingMode:NSNumberFormatterRoundCeiling];
     return [numberFormatter stringFromNumber:number];
+}
+
++ (NSNumberFormatter *)_numberFormatterWithFractionDigits:(NSInteger)fractionDigits
+                                             roundingMode:(NSNumberFormatterRoundingMode)mode{
+    static NSNumberFormatter *numberFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        numberFormatter = [NSNumberFormatter new];
+        numberFormatter.minimumIntegerDigits = 1;
+        numberFormatter.groupingSeparator = @"";
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numberFormatter.decimalSeparator = @".";
+    });
+    numberFormatter.minimumFractionDigits = fractionDigits;
+    numberFormatter.maximumFractionDigits = fractionDigits;
+    numberFormatter.roundingMode = mode;
+    return numberFormatter;
 }
 
 + (NSString *)deleteSuffixAllZero:(NSString *) string
