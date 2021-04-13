@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.1.5'
+  s.version          = '0.1.6'
   s.summary          = '基础组件库'
 
 
@@ -64,12 +64,12 @@ TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
     ss.subspec 'MapKeyValueTool' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/StorageLib/MapKeyValueTool/**/*'
       sss.dependency 'MMKV'
+      sss.dependency 'UICKeyChainStore'
     end
 
     ss.subspec 'RealmStore' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/StorageLib/RealmStore/**/*'
       sss.dependency 'Realm'
-      sss.dependency 'UICKeyChainStore'
     end
 
   end
