@@ -1,6 +1,6 @@
 {
   "name": "VinBaseComponents",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "summary": "基础组件库",
   "description": "TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions",
   "homepage": "https://github.com/BinBear/VinBaseComponents",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/BinBear/VinBaseComponents.git",
-    "tag": "0.1.4"
+    "tag": "0.1.5"
   },
   "platforms": {
     "ios": "10.0"
