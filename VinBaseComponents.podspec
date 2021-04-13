@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.1.3'
+  s.version          = '0.1.4'
   s.summary          = '基础组件库'
 
 
@@ -24,27 +24,59 @@ TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
   s.ios.deployment_target = '10.0'
 
   s.subspec 'CocoaExtentions' do |ss|
-    ss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/**/*'
+
+    ss.public_header_files = 'VinBaseComponents/Classes/CocoaExtentions/CommonElement.h'
+
+    ss.subspec 'Foundation' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/Foundation/**/*'
+    end
+
+    ss.subspec 'UIKit' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/UIKit/**/*'
+    end
+
   end
 
   s.subspec 'NetWorking' do |ss|
-    ss.source_files = 'VinBaseComponents/Classes/NetWorking/**/*'
-    ss.dependency "AFNetworking"
-    ss.dependency "YYCache"
-    ss.dependency "CocoaLumberjack"
-    ss.dependency 'VinBaseComponents/RACExtentions'
+
+    ss.subspec 'TaskInfo' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/NetWorking/TaskInfo/**/*'
+    end
+
+    ss.subspec 'Cache' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/NetWorking/Cache/**/*'
+      sss.dependency 'YYCache'
+    end
+
+    ss.subspec 'Base' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/NetWorking/Base/**/*'
+      sss.dependency "AFNetworking"
+      sss.dependency "CocoaLumberjack"
+      sss.dependency "VinBaseComponents/NetWorking/TaskInfo"
+      sss.dependency "VinBaseComponents/NetWorking/Cache"
+      sss.dependency "VinBaseComponents/RACExtentions"
+    end
+    
+  end
+
+  s.subspec 'StorageLib' do |ss|
+
+    ss.subspec 'MapKeyValueTool' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/StorageLib/MapKeyValueTool/**/*'
+      sss.dependency 'MMKV'
+    end
+
+    ss.subspec 'RealmStore' do |sss|
+      sss.source_files = 'VinBaseComponents/Classes/StorageLib/RealmStore/**/*'
+      sss.dependency 'Realm'
+      sss.dependency 'UICKeyChainStore'
+    end
+
   end
 
   s.subspec 'RACExtentions' do |ss|
     ss.source_files = 'VinBaseComponents/Classes/RACExtentions/**/*'
     ss.dependency "ReactiveObjC"
-  end
-
-  s.subspec 'StorageLib' do |ss|
-    ss.source_files = 'VinBaseComponents/Classes/StorageLib/**/*'
-    ss.dependency 'Realm'
-    ss.dependency 'UICKeyChainStore'
-    ss.dependency 'MMKV'
   end
 
 end

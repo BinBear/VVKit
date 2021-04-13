@@ -9,6 +9,7 @@
 #import "HTNetworking.h"
 #import "HTJSON.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 #ifndef __OPTIMIZE__
 #define NSLog(...) {}
@@ -76,15 +77,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         return nil;
     }
     
-    if (configure.isShowHUD) {
-        [self showHUD];
-    }
-    @ht_weakify(self);
+
+    @weakify(self);
     // 成功回调
     void (^success)(NSURLSessionDataTask *, id) =
     ^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject){
-        @ht_strongify(self);
-        [self dismissHUD];
+        @strongify(self);
         !configure.isCache ?: [self.networkCache setCache:responseObject forKey:cacheKey];
         !successBlock ?: [self handleSuccessCallback:successBlock withTask:task withResponse:responseObject];
         !self.ht_isDebug ?:[self logWithSuccessResponse:responseObject
@@ -99,8 +97,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     // 失败回调
     void (^failure)(NSURLSessionDataTask *, NSError *) =
     ^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error){
-        @ht_strongify(self);
-        [self dismissHUD];
+        @strongify(self);
         id cacheData = nil;
         if (configure.isCache) {
             cacheData = [self.networkCache getCacheForKey:cacheKey];
@@ -153,13 +150,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
                                 failure:failure];
         }break;
         case kHTNetworRequestTypeHead:{
-            @ht_weakify(self);
+            @weakify(self);
             sessionTask = [manager HEAD:url
                              parameters:parameter
                                 headers:nil
                                 success:^(NSURLSessionDataTask * _Nonnull task) {
-                @ht_strongify(self);
-                [self dismissHUD];
+                @strongify(self);
                 !successBlock ?: successBlock(nil,task);
                 [self.networkTask cancelResumingSingleTask:task];
             }
@@ -205,12 +201,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     HTAppDotNetAPIClient *manager = [self netManager];
     [self handleRequestData];
     HTURLSessionTask *sessionTask = nil;
-    @ht_weakify(self);
+    @weakify(self);
     sessionTask =
     [manager uploadTaskWithRequest:request fromFile:[NSURL URLWithString:uploadingFile] progress:^(NSProgress * _Nonnull uploadProgress) {
         !progressBlock ?: progressBlock(uploadProgress.completedUnitCount,uploadProgress.totalUnitCount);
     } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
-        @ht_strongify(self);
+        @strongify(self);
         error ?
         (!failureBlock ?: [self handleFailCallback:failureBlock WithTask:nil WithError:nil]):
         (!successBlock ?: [self handleSuccessCallback:successBlock withTask:nil withResponse:responseObject]);
@@ -250,7 +246,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     [self handleRequestData];
     
     HTURLSessionTask *sessionTask = nil;
-    @ht_weakify(self);
+    @weakify(self);
     sessionTask =
     [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
         !progressBlock ?: progressBlock(downloadProgress.completedUnitCount,downloadProgress.totalUnitCount);
@@ -258,7 +254,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         return [NSURL fileURLWithPath:saveToPath];
     } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
         
-        @ht_strongify(self);
+        @strongify(self);
         error ?
         (!failureBlock ?: [self handleFailCallback:failureBlock WithTask:nil WithError:nil]):
         (!successBlock ?: [self handleSuccessCallback:successBlock withTask:nil withResponse:filePath.absoluteString]);
@@ -489,11 +485,5 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     }
 }
 
-#pragma mark - HUD
-- (void)showHUD{
-}
-
-- (void)dismissHUD{
-}
 
 @end

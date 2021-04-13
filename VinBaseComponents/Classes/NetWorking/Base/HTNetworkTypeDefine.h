@@ -79,45 +79,4 @@ typedef void(^HTResponseSuccess)(id _Nullable response,NSURLSessionDataTask * _N
 typedef void(^HTResponseFail)(NSError * _Nullable error,NSURLSessionDataTask * _Nullable task);
 
 
-#ifndef ht_weakify
-#if __has_feature(objc_arc)
-
-#define ht_weakify( x ) \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Wshadow\"") \
-autoreleasepool{} __weak __typeof__(x) __weak_##x##__ = x; \
-_Pragma("clang diagnostic pop")
-
-#else
-
-#define ht_weakify( x ) \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Wshadow\"") \
-autoreleasepool{} __block __typeof__(x) __block_##x##__ = x; \
-_Pragma("clang diagnostic pop")
-
-#endif
-#endif
-
-#ifndef ht_strongify
-#if __has_feature(objc_arc)
-
-#define ht_strongify( x ) \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Wshadow\"") \
-try{} @finally{} __typeof__(x) x = __weak_##x##__; \
-_Pragma("clang diagnostic pop")
-
-#else
-
-#define ht_strongify( x ) \
-_Pragma("clang diagnostic push") \
-_Pragma("clang diagnostic ignored \"-Wshadow\"") \
-try{} @finally{} __typeof__(x) x = __block_##x##__; \
-_Pragma("clang diagnostic pop")
-
-#endif
-#endif
-
-
 #endif /* HTNetworkTypeDefine_h */
