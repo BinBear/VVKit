@@ -19,10 +19,14 @@ it, simply add the following line to your Podfile:
 ```ruby
 pod 'VinBaseComponents'
 
+or
+
 pod 'VinBaseComponents/CocoaExtentions'
 pod 'VinBaseComponents/NetWorking'
 pod 'VinBaseComponents/RACExtentions'
 pod 'VinBaseComponents/StorageLib'
+pod 'VinBaseComponents/BlockViewKit'
+
 ```
 
 ## Author

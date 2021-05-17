@@ -8,12 +8,18 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.1.7'
+  s.version          = '0.1.8'
   s.summary          = '基础组件库'
 
 
   s.description      = <<-DESC
-TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
+TODO: 基础组件库
+      BlockViewKit：UIScrollView、UITableView、UICollectionView基于Block的封装，支持链式调用，所有代理方法动态添加
+      CocoaExtentions：常用的Extentions
+      Components：常用的工具类
+      NetWorking：基于AFNetWorking的网络请求组件，支持缓存，配置灵活
+      RACExtentions：基于ReactCocoa封装的组件
+      StorageLib：基于Realm数据库组件、基于MMKV的持久化组件
                        DESC
 
   s.homepage         = 'https://github.com/BinBear/VinBaseComponents'
@@ -34,6 +40,12 @@ TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
     ss.subspec 'UIKit' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/UIKit/**/*'
     end
+
+  end
+
+  s.subspec 'Components' do |ss|
+
+    ss.source_files = 'VinBaseComponents/Classes/Components/**/*'
 
   end
 
@@ -77,6 +89,12 @@ TODO: 基础组件库，包含网络请求，RAC组件，常用的Extentions
   s.subspec 'RACExtentions' do |ss|
     ss.source_files = 'VinBaseComponents/Classes/RACExtentions/**/*'
     ss.dependency "ReactiveObjC"
+  end
+
+  s.subspec 'BlockViewKit' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/BlockViewKit/**/*'
+    ss.dependency "VinBaseComponents/RACExtentions"
+    ss.dependency "VinBaseComponents/Components"
   end
 
 end
