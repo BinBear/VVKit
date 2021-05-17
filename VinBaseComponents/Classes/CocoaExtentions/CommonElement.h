@@ -13,9 +13,7 @@
 #import "NSObject+BinAdd.h"
 #import "NSDate+BinAdd.h"
 #import "NSString+BinAdd.h"
-#import "NSData+BinAdd.h"
 #import "NSDictionary+BinAdd.h"
-#import "NSMutableArray+BinAdd.h"
 #import "NSDecimalNumber+BinAdd.h"
 
 // UIKit
