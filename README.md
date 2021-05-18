@@ -22,6 +22,7 @@ pod 'VinBaseComponents'
 or
 
 pod 'VinBaseComponents/CocoaExtentions'
+pod 'VinBaseComponents/Components'
 pod 'VinBaseComponents/NetWorking'
 pod 'VinBaseComponents/RACExtentions'
 pod 'VinBaseComponents/StorageLib'
