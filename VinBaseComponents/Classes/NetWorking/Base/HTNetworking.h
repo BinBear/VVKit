@@ -16,22 +16,22 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface HTNetworking : NSObject
 
-// 设置请求超时时间，默认为90秒
+/// 设置请求超时时间，默认为90秒
 @property (assign, nonatomic) NSTimeInterval  ht_timeout;
-// 当检查到网络异常时，是否从从本地提取数据,默认false
+/// 当检查到网络异常时，是否从从本地提取数据,默认false
 @property (assign, nonatomic) BOOL  ht_shouldObtain;
-// 是否开启接口打印信息,默认true
-@property (assign, nonatomic) BOOL  ht_isDebug;
-// 是否encode url,默认false
+/// 是否开启接口打印信息,默认false
+@property (assign, nonatomic) BOOL  ht_isDebugSuccessLog;
+/// 是否开启接口打印信息,默认true
+@property (assign, nonatomic) BOOL  ht_isDebugFailLog;
+/// 是否encode url,默认false
 @property (assign, nonatomic) BOOL  ht_shouldEncode;
-// 当取消请求时，是否要回调,默认false
+/// 当取消请求时，是否要回调,默认false
 @property (assign, nonatomic) BOOL  ht_shouldCallbackCancelRequest;
-// 请求格式，默认为JSON,默认kHTRequestTypeJSON
+/// 请求格式，默认为JSON,默认kHTRequestTypeJSON
 @property (assign, nonatomic) HTRequestType  ht_requestType;
-// 响应格式，默认为JSON,默认kHTResponseTypeData
+/// 响应格式，默认为JSON,默认kHTResponseTypeData
 @property (assign, nonatomic) HTResponseType  ht_responseType;
-// 网络状态
-@property (assign, nonatomic) HTNetworkStatus  ht_networkStatus;
 
 
 + (instancetype)networkWithCache:(HTNetworkCache *)cache

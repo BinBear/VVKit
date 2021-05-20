@@ -7,6 +7,7 @@
 //
 
 #import "HTRequestListConfigure.h"
+#import <ReactiveObjC/ReactiveObjC.h>
 
 @interface HTRequestListConfigure ()
 @property (nonatomic,assign,getter=isConfigure_showHUD) BOOL configure_showHUD;
@@ -44,46 +45,60 @@
 }
 
 - (HTRequestListConfigure *(^)(BOOL))showHUD {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL showHUD) {
+        @strongify(self);
         self.configure_showHUD = showHUD;
         return self;
     };
 }
 - (HTRequestListConfigure *(^)(BOOL))showError {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL showError) {
+        @strongify(self);
         self.configure_showError = showError;
         return self;
     };
 }
 - (HTRequestListConfigure *(^)(BOOL))signature {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL signature) {
+        @strongify(self);
         self.configure_signature = signature;
         return self;
     };
 }
 - (HTRequestListConfigure *(^)(BOOL))cache {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL cache) {
+        @strongify(self);
         self.configure_cache = cache;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(BOOL))needToken {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL needToken) {
+        @strongify(self);
         self.configure_needToken = needToken;
         return self;
     };
 }
 
 - (HTRequestListConfigure * _Nonnull (^)(BOOL))needHandleLoginState{
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL needHandleLoginState) {
+        @strongify(self);
         self.configure_needHandleLoginState = needHandleLoginState;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(BOOL))needQuery {
+    @weakify(self);
     return ^HTRequestListConfigure *(BOOL needQuery) {
+        @strongify(self);
         self.configure_needQuery = needQuery;
         return self;
     };
@@ -91,49 +106,63 @@
 
 
 - (HTRequestListConfigure *(^)(HTNetworkRequestType))requestMethodType {
+    @weakify(self);
     return ^HTRequestListConfigure *(HTNetworkRequestType requestType) {
+        @strongify(self);
         self.configure_requestMethodType = requestType;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(HTRequestType))requestType {
+    @weakify(self);
     return ^HTRequestListConfigure *(HTRequestType requestType) {
+        @strongify(self);
         self.configure_requestType = requestType;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(HTResponseType))responseType {
+    @weakify(self);
     return ^HTRequestListConfigure *(HTResponseType requestType) {
+        @strongify(self);
         self.configure_responseType = requestType;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(id))serverName {
+    @weakify(self);
     return ^HTRequestListConfigure *(id serverName) {
+        @strongify(self);
         self.configure_serverName = serverName;
         return self;
     };
 }
 
 - (HTRequestListConfigure * _Nonnull (^)(NSString * _Nonnull))uploadFile{
+    @weakify(self);
     return ^HTRequestListConfigure *(NSString *uploadFile){
+        @strongify(self);
         self.configure_uploadFile = uploadFile;
         return self;
     };
 }
 
 - (HTRequestListConfigure * _Nonnull (^)(NSString * _Nonnull))uploadFileName{
+    @weakify(self);
     return ^HTRequestListConfigure *(NSString *uploadFileName){
+        @strongify(self);
         self.configure_uploadFileName = uploadFileName;
         return self;
     };
 }
 
 - (HTRequestListConfigure *(^)(NSDictionary *))httpHeaderParams {
+    @weakify(self);
     return ^HTRequestListConfigure *(NSDictionary *params){
+        @strongify(self);
         self.configure_httpHeaderParams = params;
         return self;
     };

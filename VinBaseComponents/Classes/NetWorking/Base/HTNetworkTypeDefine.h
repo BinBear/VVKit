@@ -24,13 +24,6 @@ typedef NS_ENUM(NSUInteger, HTRequestType) {
     kHTRequestTypePlainText  = 2 // 普通text/html
 };
 
-typedef NS_ENUM(NSInteger, HTNetworkStatus) {
-    kHTNetworkStatusUnknown          = -1,//未知网络
-    kHTNetworkStatusNotReachable     = 0,//网络无连接
-    kHTNetworkStatusReachableViaWWAN = 1,//2，3，4G网络
-    kHTNetworkStatusReachableViaWiFi = 2,//WIFI网络
-};
-
 typedef NS_ENUM(NSUInteger, HTNetworkRequestType) {
     kHTNetworRequestTypeGet,
     kHTNetworRequestTypePost,

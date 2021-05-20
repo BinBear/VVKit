@@ -19,6 +19,27 @@ static const DDLogLevel ddLogLevel = DDLogLevelDebug;
 static const DDLogLevel ddLogLevel = DDLogLevelOff;
 #endif
 
+/// 解析json数据
+id tryToParseData(id json) {
+    if (!json || json == (id)kCFNull) {
+        return nil;
+    }
+    NSDictionary *dic = nil;
+    NSData *jsonData = nil;
+    if ([json isKindOfClass:[NSDictionary class]]) {
+        dic = json;
+    } else if ([json isKindOfClass:[NSString class]]) {
+        jsonData = [(NSString *)json dataUsingEncoding: NSUTF8StringEncoding];
+    } else if ([json isKindOfClass:[NSData class]]) {
+        jsonData = json;
+    }
+    if (jsonData) {
+        dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:NULL];
+    }
+    return dic;
+}
+
+
 @interface HTNetworking ()
 @property (strong, nonatomic) HTAppDotNetAPIClient *netManager;
 @property (strong, nonatomic) HTNetworkCache *networkCache;
@@ -48,6 +69,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     if (self.ht_shouldEncode) {
         url = [self ht_URLEncode:url];
     }
+    
     NSString *cacheKey  = @"";
     if (configure.isCache) {cacheKey = url;}
     
@@ -55,28 +77,6 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     [self handleRequestData];
     [self handleHTTPHeader:configure.getHttpHeaderParams];
     HTURLSessionTask *sessionTask = nil;
-    
-    if (self.ht_networkStatus == kHTNetworkStatusNotReachable ||  self.ht_networkStatus == kHTNetworkStatusUnknown ) {
-        id cacheData = nil;
-        if (configure.isCache) {
-            cacheData = [self.networkCache getCacheForKey:cacheKey];
-        }
-        cacheData ?
-        (!successBlock ?: [self handleSuccessCallback:successBlock withTask:nil withResponse:cacheData]) :
-        (!failureBlock ?: [self handleFailCallback:failureBlock WithTask:nil WithError:nil]);
-        if (self.ht_isDebug) {
-            NSString *errorStr = @"当前网络不可用，且无缓存数据";
-            cacheData ?
-            [self logWithSuccessResponse:cacheData
-                                     url:url
-                                  params:parameter] :
-            [self logWithFailError:[NSError errorWithDomain:errorStr code:-10086 userInfo:nil]
-                               url:url
-                            params:parameter];
-        }
-        return nil;
-    }
-    
 
     @weakify(self);
     // 成功回调
@@ -85,18 +85,15 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         @strongify(self);
         !configure.isCache ?: [self.networkCache setCache:responseObject forKey:cacheKey];
         !successBlock ?: [self handleSuccessCallback:successBlock withTask:task withResponse:responseObject];
-        !self.ht_isDebug ?:[self logWithSuccessResponse:responseObject
-                                                    url:url
-                                                 params:parameter];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                     (int64_t)(.1 * NSEC_PER_SEC)),
-                       dispatch_get_main_queue(), ^{
-            [self.networkTask cancelResumingSingleTask:task];
-        });
+        !self.ht_isDebugSuccessLog ?:[self logWithSuccessResponse:responseObject
+                                                              url:url
+                                                           params:parameter];
+        [self.networkTask cancelResumingSingleTask:task];
     };
     // 失败回调
     void (^failure)(NSURLSessionDataTask *, NSError *) =
     ^(NSURLSessionDataTask * _Nonnull task, NSError * _Nonnull error){
+        
         @strongify(self);
         id cacheData = nil;
         if (configure.isCache) {
@@ -105,15 +102,11 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         cacheData ?
         (!successBlock ?: [self handleSuccessCallback:successBlock withTask:task withResponse:cacheData]) :
         (!failureBlock ?: [self handleFailCallback:failureBlock WithTask:task WithError:error]);
-        !self.ht_isDebug ?:[self logWithFailError:error
-                                              url:url
-                                           params:parameter];
+        !self.ht_isDebugFailLog ?:[self logWithFailError:error
+                                                     url:url
+                                                  params:parameter];
         
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW,
-                                     (int64_t)(.1 * NSEC_PER_SEC)),
-                       dispatch_get_main_queue(), ^{
-            [self.networkTask cancelResumingSingleTask:task];
-        });
+        [self.networkTask cancelResumingSingleTask:task];
     };
     // 传输进度回调
     void (^transProgress)(NSProgress * _Nonnull progress) =
@@ -150,7 +143,6 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
                                 failure:failure];
         }break;
         case kHTNetworRequestTypeHead:{
-            @weakify(self);
             sessionTask = [manager HEAD:url
                              parameters:parameter
                                 headers:nil
@@ -160,6 +152,13 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
                 [self.networkTask cancelResumingSingleTask:task];
             }
                                 failure:failure];
+        }break;
+        case kHTNetworRequestTypePut:{
+            sessionTask = [manager PUT:url
+                            parameters:parameter
+                               headers:nil
+                               success:success
+                               failure:failure];
         }break;
         case kHTNetworRequestTypePatch:{
             sessionTask = [manager PATCH:url
@@ -200,6 +199,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     HTAppDotNetAPIClient *manager = [self netManager];
     [self handleRequestData];
+    
     HTURLSessionTask *sessionTask = nil;
     @weakify(self);
     sessionTask =
@@ -212,12 +212,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         (!successBlock ?: [self handleSuccessCallback:successBlock withTask:nil withResponse:responseObject]);
         
         error ?
-        (!self.ht_isDebug ?: [self logWithFailError:error
-                                                url:url
-                                             params:nil]):
-        (!self.ht_isDebug ?: [self logWithSuccessResponse:responseObject
-                                                      url:url
-                                                   params:nil]);
+        (!self.ht_isDebugFailLog ?: [self logWithFailError:error
+                                                       url:url
+                                                    params:nil]):
+        (!self.ht_isDebugSuccessLog ?: [self logWithSuccessResponse:responseObject
+                                                                url:url
+                                                             params:nil]);
 
         [self.networkTask cancelResumingSingleTask:sessionTask];
     }];
@@ -260,12 +260,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         (!successBlock ?: [self handleSuccessCallback:successBlock withTask:nil withResponse:filePath.absoluteString]);
         
         error ?
-        (!self.ht_isDebug ?: [self logWithFailError:error
-                                                url:url
-                                             params:nil]):
-        (!self.ht_isDebug ?: [self logWithSuccessResponse:filePath.absoluteString
-                                                      url:url
-                                                   params:nil]);
+        (!self.ht_isDebugFailLog ?: [self logWithFailError:error
+                                                       url:url
+                                                    params:nil]):
+        (!self.ht_isDebugSuccessLog ?: [self logWithSuccessResponse:filePath.absoluteString
+                                                                url:url
+                                                             params:nil]);
 
         [self.networkTask cancelResumingSingleTask:sessionTask];
     }];
@@ -297,7 +297,6 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
                                                                                   @"application/x-www-form-urlencoded",
                                                                                   @"multipart/form-data"
                                                                                   ]];
-        [self detectNetwork];
     }
     return _netManager;
 }
@@ -306,12 +305,12 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
 - (void)defaultNetworkConfigure {
     self.ht_timeout = 90;
     self.ht_shouldObtain = false;
-    self.ht_isDebug = true;
+    self.ht_isDebugSuccessLog = false;
+    self.ht_isDebugFailLog = true;
     self.ht_shouldEncode = false;
     self.ht_shouldCallbackCancelRequest = false;
     self.ht_requestType = kHTRequestTypeJSON;
     self.ht_responseType = kHTResponseTypeData;
-    self.ht_networkStatus = kHTNetworkStatusReachableViaWWAN;
 }
 // 配置请求数据
 - (void)handleRequestData{
@@ -358,22 +357,6 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         }
     }];
 }
-// 开启网络状态监测
-- (void)detectNetwork{
-    AFNetworkReachabilityManager *reachabilityManager = [AFNetworkReachabilityManager sharedManager];
-    [reachabilityManager startMonitoring];
-    [reachabilityManager setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        if (status == AFNetworkReachabilityStatusNotReachable){
-            self.ht_networkStatus = kHTNetworkStatusNotReachable;
-        }else if (status == AFNetworkReachabilityStatusUnknown){
-            self.ht_networkStatus = kHTNetworkStatusUnknown;
-        }else if (status == AFNetworkReachabilityStatusReachableViaWWAN){
-            self.ht_networkStatus = kHTNetworkStatusReachableViaWWAN;
-        }else if (status == AFNetworkReachabilityStatusReachableViaWiFi){
-            self.ht_networkStatus = kHTNetworkStatusReachableViaWiFi;
-        }
-    }];
-}
 // URL encode
 - (NSString *)ht_URLEncode:(NSString *)url {
     if ([url respondsToSelector:@selector(stringByAddingPercentEncodingWithAllowedCharacters:)]) {
@@ -417,7 +400,7 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
 // 处理成功回调
 - (void)handleSuccessCallback:(HTResponseSuccess)success withTask:(NSURLSessionDataTask *)task withResponse:(id)responseData {
     if (success) {
-        NSDictionary *dataDic = [self tryToParseData:responseData];
+        NSDictionary *dataDic = tryToParseData(responseData);
         success(dataDic,task);
     }
 }
@@ -435,55 +418,36 @@ static const DDLogLevel ddLogLevel = DDLogLevelOff;
         }
     }
 }
-// 解析json数据
-- (id)tryToParseData:(id)json {
-    if (!json || json == (id)kCFNull) {
-        return nil;
-    }
-    NSDictionary *dic = nil;
-    NSData *jsonData = nil;
-    if ([json isKindOfClass:[NSDictionary class]]) {
-        dic = json;
-    } else if ([json isKindOfClass:[NSString class]]) {
-        jsonData = [(NSString *)json dataUsingEncoding : NSUTF8StringEncoding];
-    } else if ([json isKindOfClass:[NSData class]]) {
-        jsonData = json;
-    }
-    if (jsonData) {
-        dic = [NSJSONSerialization JSONObjectWithData:jsonData options:NSJSONReadingAllowFragments error:NULL];
-    }
-    return dic;
-}
-
 // 处理日志
 - (void)logWithSuccessResponse:(id)response url:(NSString *)url params:(NSDictionary *)params {
     DDLogDebug(@"\n");
-    DDLogDebug(@"\nRequest success, URL: %@\n params:%@\n response:%@\n\n",
-          url,
-          params,
-          [self tryToParseData:response]);
+    DDLogDebug(@"\n请求成功: \nURL: %@\n params: %@\n response: %@\n\n",
+               url,
+               params,
+               tryToParseData(response));
 }
 - (void)logWithFailError:(NSError *)error url:(NSString *)url params:(id)params {
     NSString *format = @" params: ";
-    if (params == nil || ![params isKindOfClass:[NSDictionary class]]) {
+    if (!params) {
         format = @"";
         params = @"";
     }
+    NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
+    NSString *errorStr = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
     
     DDLogDebug(@"\n");
     if ([error code] == NSURLErrorCancelled) {
-        DDLogDebug(@"\nRequest was canceled mannully, URL: %@ %@%@\n\n",
+        DDLogDebug(@"\n请求被取消: \nURL: %@ %@ %@\n\n",
                    url,
                    format,
                    params);
     } else {
-        DDLogDebug(@"\nRequest error, URL: %@ %@%@\n errorInfos:%@\n\n",
+        DDLogDebug(@"\n请求错误: \nURL: %@ %@ %@\n errorInfos: %@\n\n",
                    url,
                    format,
                    params,
-                   [error localizedDescription]);
+                   errorStr);
     }
 }
-
 
 @end
