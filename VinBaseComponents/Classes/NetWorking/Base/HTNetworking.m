@@ -12,10 +12,8 @@
 #import <ReactiveObjC/ReactiveObjC.h>
 
 #ifndef __OPTIMIZE__
-#define NSLog(...) {}
 static const DDLogLevel ddLogLevel = DDLogLevelDebug;
 #else
-#define NSLog(...) {}
 static const DDLogLevel ddLogLevel = DDLogLevelOff;
 #endif
 

@@ -27,6 +27,7 @@ pod 'VinBaseComponents/NetWorking'
 pod 'VinBaseComponents/RACExtentions'
 pod 'VinBaseComponents/StorageLib'
 pod 'VinBaseComponents/BlockViewKit'
+pod 'VinBaseComponents/CycleViewKit'
 
 ```
 

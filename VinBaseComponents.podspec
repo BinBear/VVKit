@@ -94,7 +94,11 @@ TODO: 基础组件库
   s.subspec 'BlockViewKit' do |ss|
     ss.source_files = 'VinBaseComponents/Classes/BlockViewKit/**/*'
     ss.dependency "VinBaseComponents/RACExtentions"
-    ss.dependency "VinBaseComponents/Components"
+  end
+
+  s.subspec 'CycleViewKit' do |ss|
+    ss.source_files = 'VinBaseComponents/Classes/CycleViewKit/**/*'
+    ss.dependency "VinBaseComponents/RACExtentions"
   end
 
 end

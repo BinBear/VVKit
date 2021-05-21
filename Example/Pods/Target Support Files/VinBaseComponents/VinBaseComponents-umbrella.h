@@ -10,8 +10,6 @@
 #endif
 #endif
 
-#import "HCBlockScrollView.h"
-#import "HCTableViewAnimationKit.h"
 #import "UICollectionReusableView+BlockExtention.h"
 #import "UICollectionView+BlockExtention.h"
 #import "UICollectionViewCell+BlockExtention.h"
@@ -20,15 +18,16 @@
 #import "UITableViewCell+BlockExtention.h"
 #import "UITableViewHeaderFooterView+BlockExtention.h"
 #import "CommonElement.h"
-#import "NSData+BinAdd.h"
 #import "NSDate+BinAdd.h"
 #import "NSDictionary+BinAdd.h"
-#import "NSMutableArray+BinAdd.h"
 #import "NSDecimalNumber+BinAdd.h"
 #import "NSObject+BinAdd.h"
 #import "NSString+BinAdd.h"
 #import "UIView+FrameExtention.h"
 #import "HTEnumMarcos.h"
+#import "HTCycleView.h"
+#import "HTSegmentView.h"
+#import "HTSegmentViewAnimate.h"
 #import "HTAppDotNetAPIClient.h"
 #import "HTJSON.h"
 #import "HTNetworking.h"
