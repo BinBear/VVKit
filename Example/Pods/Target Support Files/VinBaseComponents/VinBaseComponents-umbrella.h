@@ -21,6 +21,8 @@
 #import "NSDate+BinAdd.h"
 #import "NSDictionary+BinAdd.h"
 #import "NSDecimalNumber+BinAdd.h"
+#import "HTRunTimeMethods.h"
+#import "NSMethodSignature+HTExtention.h"
 #import "NSObject+BinAdd.h"
 #import "NSString+BinAdd.h"
 #import "UIView+FrameExtention.h"

@@ -34,6 +34,7 @@ PODS:
     - VinBaseComponents/RACExtentions (= 0.1.9)
     - VinBaseComponents/StorageLib (= 0.1.9)
   - VinBaseComponents/BlockViewKit (0.1.9):
+    - VinBaseComponents/CocoaExtentions
     - VinBaseComponents/RACExtentions
   - VinBaseComponents/CocoaExtentions (0.1.9):
     - VinBaseComponents/CocoaExtentions/Foundation (= 0.1.9)
@@ -94,7 +95,7 @@ SPEC CHECKSUMS:
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  VinBaseComponents: b4518a46e0217b320c593b0bb59472552e36ff71
+  VinBaseComponents: 1161bbe395a43dfc5a8e18d6612d3fc5d515cf5b
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
 PODFILE CHECKSUM: ff1a9c6a20a48c2c8c68ef4ed2edf2dccaa90bc8
