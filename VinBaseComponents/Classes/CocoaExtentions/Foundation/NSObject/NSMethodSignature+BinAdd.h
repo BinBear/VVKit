@@ -1,5 +1,5 @@
 //
-//  NSMethodSignature+HTExtention.h
+//  NSMethodSignature+BinAdd.h
 //  VinBaseComponents
 //
 //  Created by vin on 2021/5/25.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NSMethodSignature (HTExtention)
+@interface NSMethodSignature (BinAdd)
 
 @property (nonatomic,readonly,nullable) const char *vv_typeEncoding;
 @property (nonatomic,copy,readonly,nullable) NSString *vv_typeString;

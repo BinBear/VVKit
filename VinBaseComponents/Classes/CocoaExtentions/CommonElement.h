@@ -10,11 +10,13 @@
 #define CommonElement_h
 
 // Foundation
+#import "HTRunTimeMethods.h"
 #import "NSObject+BinAdd.h"
 #import "NSDate+BinAdd.h"
 #import "NSString+BinAdd.h"
 #import "NSDictionary+BinAdd.h"
 #import "NSDecimalNumber+BinAdd.h"
+#import "NSMethodSignature+BinAdd.h"
 
 // UIKit
 #import "UIView+FrameExtention.h"

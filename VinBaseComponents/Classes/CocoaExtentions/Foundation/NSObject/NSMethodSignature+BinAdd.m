@@ -1,14 +1,14 @@
 //
-//  NSMethodSignature+HTExtention.m
+//  NSMethodSignature+BinAdd.m
 //  VinBaseComponents
 //
 //  Created by vin on 2021/5/25.
 //
 
-#import "NSMethodSignature+HTExtention.h"
+#import "NSMethodSignature+BinAdd.h"
 #import "HTRunTimeMethods.h"
 
-@implementation NSMethodSignature (HTExtention)
+@implementation NSMethodSignature (BinAdd)
 
 - (NSString *)vv_typeString {
     
