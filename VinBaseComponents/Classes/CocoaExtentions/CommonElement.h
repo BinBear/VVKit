@@ -21,6 +21,7 @@
 // UIKit
 #import "UIView+FrameExtention.h"
 #import "UIViewController+HookExtention.h"
+#import "UINavigationController+HookExtention.h"
 
 
 #endif /* CommonElement_h */

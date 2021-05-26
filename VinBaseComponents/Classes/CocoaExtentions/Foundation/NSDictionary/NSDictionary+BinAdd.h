@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 合并后的NSDictionary
  */
-+ (NSDictionary *)dictionaryByMerging:(NSDictionary *)dict1 with:(NSDictionary *)dict2;
++ (NSDictionary *)vv_dictionaryByMerging:(NSDictionary *)dict1 with:(NSDictionary *)dict2;
 /**
  *  @brief  并入一个NSDictionary
  *
@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *  @return 增加后的NSDictionary
  */
-- (NSDictionary *)dictionaryByMergingWith:(NSDictionary *)dict;
+- (NSDictionary *)vv_dictionaryByMergingWith:(NSDictionary *)dict;
 @end
 
 NS_ASSUME_NONNULL_END
