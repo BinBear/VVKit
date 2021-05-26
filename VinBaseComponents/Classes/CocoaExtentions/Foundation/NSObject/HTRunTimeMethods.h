@@ -30,6 +30,11 @@ _value; \
 _Pragma("clang diagnostic pop") \
 })
 
+#define  ht_ProtocolAndSelector(_object, _Protocol, _Selector) \
+( \
+[_object conformsToProtocol:_Protocol] && \
+[_object respondsToSelector:_Selector] \
+)
 
 #pragma mark - Method（以下实现来自QMUI, Thanks to QMUI team）
 
