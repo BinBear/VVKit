@@ -7,8 +7,8 @@
 //
 
 #import "UIScrollView+BlockExtention.h"
-
-
+#import <VinBaseComponents/NSObject+RACExtension.h>
+#import <VinBaseComponents/HTRunTimeMethods.h>
 
 
 @interface HTScrollViewDelegateConfigure () <UIScrollViewDelegate>

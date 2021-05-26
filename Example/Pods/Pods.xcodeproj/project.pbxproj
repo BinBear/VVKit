@@ -79,6 +79,8 @@
 		207403B3A5AB127EAC7B47B15F7ADFB9 /* RLMObservation.mm in Sources */ = {isa = PBXBuildFile; fileRef = B5FF42E3517B2493CEB77FE32CB4BAE0 /* RLMObservation.mm */; settings = {COMPILER_FLAGS = "-DREALM_HAVE_CONFIG -DREALM_COCOA_VERSION='@\"10.7.2\"' -D__ASSERTMACROS__ -DREALM_ENABLE_SYNC"; }; };
 		2074A75FA0D15DC7EEB9110D43026A2F /* openssl_md5_locl.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B4A46F1396C34F5D136962C2CCAFC2E /* openssl_md5_locl.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		2079DF8C5DA1548CC1FFE0B6D7A10855 /* RACImmediateScheduler.h in Headers */ = {isa = PBXBuildFile; fileRef = 953FCC7BC25190B8BD586A77E730309E /* RACImmediateScheduler.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		209F360D265DDFA000F09F4C /* UIViewController+HookExtention.h in Headers */ = {isa = PBXBuildFile; fileRef = 209F360B265DDFA000F09F4C /* UIViewController+HookExtention.h */; };
+		209F360E265DDFA000F09F4C /* UIViewController+HookExtention.m in Sources */ = {isa = PBXBuildFile; fileRef = 209F360C265DDFA000F09F4C /* UIViewController+HookExtention.m */; };
 		20DA53AF3ACFA9107143366CA4B266D0 /* CodedInputDataCrypt_OSX.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 790FAF80533A7D8A98C6A8A38269E353 /* CodedInputDataCrypt_OSX.cpp */; settings = {COMPILER_FLAGS = "-x objective-c++ -fno-objc-arc"; }; };
 		20F5028197C5827FF066EBA86734C9CE /* RACDisposable.h in Headers */ = {isa = PBXBuildFile; fileRef = F1C783EFBC9E65FD16A58BC7D3658F01 /* RACDisposable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		2101034042E6E41ABBF544CFD4F2E050 /* VinBaseComponents-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 10E8BF98F71C121CD13AA750AD7B17C3 /* VinBaseComponents-dummy.m */; };
@@ -947,6 +949,8 @@
 		1FA21F18D0AE99F5CF580E30CA8D2ED3 /* AFNetworking.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = AFNetworking.debug.xcconfig; sourceTree = "<group>"; };
 		1FF50E3755F989F23F990BA30AB87544 /* RACMulticastConnection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RACMulticastConnection.h; path = ReactiveObjC/RACMulticastConnection.h; sourceTree = "<group>"; };
 		2067B0F3A79FA2584167F9CFCA1F6812 /* RACDynamicSignal.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RACDynamicSignal.m; path = ReactiveObjC/RACDynamicSignal.m; sourceTree = "<group>"; };
+		209F360B265DDFA000F09F4C /* UIViewController+HookExtention.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIViewController+HookExtention.h"; sourceTree = "<group>"; };
+		209F360C265DDFA000F09F4C /* UIViewController+HookExtention.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+HookExtention.m"; sourceTree = "<group>"; };
 		2272DE100D264FADA2158603817763CD /* RLMPushClient.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RLMPushClient.h; path = include/RLMPushClient.h; sourceTree = "<group>"; };
 		2312ACFC36007E91C6219A1BDF3A947D /* RLMPushClient.mm */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.cpp.objcpp; name = RLMPushClient.mm; path = Realm/RLMPushClient.mm; sourceTree = "<group>"; };
 		23590AB3D7E7512E4C939E7CCE5B8560 /* RLMCredentials.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RLMCredentials.h; path = include/RLMCredentials.h; sourceTree = "<group>"; };
@@ -1911,6 +1915,8 @@
 			children = (
 				D88F58D7535E8E8A59E937A02FC9EED9 /* UIView+FrameExtention.h */,
 				E4E2FBAD92367AA3E95678F701DD1203 /* UIView+FrameExtention.m */,
+				209F360B265DDFA000F09F4C /* UIViewController+HookExtention.h */,
+				209F360C265DDFA000F09F4C /* UIViewController+HookExtention.m */,
 			);
 			name = UIKit;
 			sourceTree = "<group>";
@@ -2756,6 +2762,7 @@
 				87AEE072DBF3E1A5D57ED7CE370F07FB /* HTEnumMarcos.h in Headers */,
 				7EC495B9AC72C41E4F847476D6B0B665 /* HTJSON.h in Headers */,
 				1422B7C75637BC73B520D42A09A46E14 /* HTMapValueManager.h in Headers */,
+				209F360D265DDFA000F09F4C /* UIViewController+HookExtention.h in Headers */,
 				90DDC68CD8461CBA2CD23117BDA9D5C6 /* HTNetworkCache.h in Headers */,
 				C7923665140DD743A1855867AC679E5B /* HTNetworking.h in Headers */,
 				894DE601858BD4E73AB08AEEEC44C286 /* HTNetworkManager.h in Headers */,
@@ -3525,6 +3532,7 @@
 				D6D305B58AB4E3B687995BD2CD55110C /* UITableViewCell+BlockExtention.m in Sources */,
 				265A6BF8CC59BA2848C6E3AF0DF37BC7 /* UITableViewHeaderFooterView+BlockExtention.m in Sources */,
 				47F197BD10DBFD7CE0DE78B9B6B08181 /* UIView+FrameExtention.m in Sources */,
+				209F360E265DDFA000F09F4C /* UIViewController+HookExtention.m in Sources */,
 				2101034042E6E41ABBF544CFD4F2E050 /* VinBaseComponents-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

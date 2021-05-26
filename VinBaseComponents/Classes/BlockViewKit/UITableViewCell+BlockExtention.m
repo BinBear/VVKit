@@ -8,6 +8,7 @@
 
 #import "UITableViewCell+BlockExtention.h"
 #import "UITableView+BlockExtention.h"
+#import <VinBaseComponents/HTRunTimeMethods.h>
 
 @interface UITableViewCell ()
 @property (nonatomic,strong) NSIndexPath *ht_indexPath;

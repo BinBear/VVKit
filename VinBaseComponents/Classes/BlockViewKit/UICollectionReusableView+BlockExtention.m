@@ -8,6 +8,7 @@
 
 #import "UICollectionReusableView+BlockExtention.h"
 #import "UICollectionView+BlockExtention.h"
+#import <VinBaseComponents/HTRunTimeMethods.h>
 
 @interface UICollectionReusableView ()
 @property (nonatomic, assign) NSInteger ht_section;

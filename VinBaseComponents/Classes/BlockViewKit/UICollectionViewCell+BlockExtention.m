@@ -8,6 +8,7 @@
 
 #import "UICollectionViewCell+BlockExtention.h"
 #import "UICollectionView+BlockExtention.h"
+#import <VinBaseComponents/HTRunTimeMethods.h>
 
 @interface UICollectionViewCell ()
 @property (nonatomic,strong) NSIndexPath *ht_indexPath;
