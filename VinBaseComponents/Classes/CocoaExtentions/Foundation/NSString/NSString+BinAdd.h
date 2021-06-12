@@ -90,6 +90,14 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)stringFromDouble:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigits:(NSUInteger)fractionDigits;
 
 /**
+ * 返回只入不舍位数的值
+ *
+ * @param number         An NSNumber object that is parsed to create the returned string object.
+ * @param fractionDigits The number of digits after the decimal separator allowed as input and output by the receiver.
+ */
++ (NSString *)stringRoundUpFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits;
+
+/**
  *  返回舍去位数的值
  *
  *  @param number         An NSNumber object that is parsed to create the returned string object.

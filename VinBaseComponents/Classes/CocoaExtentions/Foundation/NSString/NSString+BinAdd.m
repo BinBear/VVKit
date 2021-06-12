@@ -72,6 +72,13 @@
     return [NSString stringFromNumber:decimalNumber fractionDigits:fractionDigits];
 }
 
++ (NSString *)stringRoundUpFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
+
+    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
+                                                                         roundingMode:NSNumberFormatterRoundUp];
+    return [numberFormatter stringFromNumber:number];
+}
+
 + (NSString *)stringFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
     NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
                                                                          roundingMode:NSNumberFormatterRoundDown];
