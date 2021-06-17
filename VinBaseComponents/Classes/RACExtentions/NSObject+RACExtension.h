@@ -29,7 +29,7 @@ ht_dispatch_after(CGFloat delayInSeconds, void(^block)(void)) {
 CG_INLINE void
 ht_dispatch_main_async_safe(void(^block)(void)) {
     if (dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL) == dispatch_queue_get_label(dispatch_get_main_queue())) {
-        !block ?: block();
+        if (block) { block();}
     } else {
         dispatch_async(dispatch_get_main_queue(), block);
     }
