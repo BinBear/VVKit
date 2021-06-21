@@ -55,22 +55,33 @@
 
 
 + (UIViewController *)vv_currentViewController {
-       UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
-       while (vc.presentedViewController) {
-           vc = [self _topViewController:vc.presentedViewController];
-       }
-       return vc;
+    UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
+    UIViewController *currentShowingVC = [self _topViewController:vc];
+    return currentShowingVC;
 }
                   
 + (UIViewController *)_topViewController:(UIViewController *)vc {
-    if ([vc isKindOfClass:[UINavigationController class]]) {
-        return [self _topViewController:[(UINavigationController *)vc visibleViewController]];
+    UIViewController *currentVC;
+    if ([vc presentedViewController]) {
+        // 当前视图是被presented出来的
+        UIViewController *nextRootVC = [vc presentedViewController];
+        currentVC = [self _topViewController:nextRootVC];
+        
     } else if ([vc isKindOfClass:[UITabBarController class]]) {
-        return [self _topViewController:[(UITabBarController *)vc selectedViewController]];
+        // 根视图为UITabBarController
+        UIViewController *nextRootVC = [(UITabBarController *)vc selectedViewController];
+        currentVC = [self _topViewController:nextRootVC];
+        
+    } else if ([vc isKindOfClass:[UINavigationController class]]){
+        // 根视图为UINavigationController
+        UIViewController *nextRootVC = [(UINavigationController *)vc visibleViewController];
+        currentVC = [self _topViewController:nextRootVC];
+        
     } else {
-        return vc;
+        // 根视图为非导航类
+        currentVC = vc;
     }
-    return nil;
+    return currentVC;
 }
 
 - (nullable UIViewController *)vv_childViewControllerWithName:(NSString *)name {
