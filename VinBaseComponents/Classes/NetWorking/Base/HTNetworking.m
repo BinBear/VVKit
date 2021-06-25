@@ -8,14 +8,7 @@
 
 #import "HTNetworking.h"
 #import "HTJSON.h"
-#import <CocoaLumberjack/CocoaLumberjack.h>
 #import <ReactiveObjC/ReactiveObjC.h>
-
-#ifndef __OPTIMIZE__
-static const DDLogLevel ddLogLevel = DDLogLevelDebug;
-#else
-static const DDLogLevel ddLogLevel = DDLogLevelOff;
-#endif
 
 /// 解析json数据
 id tryToParseData(id json) {
@@ -418,11 +411,11 @@ id tryToParseData(id json) {
 }
 // 处理日志
 - (void)logWithSuccessResponse:(id)response url:(NSString *)url params:(NSDictionary *)params {
-    DDLogDebug(@"\n");
-    DDLogDebug(@"\n请求成功: \nURL: %@\n params: %@\n response: %@\n\n",
-               url,
-               params,
-               tryToParseData(response));
+    NSLog(@"\n");
+    NSLog(@"\n请求成功: \nURL: %@\n params: %@\n response: %@\n\n",
+          url,
+          params,
+          tryToParseData(response));
 }
 - (void)logWithFailError:(NSError *)error url:(NSString *)url params:(id)params {
     NSString *format = @" params: ";
@@ -433,18 +426,18 @@ id tryToParseData(id json) {
     NSData *errorData = error.userInfo[AFNetworkingOperationFailingURLResponseDataErrorKey];
     NSString *errorStr = [[NSString alloc] initWithData:errorData encoding:NSUTF8StringEncoding];
     
-    DDLogDebug(@"\n");
+    NSLog(@"\n");
     if ([error code] == NSURLErrorCancelled) {
-        DDLogDebug(@"\n请求被取消: \nURL: %@ %@ %@\n\n",
-                   url,
-                   format,
-                   params);
+        NSLog(@"\n请求被取消: \nURL: %@ %@ %@\n\n",
+              url,
+              format,
+              params);
     } else {
-        DDLogDebug(@"\n请求错误: \nURL: %@ %@ %@\n errorInfos: %@\n\n",
-                   url,
-                   format,
-                   params,
-                   errorStr);
+        NSLog(@"\n请求错误: \nURL: %@ %@ %@\n errorInfos: %@\n\n",
+              url,
+              format,
+              params,
+              errorStr);
     }
 }
 
