@@ -39,13 +39,9 @@
         // 注册方法
         SEL sel = sel_registerName(selString.UTF8String);
         // 判断是否已经添加过该方法
-        Method method = class_getInstanceMethod([self class], sel);
-        if (!method) {
-            if (impBlock) {
-                // 获取方法的type
-                const char *methodTypes = method_getTypeEncoding(method) ?: "v@:";
-                class_addMethod(self.class, sel, imp_implementationWithBlock(impBlock()), methodTypes);
-            }
+        BOOL isHasOverride = ht_HasOverrideSuperclassMethod([self class], sel);
+        if (!isHasOverride && impBlock) {
+            class_addMethod(self.class, sel, imp_implementationWithBlock(impBlock()), "v@:");
         }
         return self;
     };

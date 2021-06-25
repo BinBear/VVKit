@@ -212,13 +212,13 @@
     return ^id(CGFloat (^block)(UITableView *, NSInteger)){
         @strongify(self);
         self.heightForHeaderInSection = [block copy];
-//        return self.addDelegateMethod(@"tableView:heightForHeaderInSection:", ^id {
-//            return ^CGFloat(HTTableViewDelegateConfigure *_self, UITableView *_tableView, NSInteger _section) {
-//               return
-//                _self.heightForHeaderInSection ?
-//                _self.heightForHeaderInSection(_tableView, _section) : (_tableView.sectionHeaderHeight > 0 ? _tableView.sectionHeaderHeight : CGFLOAT_MIN);
-//            };
-//        });
+        return self.addDelegateMethod(@"tableView:heightForHeaderInSection:", ^id {
+            return ^CGFloat(HTTableViewDelegateConfigure *_self, UITableView *_tableView, NSInteger _section) {
+               return
+                _self.heightForHeaderInSection ?
+                _self.heightForHeaderInSection(_tableView, _section) : (_tableView.sectionHeaderHeight > 0 ? _tableView.sectionHeaderHeight : 0.01f);
+            };
+        });
         return self;
     };
 }
@@ -270,13 +270,13 @@
     return ^id(CGFloat (^block)(UITableView *, NSInteger)){
         @strongify(self);
         self.heightForFooterInSection = [block copy];
-//        return self.addDelegateMethod(@"tableView:heightForFooterInSection:", ^id {
-//            return ^CGFloat(HTTableViewDelegateConfigure *_self, UITableView *_tableView, NSInteger _section) {
-//               return
-//                _self.heightForFooterInSection ?
-//                _self.heightForFooterInSection(_tableView, _section) : (_tableView.sectionFooterHeight > 0 ? _tableView.sectionFooterHeight : CGFLOAT_MIN);
-//            };
-//        });
+        return self.addDelegateMethod(@"tableView:heightForFooterInSection:", ^id {
+            return ^CGFloat(HTTableViewDelegateConfigure *_self, UITableView *_tableView, NSInteger _section) {
+               return
+                _self.heightForFooterInSection ?
+                _self.heightForFooterInSection(_tableView, _section) : (_tableView.sectionFooterHeight > 0 ? _tableView.sectionFooterHeight : 0.01f);
+            };
+        });
         return self;
     };
 }
@@ -619,18 +619,6 @@
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return
-     self.heightForHeaderInSection ?
-     self.heightForHeaderInSection(tableView, section) : (tableView.sectionHeaderHeight > 0.01f ? tableView.sectionHeaderHeight : CGFLOAT_MIN);
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return
-     self.heightForFooterInSection ?
-     self.heightForFooterInSection(tableView, section) : (tableView.sectionFooterHeight > 0.01f ? tableView.sectionFooterHeight : CGFLOAT_MIN);
-}
-
 - (NSInteger)getSectionCount {
     
     id sectionData = [self getSectionData];
@@ -820,16 +808,8 @@
                              delegate:(id<UITableViewDelegate>)delegate {
     
     UITableView *tableView = [[self alloc] initWithFrame:frame style:style];
-    if (@available(iOS 11.0, *)){
-        tableView.estimatedRowHeight = CGFLOAT_MIN;
-        tableView.estimatedSectionHeaderHeight = CGFLOAT_MIN;
-        tableView.estimatedSectionFooterHeight = CGFLOAT_MIN;
-        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
     [tableView ht_registerCellWithCellClasses:cellClasses];
     [tableView ht_registerHeaderFooterWithViewClasses:headerFooterViewClasses];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     tableView.dataSource = dataSource;
     tableView.delegate = delegate;
     [tableView ht_tableViewLoad];
@@ -844,17 +824,9 @@
                     delegateConfigure:(void (^)(HTTableViewDelegateConfigure *configure))delegateConfigure {
     
     UITableView *tableView = [[self alloc] initWithFrame:frame style:style];
-    if (@available(iOS 11.0, *)){
-        tableView.estimatedRowHeight = CGFLOAT_MIN;
-        tableView.estimatedSectionHeaderHeight = CGFLOAT_MIN;
-        tableView.estimatedSectionFooterHeight = CGFLOAT_MIN;
-        tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    }
     tableView.ht_tableViewData = tableViewData;
     [tableView ht_registerCellWithCellClasses:cellClasses];
     [tableView ht_registerHeaderFooterWithViewClasses:headerFooterViewClasses];
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     tableView.ht_delegateConfigure = tableView.delegateInstance;
     !delegateConfigure ?: delegateConfigure(tableView.ht_delegateConfigure);
     tableView.ht_delegateConfigure.tableView = tableView;
@@ -877,7 +849,19 @@
     return [self delegateInstance];
 }
 
-- (void)ht_tableViewLoad {};
+- (void)ht_tableViewLoad {
+    if (@available(iOS 11.0, *)){
+        self.estimatedRowHeight = 44.0f;
+        self.estimatedSectionHeaderHeight = 0.01f;
+        self.estimatedSectionFooterHeight = 0.01f;
+        self.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    }
+    self.sectionHeaderHeight= 0.01f;
+    self.sectionFooterHeight = 0.01f;
+    self.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableHeaderView = [[UIView alloc] initWithFrame:CGRectZero];
+};
 - (void)ht_reloadWithTableViewData:(id)tableViewData
                         sectionKey:(NSString * _Nullable)sectionKey
                            cellKey:(NSString * _Nullable)cellKey {
