@@ -63,7 +63,6 @@ TODO: 基础组件库
     ss.subspec 'Base' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/NetWorking/Base/**/*'
       sss.dependency "AFNetworking"
-      sss.dependency "CocoaLumberjack"
       sss.dependency "VinBaseComponents/NetWorking/TaskInfo"
       sss.dependency "VinBaseComponents/NetWorking/Cache"
       sss.dependency "VinBaseComponents/RACExtentions"
