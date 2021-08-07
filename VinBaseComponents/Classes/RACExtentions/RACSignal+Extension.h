@@ -88,7 +88,7 @@ ht_rac_btn(UIButton *btn, void(^subscribeNext)(UIButton *x)) {
 
 /// 创建一个定时器信号
 CG_INLINE RACSignal *
-hc_signalInterval(NSTimeInterval interval) {
+ht_signalInterval(NSTimeInterval interval) {
     return [RACSignal interval:interval onScheduler:[RACScheduler mainThreadScheduler]];
 }
 

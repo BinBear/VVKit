@@ -41,11 +41,11 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *    常用请求
  *
- *    @param configure                                   配置信息
- *    @param url                                                请求路径
- *    @param parameter                                   参数
- *    @param formDataBlock                          用于上传图片（requestType为：kHTNetworRequestTypePostFormData）
- *    @param progressBlock                          进度
+ *    @param configure                               配置信息
+ *    @param url                                     请求路径
+ *    @param parameter                               参数
+ *    @param formDataBlock                           用于上传图片（requestType为：kHTNetworRequestTypePostFormData）
+ *    @param progressBlock                           进度
  *    @param successBlock                            成功回调
  *    @param failureBlock                            失败回调
  */
@@ -61,9 +61,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *    上传文件
  *
- *    @param url                                                上传路径
- *    @param uploadingFile                          待上传文件的路径
- *    @param progressBlock                          进度
+ *    @param url                                     上传路径
+ *    @param uploadingFile                           待上传文件的路径
+ *    @param progressBlock                           进度
  *    @param successBlock                            成功回调
  *    @param failureBlock                            失败回调
  */
@@ -78,9 +78,9 @@ NS_ASSUME_NONNULL_BEGIN
  *
  *    下载文件
  *
- *    @param url                                                下载URL
- *    @param saveToPath                                 保存路径
- *    @param progressBlock                          进度
+ *    @param url                                     下载URL
+ *    @param saveToPath                              保存路径
+ *    @param progressBlock                           进度
  *    @param successBlock                            成功回调
  *    @param failureBlock                            失败回调
  */

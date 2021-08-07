@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.1.9'
+  s.version          = '0.2.0'
   s.summary          = '基础组件库'
 
 
@@ -31,7 +31,7 @@ TODO: 基础组件库
 
   s.subspec 'CocoaExtentions' do |ss|
 
-    ss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/CommonElement.h'
+    ss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/VinCocoaExtention.h'
 
     ss.subspec 'Foundation' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/Foundation/**/*'
