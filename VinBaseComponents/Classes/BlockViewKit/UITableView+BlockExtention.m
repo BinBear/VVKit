@@ -794,7 +794,7 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ht_ExtendImplementationOfVoidMethodWithoutArguments([UITableView class], @selector(reloadData), ^(UITableView *selfObject) {
+        vv_ExtendImplementationOfVoidMethodWithoutArguments([UITableView class], @selector(reloadData), ^(UITableView *selfObject) {
             [selfObject ht_reloadData];
         });
     });

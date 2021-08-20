@@ -21,7 +21,7 @@
     dispatch_once(&onceToken, ^{
         
         // 重新实现initWithStyle:reuseIdentifier: ，内部会先调用父类的initWithStyle:reuseIdentifier: 方法
-        ht_OverrideImplementation([UITableViewCell class], @selector(initWithStyle:reuseIdentifier:), ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {
+        vv_OverrideImplementation([UITableViewCell class], @selector(initWithStyle:reuseIdentifier:), ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {
             return ^UITableViewCell *(UITableViewCell *selfObject, UITableViewCellStyle style, NSString *reuseIdentifier) {
                 // 调用父类
                 UITableViewCell *(*originSelectorIMP)(id, SEL, UITableViewCellStyle, NSString *);
@@ -33,7 +33,7 @@
         });
         
         // 重新实现initWithCoder：，内部会先调用父类的initWithCoder：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewCell class], @selector(initWithCoder:), NSCoder *, UITableViewCell *, ^UITableViewCell *(UITableViewCell *selfObject, NSCoder *firstArgv, UITableViewCell *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewCell class], @selector(initWithCoder:), NSCoder *, UITableViewCell *, ^UITableViewCell *(UITableViewCell *selfObject, NSCoder *firstArgv, UITableViewCell *originReturnValue) {
             [selfObject ht_cellLoad];
             return originReturnValue;
         });

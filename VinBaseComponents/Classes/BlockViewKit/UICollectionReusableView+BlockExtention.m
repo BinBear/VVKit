@@ -23,13 +23,13 @@
     dispatch_once(&onceToken, ^{
         
         // 重新实现initWithFrame：，内部会先调用父类的initWithFrame：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionReusableView class], @selector(initWithFrame:), CGRect, UICollectionReusableView *, ^UICollectionReusableView *(UICollectionReusableView *selfObject, CGRect firstArgv, UICollectionReusableView *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionReusableView class], @selector(initWithFrame:), CGRect, UICollectionReusableView *, ^UICollectionReusableView *(UICollectionReusableView *selfObject, CGRect firstArgv, UICollectionReusableView *originReturnValue) {
             [selfObject ht_headerFooterViewLoad];
             return originReturnValue;
         });
         
         // 重新实现initWithCoder：，内部会先调用父类的initWithCoder：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionReusableView class], @selector(initWithCoder:), NSCoder *, UICollectionReusableView *, ^UICollectionReusableView *(UICollectionReusableView *selfObject, NSCoder *firstArgv, UICollectionReusableView *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionReusableView class], @selector(initWithCoder:), NSCoder *, UICollectionReusableView *, ^UICollectionReusableView *(UICollectionReusableView *selfObject, NSCoder *firstArgv, UICollectionReusableView *originReturnValue) {
             [selfObject ht_headerFooterViewLoad];
             return originReturnValue;
         });

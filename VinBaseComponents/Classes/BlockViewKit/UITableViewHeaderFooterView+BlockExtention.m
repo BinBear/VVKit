@@ -22,13 +22,13 @@
     dispatch_once(&onceToken, ^{
         
         // 重新实现initWithReuseIdentifier：，内部会先调用父类的initWithReuseIdentifier：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewHeaderFooterView class], @selector(initWithReuseIdentifier:), NSString *, UITableViewHeaderFooterView *, ^UITableViewHeaderFooterView *(UITableViewHeaderFooterView *selfObject, NSString *firstArgv, UITableViewHeaderFooterView *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewHeaderFooterView class], @selector(initWithReuseIdentifier:), NSString *, UITableViewHeaderFooterView *, ^UITableViewHeaderFooterView *(UITableViewHeaderFooterView *selfObject, NSString *firstArgv, UITableViewHeaderFooterView *originReturnValue) {
             [selfObject ht_headerFooterViewLoad];
             return originReturnValue;
         });
         
         // 重新实现initWithCoder：，内部会先调用父类的initWithCoder：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewHeaderFooterView class], @selector(initWithCoder:), NSCoder *, UITableViewHeaderFooterView *, ^UITableViewHeaderFooterView *(UITableViewHeaderFooterView *selfObject, NSCoder *firstArgv, UITableViewHeaderFooterView *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UITableViewHeaderFooterView class], @selector(initWithCoder:), NSCoder *, UITableViewHeaderFooterView *, ^UITableViewHeaderFooterView *(UITableViewHeaderFooterView *selfObject, NSCoder *firstArgv, UITableViewHeaderFooterView *originReturnValue) {
             [selfObject ht_headerFooterViewLoad];
             return originReturnValue;
         });

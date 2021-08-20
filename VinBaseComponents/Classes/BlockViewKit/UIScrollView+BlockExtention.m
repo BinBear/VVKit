@@ -39,7 +39,7 @@
         // 注册方法
         SEL sel = sel_registerName(selString.UTF8String);
         // 判断是否已经添加过该方法
-        BOOL isHasOverride = ht_HasOverrideSuperclassMethod([self class], sel);
+        BOOL isHasOverride = vv_HasOverrideSuperclassMethod([self class], sel);
         if (!isHasOverride && impBlock) {
             class_addMethod(self.class, sel, imp_implementationWithBlock(impBlock()), "v@:");
         }

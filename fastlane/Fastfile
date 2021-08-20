@@ -46,7 +46,7 @@ lane :release_pod do |options|
   end
   # 拉取最新代码
   # git_pull_allow_unrelated_histories
-  # git_pull(rebase: true) # use --rebase with pull
+  git_pull(rebase: true) # use --rebase with pull
   # 提交代码到远端仓库
   push_to_git_remote
   # 判断 tag 是否存在

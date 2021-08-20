@@ -15,7 +15,7 @@
     SEL selector = sel_registerName("_typeString");
     IMP imp = [self methodForSelector:selector];
     if (imp != NULL) {
-       return ht_ValueImpFuctoin(imp, NSString *, self, selector);
+       return vv_ValueImpFuctoin(imp, NSString *, self, selector);
     }
     return nil;
 }

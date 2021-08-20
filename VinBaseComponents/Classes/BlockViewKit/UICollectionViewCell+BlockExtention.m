@@ -22,13 +22,13 @@
     dispatch_once(&onceToken, ^{
         
         // 重新实现initWithFrame：，内部会先调用父类的initWithFrame：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionViewCell class], @selector(initWithFrame:), CGRect, UICollectionViewCell *, ^UICollectionViewCell *(UICollectionViewCell *selfObject, CGRect firstArgv, UICollectionViewCell *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionViewCell class], @selector(initWithFrame:), CGRect, UICollectionViewCell *, ^UICollectionViewCell *(UICollectionViewCell *selfObject, CGRect firstArgv, UICollectionViewCell *originReturnValue) {
             [selfObject ht_cellLoad];
             return originReturnValue;
         });
         
         // 重新实现initWithCoder：，内部会先调用父类的initWithCoder：方法
-        ht_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionViewCell class], @selector(initWithCoder:), NSCoder *, UICollectionViewCell *, ^UICollectionViewCell *(UICollectionViewCell *selfObject, NSCoder *firstArgv, UICollectionViewCell *originReturnValue) {
+        vv_ExtendImplementationOfNonVoidMethodWithSingleArgument([UICollectionViewCell class], @selector(initWithCoder:), NSCoder *, UICollectionViewCell *, ^UICollectionViewCell *(UICollectionViewCell *selfObject, NSCoder *firstArgv, UICollectionViewCell *originReturnValue) {
             [selfObject ht_cellLoad];
             return originReturnValue;
         });

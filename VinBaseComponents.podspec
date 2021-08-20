@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.2.0'
+  s.version          = '0.2.1'
   s.summary          = '基础组件库'
 
 
@@ -39,6 +39,7 @@ TODO: 基础组件库
 
     ss.subspec 'UIKit' do |sss|
       sss.source_files = 'VinBaseComponents/Classes/CocoaExtentions/UIKit/**/*'
+      sss.dependency 'VinBaseComponents/CocoaExtentions/Foundation'
     end
 
   end

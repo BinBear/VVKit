@@ -7,3 +7,6 @@
 
 #import "HTRunTimeMethods.h"
 
+@implementation HTRunTimeMethods
+
+@end

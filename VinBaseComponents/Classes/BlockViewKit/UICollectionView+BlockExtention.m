@@ -604,7 +604,7 @@
 + (void)load {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        ht_ExtendImplementationOfVoidMethodWithoutArguments([UICollectionView class], @selector(reloadData), ^(UICollectionView *selfObject) {
+        vv_ExtendImplementationOfVoidMethodWithoutArguments([UICollectionView class], @selector(reloadData), ^(UICollectionView *selfObject) {
             [selfObject ht_reloadData];
         });
     });

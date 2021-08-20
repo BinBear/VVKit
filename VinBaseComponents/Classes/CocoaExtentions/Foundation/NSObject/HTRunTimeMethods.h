@@ -9,7 +9,11 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-#define ht_ImpFuctoin(_imp, ...) \
+@interface HTRunTimeMethods : NSObject
+
+@end
+
+#define vv_ImpFuctoin(_imp, ...) \
 {\
 IMP __imp = _imp; \
 if (__imp != NULL) { \
@@ -17,7 +21,7 @@ if (__imp != NULL) { \
 }\
 }
 
-#define ht_ValueImpFuctoin(_imp, _type,...) \
+#define vv_ValueImpFuctoin(_imp, _type,...) \
 ({ \
 _Pragma("clang diagnostic push") \
 _Pragma("clang diagnostic ignored \"-Wsometimes-uninitialized\"") \
@@ -30,7 +34,7 @@ _value; \
 _Pragma("clang diagnostic pop") \
 })
 
-#define  ht_ProtocolAndSelector(_object, _Protocol, _Selector) \
+#define  vv_ProtocolAndSelector(_object, _Protocol, _Selector) \
 ( \
 [_object conformsToProtocol:_Protocol] && \
 [_object respondsToSelector:_Selector] \
@@ -39,7 +43,7 @@ _Pragma("clang diagnostic pop") \
 #pragma mark - Method（以下实现来自QMUI, Thanks to QMUI team）
 
 CG_INLINE BOOL
-ht_HasOverrideSuperclassMethod(Class targetClass, SEL targetSelector) {
+vv_HasOverrideSuperclassMethod(Class targetClass, SEL targetSelector) {
     Method method = class_getInstanceMethod(targetClass, targetSelector);
     if (!method) return NO;
     
@@ -60,7 +64,7 @@ ht_HasOverrideSuperclassMethod(Class targetClass, SEL targetSelector) {
  *  @return 是否成功替换（或增加）
  */
 CG_INLINE BOOL
-ht_ExchangeImplementationsInTwoClasses(Class _fromClass, SEL _originSelector, Class _toClass, SEL _newSelector) {
+vv_ExchangeImplementationsInTwoClasses(Class _fromClass, SEL _originSelector, Class _toClass, SEL _newSelector) {
     if (!_fromClass || !_toClass) {
         return NO;
     }
@@ -85,8 +89,8 @@ ht_ExchangeImplementationsInTwoClasses(Class _fromClass, SEL _originSelector, Cl
 
 /// 交换同一个 class 里的 originSelector 和 newSelector 的实现，如果原本不存在 originSelector，则相当于给 class 新增一个叫做 originSelector 的方法
 CG_INLINE BOOL
-ht_ExchangeImplementations(Class _class, SEL _originSelector, SEL _newSelector) {
-    return ht_ExchangeImplementationsInTwoClasses(_class, _originSelector, _class, _newSelector);
+vv_ExchangeImplementations(Class _class, SEL _originSelector, SEL _newSelector) {
+    return vv_ExchangeImplementationsInTwoClasses(_class, _originSelector, _class, _newSelector);
 }
 
 /**
@@ -96,10 +100,10 @@ ht_ExchangeImplementations(Class _class, SEL _originSelector, SEL _newSelector) 
  *  @param implementationBlock 该 block 必须返回一个 block，返回的 block 将被当成 targetSelector 的新实现，所以要在内部自己处理对 super 的调用，以及对当前调用方法的 self 的 class 的保护判断（因为如果 targetClass 的 targetSelector 是继承自父类的，targetClass 内部并没有重写这个方法，则我们这个函数最终重写的其实是父类的 targetSelector，所以会产生预期之外的 class 的影响，例如 targetClass 传进来  UIButton.class，则最终可能会影响到 UIView.class），implementationBlock 的参数里第一个为你要修改的 class，也即等同于 targetClass，第二个参数为你要修改的 selector，也即等同于 targetSelector，第三个参数是一个 block，用于获取 targetSelector 原本的实现，由于 IMP 可以直接当成 C 函数调用，所以可利用它来实现“调用 super”的效果，但由于 targetSelector 的参数个数、参数类型、返回值类型，都会影响 IMP 的调用写法，所以这个调用只能由业务自己写。
  */
 CG_INLINE BOOL
-ht_OverrideImplementation(Class targetClass, SEL targetSelector, id (^implementationBlock)(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void))) {
+vv_OverrideImplementation(Class targetClass, SEL targetSelector, id (^implementationBlock)(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void))) {
     Method originMethod = class_getInstanceMethod(targetClass, targetSelector);
     IMP imp = method_getImplementation(originMethod);
-    BOOL hasOverride = ht_HasOverrideSuperclassMethod(targetClass, targetSelector);
+    BOOL hasOverride = vv_HasOverrideSuperclassMethod(targetClass, targetSelector);
     
     // 以 block 的方式达到实时获取初始方法的 IMP 的目的，从而避免先 swizzle 了 subclass 的方法，再 swizzle superclass 的方法，会发现前者调用时不会触发后者 swizzle 后的版本的 bug。
     IMP (^originalIMPProvider)(void) = ^IMP(void) {
@@ -141,8 +145,8 @@ ht_OverrideImplementation(Class targetClass, SEL targetSelector, id (^implementa
  *  @param implementationBlock targetSelector 的自定义实现，直接将你的实现写进去即可，不需要管 super 的调用。参数 selfObject 代表当前正在调用这个方法的对象，也即 self 指针。
  */
 CG_INLINE BOOL
-ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targetSelector, void (^implementationBlock)(__kindof NSObject *selfObject)) {
-    return ht_OverrideImplementation(targetClass, targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {
+vv_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targetSelector, void (^implementationBlock)(__kindof NSObject *selfObject)) {
+    return vv_OverrideImplementation(targetClass, targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {
         void (^block)(__unsafe_unretained __kindof NSObject *selfObject) = ^(__unsafe_unretained __kindof NSObject *selfObject) {
             
             void (*originSelectorIMP)(id, SEL);
@@ -166,7 +170,7 @@ ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targe
  *  @param _returnType 返回值的数据类型
  *  @param _implementationBlock 格式为 ^_returnType(NSObject *selfObject, _returnType originReturnValue) {}，内容即为 targetSelector 的自定义实现，直接将你的实现写进去即可，不需要管 super 的调用。第一个参数 selfObject 代表当前正在调用这个方法的对象，也即 self 指针；第二个参数 originReturnValue 代表 super 的返回值，具体类型请自行填写
  */
-#define ht_ExtendImplementationOfNonVoidMethodWithoutArguments(_targetClass, _targetSelector, _returnType, _implementationBlock) ht_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
+#define vv_ExtendImplementationOfNonVoidMethodWithoutArguments(_targetClass, _targetSelector, _returnType, _implementationBlock) vv_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
             return ^_returnType (__unsafe_unretained __kindof NSObject *selfObject) {\
                 \
                 _returnType (*originSelectorIMP)(id, SEL);\
@@ -184,7 +188,7 @@ ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targe
  *  @param _argumentType targetSelector 的参数类型
  *  @param _implementationBlock 格式为 ^(NSObject *selfObject, _argumentType firstArgv) {}，内容即为 targetSelector 的自定义实现，直接将你的实现写进去即可，不需要管 super 的调用。第一个参数 selfObject 代表当前正在调用这个方法的对象，也即 self 指针；第二个参数 firstArgv 代表 targetSelector 被调用时传进来的第一个参数，具体的类型请自行填写
  */
-#define ht_ExtendImplementationOfVoidMethodWithSingleArgument(_targetClass, _targetSelector, _argumentType, _implementationBlock) ht_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
+#define vv_ExtendImplementationOfVoidMethodWithSingleArgument(_targetClass, _targetSelector, _argumentType, _implementationBlock) vv_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
         return ^(__unsafe_unretained __kindof NSObject *selfObject, _argumentType firstArgv) {\
             \
             void (*originSelectorIMP)(id, SEL, _argumentType);\
@@ -195,7 +199,7 @@ ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targe
         };\
     });
 
-#define ExtendImplementationOfVoidMethodWithTwoArguments(_targetClass, _targetSelector, _argumentType1, _argumentType2, _implementationBlock) ht_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
+#define ExtendImplementationOfVoidMethodWithTwoArguments(_targetClass, _targetSelector, _argumentType1, _argumentType2, _implementationBlock) vv_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
         return ^(__unsafe_unretained __kindof NSObject *selfObject, _argumentType1 firstArgv, _argumentType2 secondArgv) {\
             \
             void (*originSelectorIMP)(id, SEL, _argumentType1, _argumentType2);\
@@ -212,7 +216,7 @@ ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targe
  *  @param targetSelector 要重写的 class 里的实例方法，注意如果该方法不存在于 targetClass 里，则什么都不做，注意该方法必须带一个参数，返回值不为空
  *  @param implementationBlock，格式为 ^_returnType (NSObject *selfObject, _argumentType firstArgv, _returnType originReturnValue){}，内容也即 targetSelector 的自定义实现，直接将你的实现写进去即可，不需要管 super 的调用。第一个参数 selfObject 代表当前正在调用这个方法的对象，也即 self 指针；第二个参数 firstArgv 代表 targetSelector 被调用时传进来的第一个参数，具体的类型请自行填写；第三个参数 originReturnValue 代表 super 的返回值，具体类型请自行填写
  */
-#define ht_ExtendImplementationOfNonVoidMethodWithSingleArgument(_targetClass, _targetSelector, _argumentType, _returnType, _implementationBlock) ht_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
+#define vv_ExtendImplementationOfNonVoidMethodWithSingleArgument(_targetClass, _targetSelector, _argumentType, _returnType, _implementationBlock) vv_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
         return ^_returnType (__unsafe_unretained __kindof NSObject *selfObject, _argumentType firstArgv) {\
             \
             _returnType (*originSelectorIMP)(id, SEL, _argumentType);\
@@ -223,7 +227,7 @@ ht_ExtendImplementationOfVoidMethodWithoutArguments(Class targetClass, SEL targe
         };\
     });
 
-#define ht_ExtendImplementationOfNonVoidMethodWithTwoArguments(_targetClass, _targetSelector, _argumentType1, _argumentType2, _returnType, _implementationBlock) ht_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
+#define vv_ExtendImplementationOfNonVoidMethodWithTwoArguments(_targetClass, _targetSelector, _argumentType1, _argumentType2, _returnType, _implementationBlock) vv_OverrideImplementation(_targetClass, _targetSelector, ^id(__unsafe_unretained Class originClass, SEL originCMD, IMP (^originalIMPProvider)(void)) {\
         return ^_returnType (__unsafe_unretained __kindof NSObject *selfObject, _argumentType1 firstArgv, _argumentType2 secondArgv) {\
             \
             _returnType (*originSelectorIMP)(id, SEL, _argumentType1, _argumentType2);\

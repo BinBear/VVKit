@@ -6,7 +6,7 @@
 //
 
 #import "UIViewController+VinKit.h"
-#import "HTRunTimeMethods.h"
+#import <VinBaseComponents/HTRunTimeMethods.h>
 
 
 @implementation UIViewController (VinKit)
@@ -16,37 +16,37 @@
     dispatch_once(&onceToken, ^{
         
         // 重新实现viewDidLoad ，内部会先调用父类的 viewDidLoad 方法
-        ht_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewDidLoad), ^(UIViewController *selfObject) {
+        vv_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewDidLoad), ^(UIViewController *selfObject) {
             !selfObject.vv_viewDidLoadBlock ?: selfObject.vv_viewDidLoadBlock(selfObject);
         });
 
         // 重新实现viewWillAppear: ，内部会先调用父类的 viewWillAppear: 方法
-        ht_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewWillAppear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
+        vv_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewWillAppear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
             !selfObject.vv_viewWillAppearBlock ?: selfObject.vv_viewWillAppearBlock(selfObject, animated);
         });
 
         // 重新实现viewDidAppear: ，内部会先调用父类的 viewDidAppear: 方法
-        ht_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewDidAppear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
+        vv_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewDidAppear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
             !selfObject.vv_viewDidAppearBlock ?: selfObject.vv_viewDidAppearBlock(selfObject, animated);
         });
 
         // 重新实现viewWillLayoutSubviews ，内部会先调用父类的 viewWillLayoutSubviews 方法
-        ht_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewWillLayoutSubviews), ^(UIViewController *selfObject) {
+        vv_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewWillLayoutSubviews), ^(UIViewController *selfObject) {
             !selfObject.vv_viewWillLayoutSubviewsBlock ?: selfObject.vv_viewWillLayoutSubviewsBlock(selfObject);
         });
 
         // 重新实现viewDidLayoutSubviews ，内部会先调用父类的 viewDidLayoutSubviews 方法
-        ht_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewDidLayoutSubviews), ^(UIViewController *selfObject) {
+        vv_ExtendImplementationOfVoidMethodWithoutArguments([UIViewController class], @selector(viewDidLayoutSubviews), ^(UIViewController *selfObject) {
             !selfObject.vv_viewDidLayoutSubviewsBlock ?: selfObject.vv_viewDidLayoutSubviewsBlock(selfObject);
         });
 
         // 重新实现viewWillDisappear: ，内部会先调用父类的 viewWillDisappear: 方法
-        ht_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewWillDisappear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
+        vv_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewWillDisappear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
             !selfObject.vv_viewWillDisappearBlock ?: selfObject.vv_viewWillDisappearBlock(selfObject, animated);
         });
 
         // 重新实现viewDidDisappear: ，内部会先调用父类的 viewDidDisappear: 方法
-        ht_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewDidDisappear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
+        vv_ExtendImplementationOfVoidMethodWithSingleArgument([UIViewController class], @selector(viewDidDisappear:), BOOL, ^(UIViewController *selfObject, BOOL animated) {
             !selfObject.vv_viewDidDisappearBlock ?: selfObject.vv_viewDidDisappearBlock(selfObject, animated);
         });
         
