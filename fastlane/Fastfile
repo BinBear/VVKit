@@ -1,7 +1,7 @@
 desc '发布pod新版本'
 lane :release_pod do |options|
   # 存放私有podspec的仓库名
-  # target_repo    = options[:repo]
+  target_repo    = options[:repo]
 
   # 需要更新的项目名称
   target_project = options[:project]
