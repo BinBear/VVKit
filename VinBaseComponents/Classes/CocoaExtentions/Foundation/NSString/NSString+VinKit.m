@@ -123,4 +123,84 @@
     }
     return mutableStr;
 }
+
+#pragma mark - Calculation
++ (NSString *)vv_stringAbs:(NSString *)num {
+    num = [num _safeString];
+    NSDecimalNumber *absNum = [NSDecimalNumber vv_abs:[NSDecimalNumber decimalNumberWithString:num]];
+    return [absNum stringValue];
+}
+
+- (NSString *)vv_safeAdding:(NSString *)num {
+    NSString *safeSelf = [self _safeString];
+    num = [num _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
+    NSDecimalNumber *addingNum = [num1 vv_safeDecimalNumberByAdding:num2];
+    return [addingNum stringValue];
+}
+
+- (NSString *)vv_safeSubtracting:(NSString *)num {
+    NSString *safeSelf = [self _safeString];
+    num = [num _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
+    NSDecimalNumber *subtractingNum = [num1 vv_safeDecimalNumberBySubtracting:num2];
+    return [subtractingNum stringValue];
+}
+
+- (NSString *)vv_safeMultiplying:(NSString *)num {
+    NSString *safeSelf = [self _safeString];
+    num = [num _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
+    NSDecimalNumber *multiplyingNum = [num1 vv_safeDecimalNumberByMultiplying:num2];
+    return [multiplyingNum stringValue];
+}
+
+- (NSString *)vv_safeDividing:(NSString *)num {
+    NSString *safeSelf = [self _safeString];
+    num = [num _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
+    NSDecimalNumber *dividingNum = [num1 vv_safeDecimalNumberByDividing:num2];
+    return [dividingNum stringValue];
+}
+
+- (BOOL)vv_compareIsEqual:(NSString *)stringNumer {
+    if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
+        return false;
+    }
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
+    NSComparisonResult result = [num1 compare:num2];
+    return result == NSOrderedSame;
+}
+
+- (BOOL)vv_compareIsGreater:(NSString *)stringNumer {
+    if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
+        return false;
+    }
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
+    NSComparisonResult result = [num1 compare:num2];
+    return result == NSOrderedDescending;
+}
+
+- (BOOL)vv_compareIsLess:(NSString *)stringNumer {
+    if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
+        return false;
+    }
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
+    NSComparisonResult result = [num1 compare:num2];
+    return result == NSOrderedAscending;
+}
+
+- (NSString *)_safeString {
+    if ([self isKindOfClass:NSString.class] && self.length > 0) {
+        return self;
+    }
+    return @"0";
+}
 @end

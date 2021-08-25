@@ -122,6 +122,66 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param string      传入需要补充0的字符串、位数.
  */
 + (NSString *)vv_addZeroForString:(NSString *) string andLength:(NSInteger)length;
+
+
+#pragma mark - Calculation
+/**
+ * 取绝对值
+ *
+ * @param num 数值
+ * @return 取绝对值后的值
+ */
++ (NSString *)vv_stringAbs:(NSString *)num;
+
+/**
+ * 两数相加
+ *
+ * @param num 加的数
+ * @return 相加后的数
+ */
+- (NSString *)vv_safeAdding:(NSString *)num;
+/**
+ * 两数相减
+ *
+ * @param num 减的数
+ * @return 相减后的数
+ */
+- (NSString *)vv_safeSubtracting:(NSString *)num;
+/**
+ * 两数相乘
+ *
+ * @param num 乘的数
+ * @return 相乘后的数
+ */
+- (NSString *)vv_safeMultiplying:(NSString *)num;
+/**
+ * 两数相除
+ *
+ * @param num 除的数
+ * @return 相除后的数
+ */
+- (NSString *)vv_safeDividing:(NSString *)num;
+/**
+ * 是否相等
+ *
+ * @param stringNumer 比较的数
+ * @return 比较结果
+ */
+- (BOOL)vv_compareIsEqual:(NSString *)stringNumer;
+/**
+ * 是否大于
+ *
+ * @param stringNumer 比较的数
+ * @return 比较结果
+ */
+- (BOOL)vv_compareIsGreater:(NSString *)stringNumer;
+/**
+ * 是否小于
+ *
+ * @param stringNumer 比较的数
+ * @return 比较结果
+ */
+- (BOOL)vv_compareIsLess:(NSString *)stringNumer;
 @end
 
 NS_ASSUME_NONNULL_END
