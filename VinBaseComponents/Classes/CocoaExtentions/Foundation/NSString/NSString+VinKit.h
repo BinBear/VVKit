@@ -29,6 +29,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)vv_stringByAppendingString:(NSString *)format;
 
+/**
+ 随机生成相应长度的数字+字母的字符串
+ 
+ @param length 长度
+ @return 随机字符串
+ */
++ (NSString *)vv_randomString:(NSInteger)length;
+
 #pragma mark - RoundNumber
 /**
  *  Return a string from the provided float value. The float value is plain rounded in the way specified by scale. The rounded value could be padded by zero to conform fraction digits to the scale.

@@ -7,6 +7,7 @@
 
 #import "NSString+VinKit.h"
 #import "NSDecimalNumber+VinKit.h"
+#import <CommonCrypto/CommonRandom.h>
 
 @implementation NSString (VinKit)
 
@@ -36,6 +37,22 @@
     
     return outStr;
 }
++ (NSString *)vv_randomString:(NSInteger)length {
+    NSInteger len = length * 0.5;
+    if (len <= 0) { return @""; }
+    unsigned char digest[len];
+    CCRNGStatus status = CCRandomGenerateBytes(digest, len);
+    NSString *str = @"";
+    if (status == kCCSuccess) {
+        NSMutableString *mutaStr = [NSMutableString string];
+        for (NSInteger i = 0; i < len; i++) {
+            [mutaStr appendFormat:@"%02x",digest[i]];
+        }
+        str = [mutaStr copy];
+    }
+    return str;
+}
+
 #pragma mark - RoundNumber
 + (NSString *)vv_stringFromFloat:(float)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
     return [NSString vv_stringFromFloat:value roundingScale:scale roundingMode:NSRoundPlain fractionDigitsPadded:isPadded];
