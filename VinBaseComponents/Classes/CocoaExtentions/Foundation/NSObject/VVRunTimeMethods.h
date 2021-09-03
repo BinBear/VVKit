@@ -1,5 +1,5 @@
 //
-//  HTRunTimeMethods.h
+//  VVRunTimeMethods.h
 //  VinBaseComponents
 //
 //  Created by vin on 2021/5/25.
@@ -8,10 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <objc/runtime.h>
 #import <objc/message.h>
-
-@interface HTRunTimeMethods : NSObject
-
-@end
 
 #define vv_ImpFuctoin(_imp, ...) \
 {\

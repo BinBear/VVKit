@@ -8,7 +8,7 @@
 
 #import "UICollectionView+BlockExtention.h"
 #import <VinBaseComponents/NSObject+RACExtension.h>
-#import <VinBaseComponents/HTRunTimeMethods.h>
+#import <VinBaseComponents/VVRunTimeMethods.h>
 
 @interface HTCollectionViewDelegateConfigure ()<UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout>
 @property (nonatomic,copy) NSInteger(^numberOfSections)(UICollectionView *collectionView);

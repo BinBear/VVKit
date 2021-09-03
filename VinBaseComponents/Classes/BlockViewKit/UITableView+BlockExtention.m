@@ -8,7 +8,7 @@
 
 #import "UITableView+BlockExtention.h"
 #import <VinBaseComponents/NSObject+RACExtension.h>
-#import <VinBaseComponents/HTRunTimeMethods.h>
+#import <VinBaseComponents/VVRunTimeMethods.h>
 
 @interface HTTableViewDelegateConfigure () <UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic,copy) NSInteger(^numberOfSections)(UITableView *tableView);

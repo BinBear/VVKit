@@ -6,7 +6,7 @@
 //
 
 #import "UIViewController+VinKit.h"
-#import <VinBaseComponents/HTRunTimeMethods.h>
+#import <VinBaseComponents/VVRunTimeMethods.h>
 
 
 @implementation UIViewController (VinKit)
