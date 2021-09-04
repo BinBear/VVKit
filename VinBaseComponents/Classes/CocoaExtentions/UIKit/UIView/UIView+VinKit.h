@@ -7,16 +7,26 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger , VVShadowPathType) {
+    VVShadowPathType_Top    = 1,
+    VVShadowPathType_Bottom = 2,
+    VVShadowPathType_Left   = 3,
+    VVShadowPathType_Right  = 4,
+    VVShadowPathType_Around = 5,
+};
 
 @interface UIView (VinKit)
 
 @property (nonatomic,strong,readonly) NSData *vv_snapshotPDF;
 @property (nonatomic,strong,readonly) UIImage *vv_snapshotImage;
+
+- (UIImage *)vv_snapshotImageWithRect:(CGRect)frame;
 - (UIImage *)vv_snapshotImageAfterScreenUpdates:(BOOL)afterUpdates;
 
+- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowPathType:(VVShadowPathType)shadowPathType shadowPathWidth:(CGFloat)shadowPathWidth;
 @end
 
-@interface UIView (FrameExtention)
+@interface UIView (Frame)
 
 @property (nonatomic) CGSize size;
 @property (nonatomic) CGFloat width;

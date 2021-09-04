@@ -6,7 +6,7 @@
 //
 
 #import "UIView+VinKit.h"
-
+#import "UIImage+VinKit.h"
 
 @implementation UIView (VinKit)
 
@@ -28,27 +28,63 @@
 }
 
 - (UIImage *)vv_snapshotImage {
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, 0);
+    return [UIImage vv_imageWithSize:self.bounds.size opaque:self.opaque scale:0 actions:^(CGContextRef contextRef) {
+        [self.layer renderInContext:contextRef];
+    }];
+}
+
+- (UIImage *)vv_snapshotImageWithRect:(CGRect)frame {
+    CGFloat scale = [UIScreen mainScreen].scale;
+    UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, scale);
     [self.layer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *snap = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    CGRect rect = CGRectMake(frame.origin.x * scale, frame.origin.y * scale, frame.size.width * scale, frame.size.height * scale);
+    CGImageRef subImageRef = CGImageCreateWithImageInRect(image.CGImage, rect);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextDrawImage(context, rect, subImageRef);
+    UIImage *smallImage = [UIImage imageWithCGImage:subImageRef];
+    CGImageRelease(subImageRef);
     UIGraphicsEndImageContext();
-    return snap;
+    return smallImage;
 }
 
 - (UIImage *)vv_snapshotImageAfterScreenUpdates:(BOOL)afterUpdates {
-    if (![self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
-        return [self vv_snapshotImage];
-    }
-    UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.opaque, 0);
-    [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:afterUpdates];
-    UIImage *snap = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return snap;
+    return [UIImage vv_imageWithSize:self.bounds.size opaque:self.opaque scale:0 actions:^(CGContextRef contextRef) {
+        [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:afterUpdates];
+    }];
 }
 
+- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowPathType:(VVShadowPathType)shadowPathType shadowPathWidth:(CGFloat)shadowPathWidth {
+    self.layer.masksToBounds = false;
+    self.layer.shadowColor = shadowColor.CGColor;// 阴影颜色
+    self.layer.shadowOpacity = shadowOpacity;// 阴影透明度，默认0
+    self.layer.shadowOffset = CGSizeZero;//shadowOffset阴影偏移，默认(0, -3)
+    self.layer.shadowRadius = shadowRadius;//阴影半径，默认3
+    CGRect shadowRect = CGRectZero;
+    CGFloat originX,originY,sizeWith,sizeHeight;
+    originX = 0;
+    originY = 0;
+    sizeWith = self.bounds.size.width;
+    sizeHeight = self.bounds.size.height;
+    
+    if (shadowPathType == VVShadowPathType_Top) {
+        shadowRect = CGRectMake(-shadowPathWidth, -shadowPathWidth, sizeWith + 2 * shadowPathWidth, 2 * shadowPathWidth);
+    }else if (shadowPathType == VVShadowPathType_Bottom){
+        shadowRect = CGRectMake(-shadowPathWidth, sizeHeight-shadowPathWidth, sizeWith + 2 * shadowPathWidth, 2 * shadowPathWidth);
+    }else if (shadowPathType == VVShadowPathType_Left){
+        shadowRect = CGRectMake(-shadowPathWidth, -shadowPathWidth, 2 * shadowPathWidth, sizeHeight + 2 * shadowPathWidth);
+    }else if (shadowPathType == VVShadowPathType_Right){
+        shadowRect = CGRectMake(sizeWith-shadowPathWidth, -shadowPathWidth, 2 * shadowPathWidth, sizeHeight + 2 * shadowPathWidth);
+    }else if (shadowPathType == VVShadowPathType_Around){
+        shadowRect = CGRectMake(-shadowPathWidth, -shadowPathWidth, sizeWith + 2 * shadowPathWidth, sizeHeight + 2 * shadowPathWidth);
+    }
+    UIBezierPath *bezierPath = [UIBezierPath bezierPathWithRect:shadowRect];
+    self.layer.shadowPath = bezierPath.CGPath;
+}
 @end
 
-@implementation UIView (FrameExtention)
+@implementation UIView (Frame)
 - (UIView *(^)(CGFloat left, CGFloat top, CGFloat width, CGFloat heigth))rectValue {
     return ^(CGFloat left, CGFloat top, CGFloat width, CGFloat heigth){
         self.frame = CGRectMake(left, top, width, heigth);
