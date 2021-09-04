@@ -18,6 +18,7 @@
 #import "NSMethodSignature+VinKit.h"
 
 // UIKit
+#import "UIImage+VinKit.h"
 #import "UIView+VinKit.h"
 #import "UIViewController+VinKit.h"
 #import "UINavigationController+VinKit.h"
