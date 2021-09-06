@@ -23,7 +23,11 @@ typedef NS_ENUM(NSInteger , VVShadowPathType) {
 - (UIImage *)vv_snapshotImageWithRect:(CGRect)frame;
 - (UIImage *)vv_snapshotImageAfterScreenUpdates:(BOOL)afterUpdates;
 
-- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowPathType:(VVShadowPathType)shadowPathType shadowPathWidth:(CGFloat)shadowPathWidth;
+- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor
+                     shadowOpacity:(CGFloat)shadowOpacity
+                      shadowRadius:(CGFloat)shadowRadius
+                    shadowPathType:(VVShadowPathType)shadowPathType
+                   shadowPathWidth:(CGFloat)shadowPathWidth;
 @end
 
 @interface UIView (Frame)

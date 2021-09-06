@@ -55,7 +55,11 @@
     }];
 }
 
-- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor shadowOpacity:(CGFloat)shadowOpacity shadowRadius:(CGFloat)shadowRadius shadowPathType:(VVShadowPathType)shadowPathType shadowPathWidth:(CGFloat)shadowPathWidth {
+- (void)vv_viewShadowPathWithColor:(UIColor *)shadowColor
+                     shadowOpacity:(CGFloat)shadowOpacity
+                      shadowRadius:(CGFloat)shadowRadius
+                    shadowPathType:(VVShadowPathType)shadowPathType
+                   shadowPathWidth:(CGFloat)shadowPathWidth {
     self.layer.masksToBounds = false;
     self.layer.shadowColor = shadowColor.CGColor;// 阴影颜色
     self.layer.shadowOpacity = shadowOpacity;// 阴影透明度，默认0
