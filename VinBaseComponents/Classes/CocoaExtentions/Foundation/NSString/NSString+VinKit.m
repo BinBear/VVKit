@@ -188,7 +188,9 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSString *safeSelf = [self _safeString];
+    stringNumer = [stringNumer _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedSame;
@@ -198,7 +200,9 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSString *safeSelf = [self _safeString];
+    stringNumer = [stringNumer _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedDescending;
@@ -208,7 +212,9 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:self];
+    NSString *safeSelf = [self _safeString];
+    stringNumer = [stringNumer _safeString];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedAscending;
