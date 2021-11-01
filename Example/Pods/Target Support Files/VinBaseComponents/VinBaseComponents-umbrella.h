@@ -18,7 +18,7 @@
 #import "UITableViewCell+BlockExtention.h"
 #import "UITableViewHeaderFooterView+BlockExtention.h"
 #import "VinCocoaExtention.h"
-#import "NSArray+Sort.h"
+#import "NSArray+VinKit.h"
 #import "NSDate+VinKit.h"
 #import "NSDictionary+VinKit.h"
 #import "NSDecimalNumber+VinKit.h"

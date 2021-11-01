@@ -143,14 +143,14 @@
 
 #pragma mark - Calculation
 + (NSString *)vv_stringAbs:(NSString *)num {
-    num = [num _safeString];
+    num = [NSString _safeString:num];
     NSDecimalNumber *absNum = [NSDecimalNumber vv_abs:[NSDecimalNumber decimalNumberWithString:num]];
     return [absNum stringValue];
 }
 
 - (NSString *)vv_safeAdding:(NSString *)num {
-    NSString *safeSelf = [self _safeString];
-    num = [num _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *addingNum = [num1 vv_safeDecimalNumberByAdding:num2];
@@ -158,8 +158,8 @@
 }
 
 - (NSString *)vv_safeSubtracting:(NSString *)num {
-    NSString *safeSelf = [self _safeString];
-    num = [num _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *subtractingNum = [num1 vv_safeDecimalNumberBySubtracting:num2];
@@ -167,8 +167,8 @@
 }
 
 - (NSString *)vv_safeMultiplying:(NSString *)num {
-    NSString *safeSelf = [self _safeString];
-    num = [num _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *multiplyingNum = [num1 vv_safeDecimalNumberByMultiplying:num2];
@@ -176,8 +176,8 @@
 }
 
 - (NSString *)vv_safeDividing:(NSString *)num {
-    NSString *safeSelf = [self _safeString];
-    num = [num _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *dividingNum = [num1 vv_safeDecimalNumberByDividing:num2];
@@ -188,8 +188,8 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [self _safeString];
-    stringNumer = [stringNumer _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    stringNumer = [NSString _safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
@@ -200,8 +200,8 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [self _safeString];
-    stringNumer = [stringNumer _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    stringNumer = [NSString _safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
@@ -212,17 +212,17 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [self _safeString];
-    stringNumer = [stringNumer _safeString];
+    NSString *safeSelf = [NSString _safeString:self];
+    stringNumer = [NSString _safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedAscending;
 }
 
-- (NSString *)_safeString {
-    if ([self isKindOfClass:NSString.class] && self.length > 0) {
-        return self;
++ (NSString *)_safeString:(NSString *)str {
+    if ([str isKindOfClass:NSString.class] && str.length > 0) {
+        return str;
     }
     return @"0";
 }

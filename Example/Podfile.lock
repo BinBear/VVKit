@@ -22,47 +22,47 @@ PODS:
     - Realm/Headers (= 10.7.2)
   - Realm/Headers (10.7.2)
   - UICKeyChainStore (2.2.1)
-  - VinBaseComponents (0.2.6):
-    - VinBaseComponents/BlockViewKit (= 0.2.6)
-    - VinBaseComponents/CocoaExtentions (= 0.2.6)
-    - VinBaseComponents/Components (= 0.2.6)
-    - VinBaseComponents/CycleViewKit (= 0.2.6)
-    - VinBaseComponents/NetWorking (= 0.2.6)
-    - VinBaseComponents/RACExtentions (= 0.2.6)
-    - VinBaseComponents/StorageLib (= 0.2.6)
-  - VinBaseComponents/BlockViewKit (0.2.6):
+  - VinBaseComponents (0.2.8):
+    - VinBaseComponents/BlockViewKit (= 0.2.8)
+    - VinBaseComponents/CocoaExtentions (= 0.2.8)
+    - VinBaseComponents/Components (= 0.2.8)
+    - VinBaseComponents/CycleViewKit (= 0.2.8)
+    - VinBaseComponents/NetWorking (= 0.2.8)
+    - VinBaseComponents/RACExtentions (= 0.2.8)
+    - VinBaseComponents/StorageLib (= 0.2.8)
+  - VinBaseComponents/BlockViewKit (0.2.8):
     - VinBaseComponents/CocoaExtentions
     - VinBaseComponents/RACExtentions
-  - VinBaseComponents/CocoaExtentions (0.2.6):
-    - VinBaseComponents/CocoaExtentions/Foundation (= 0.2.6)
-    - VinBaseComponents/CocoaExtentions/UIKit (= 0.2.6)
-  - VinBaseComponents/CocoaExtentions/Foundation (0.2.6)
-  - VinBaseComponents/CocoaExtentions/UIKit (0.2.6):
+  - VinBaseComponents/CocoaExtentions (0.2.8):
+    - VinBaseComponents/CocoaExtentions/Foundation (= 0.2.8)
+    - VinBaseComponents/CocoaExtentions/UIKit (= 0.2.8)
+  - VinBaseComponents/CocoaExtentions/Foundation (0.2.8)
+  - VinBaseComponents/CocoaExtentions/UIKit (0.2.8):
     - VinBaseComponents/CocoaExtentions/Foundation
-  - VinBaseComponents/Components (0.2.6)
-  - VinBaseComponents/CycleViewKit (0.2.6):
+  - VinBaseComponents/Components (0.2.8)
+  - VinBaseComponents/CycleViewKit (0.2.8):
     - VinBaseComponents/RACExtentions
-  - VinBaseComponents/NetWorking (0.2.6):
-    - VinBaseComponents/NetWorking/Base (= 0.2.6)
-    - VinBaseComponents/NetWorking/Cache (= 0.2.6)
-    - VinBaseComponents/NetWorking/TaskInfo (= 0.2.6)
-  - VinBaseComponents/NetWorking/Base (0.2.6):
+  - VinBaseComponents/NetWorking (0.2.8):
+    - VinBaseComponents/NetWorking/Base (= 0.2.8)
+    - VinBaseComponents/NetWorking/Cache (= 0.2.8)
+    - VinBaseComponents/NetWorking/TaskInfo (= 0.2.8)
+  - VinBaseComponents/NetWorking/Base (0.2.8):
     - AFNetworking
     - VinBaseComponents/NetWorking/Cache
     - VinBaseComponents/NetWorking/TaskInfo
     - VinBaseComponents/RACExtentions
-  - VinBaseComponents/NetWorking/Cache (0.2.6):
+  - VinBaseComponents/NetWorking/Cache (0.2.8):
     - YYCache
-  - VinBaseComponents/NetWorking/TaskInfo (0.2.6)
-  - VinBaseComponents/RACExtentions (0.2.6):
+  - VinBaseComponents/NetWorking/TaskInfo (0.2.8)
+  - VinBaseComponents/RACExtentions (0.2.8):
     - ReactiveObjC
-  - VinBaseComponents/StorageLib (0.2.6):
-    - VinBaseComponents/StorageLib/MapKeyValueTool (= 0.2.6)
-    - VinBaseComponents/StorageLib/RealmStore (= 0.2.6)
-  - VinBaseComponents/StorageLib/MapKeyValueTool (0.2.6):
+  - VinBaseComponents/StorageLib (0.2.8):
+    - VinBaseComponents/StorageLib/MapKeyValueTool (= 0.2.8)
+    - VinBaseComponents/StorageLib/RealmStore (= 0.2.8)
+  - VinBaseComponents/StorageLib/MapKeyValueTool (0.2.8):
     - MMKV
     - UICKeyChainStore
-  - VinBaseComponents/StorageLib/RealmStore (0.2.6):
+  - VinBaseComponents/StorageLib/RealmStore (0.2.8):
     - Realm
   - YYCache (1.0.4)
 
@@ -90,7 +90,7 @@ SPEC CHECKSUMS:
   ReactiveObjC: 011caa393aa0383245f2dcf9bf02e86b80b36040
   Realm: e523da9ade306c5ae87e85dc09fdef148d3e1cc1
   UICKeyChainStore: ba3bff2c762b12db1e516f395c837dd25298b05e
-  VinBaseComponents: 4dfe0ab4efe27079c753036e5410e6ba28e4f879
+  VinBaseComponents: b3fc8181643551bcb9ce1d49f75ad154584d65fa
   YYCache: 8105b6638f5e849296c71f331ff83891a4942952
 
 PODFILE CHECKSUM: ff1a9c6a20a48c2c8c68ef4ed2edf2dccaa90bc8
