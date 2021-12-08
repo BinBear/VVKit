@@ -16,7 +16,10 @@
 
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
     for (NSInteger i = 0; i < self.count; i++) {
-        [result addObject:block(i,self[i])];
+        id item = block(i,self[i]);
+        if (item) {
+            [result addObject:item];
+        }
     }
     return [result copy];
 }

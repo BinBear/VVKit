@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.2.9'
+  s.version          = '0.3.0'
   s.summary          = '基础组件库'
 
 
