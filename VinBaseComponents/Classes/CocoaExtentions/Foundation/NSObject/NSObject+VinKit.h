@@ -17,6 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 - (id)vv_getAssociatedValueForKey:(void *)key;
 - (void)vv_removeAssociatedValues;
 
+@end
+
+
+@interface NSObject (VinDevice)
+
 + (NSURL *)vv_documentsURL;
 + (NSString *)vv_documentsPath;
 
@@ -32,6 +37,41 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)vv_appVersion;
 
 + (BOOL)vv_fileExistInMainBundle:(NSString *)name;
+
+@end
+
+typedef void(^VinCaseBlock)(void);
+
+@interface NSObject (VinSwitchCase)
+/**
+ * SwitchCase示例:
+ *
+ * NSNumber *flagNum = @(1.1);
+ * [flagNum vv_switch:@{
+ *    @(1.1): ^{
+ *    // todo
+ * },
+ *    @(2.2): ^{
+ *    // todo
+ * }
+ * }];
+ *
+ * NSString *str = @"a";
+ * [str vv_switch:@{
+ *    @"a": ^{
+ *    // todo
+ * },
+ *    @"b": ^{
+ *    // todo
+ * },
+ * } withDefault:^{
+ *    // todo
+ * }];
+ *
+ */
+- (void)vv_switch:(NSDictionary<id<NSCopying>, VinCaseBlock> *)cases;
+- (void)vv_switch:(NSDictionary<id<NSCopying>, VinCaseBlock> *)cases withDefault:(nullable VinCaseBlock)defaultBlock;
+
 @end
 
 NS_ASSUME_NONNULL_END

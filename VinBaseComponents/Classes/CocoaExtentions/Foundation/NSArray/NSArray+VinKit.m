@@ -26,7 +26,7 @@
 
 @end
 
-@implementation NSArray (Sort)
+@implementation NSArray (VinSort)
 
 #pragma mark -
 #pragma mark 二分查找（循环）

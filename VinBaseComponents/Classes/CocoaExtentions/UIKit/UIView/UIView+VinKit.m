@@ -88,7 +88,7 @@
 }
 @end
 
-@implementation UIView (Frame)
+@implementation UIView (VinFrame)
 - (UIView *(^)(CGFloat left, CGFloat top, CGFloat width, CGFloat heigth))rectValue {
     return ^(CGFloat left, CGFloat top, CGFloat width, CGFloat heigth){
         self.frame = CGRectMake(left, top, width, heigth);

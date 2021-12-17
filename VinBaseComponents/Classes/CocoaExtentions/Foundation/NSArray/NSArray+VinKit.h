@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
-@interface NSArray (Sort)
+@interface NSArray (VinSort)
 
 /// 二分查找（循环）
 - (NSInteger)vv_bsearchWithLoop:(NSString *)propertyName value:(double)value;

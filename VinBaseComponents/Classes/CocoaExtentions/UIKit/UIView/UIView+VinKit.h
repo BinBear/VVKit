@@ -30,7 +30,7 @@ typedef NS_ENUM(NSInteger , VVShadowPathType) {
                    shadowPathWidth:(CGFloat)shadowPathWidth;
 @end
 
-@interface UIView (Frame)
+@interface UIView (VinFrame)
 
 @property (nonatomic) CGSize size;
 @property (nonatomic) CGFloat width;

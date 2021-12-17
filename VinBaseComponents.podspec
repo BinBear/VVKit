@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'VinBaseComponents'
-  s.version          = '0.3.0'
+  s.version          = '0.3.1'
   s.summary          = '基础组件库'
 
 
@@ -28,7 +28,7 @@ TODO: 基础组件库
   s.author           = { 'BinBear' => 'vin404@outlook.com' }
   s.source           = { :git => 'https://github.com/BinBear/VinBaseComponents.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '10.0'
+  s.ios.deployment_target = '11.0'
 
   # 常用的Extentions 
   s.subspec 'CocoaExtentions' do |ss|
