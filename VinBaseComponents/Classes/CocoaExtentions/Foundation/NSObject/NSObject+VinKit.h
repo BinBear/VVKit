@@ -11,10 +11,15 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (VinKit)
 
+/// 给Category设置一个Retain属性
 - (void)vv_setAssociateRetainValue:(id)value withKey:(void *)key;
+/// 给Category设置一个Copy属性
 - (void)vv_setAssociateCopyValue:(id)value withKey:(void *)key;
+/// 给Category设置一个Assign属性
 - (void)vv_setAssociateAssignValue:(id)value withKey:(void *)key;
+/// 根据key获取Category对应属性的值
 - (id)vv_getAssociatedValueForKey:(void *)key;
+/// 移除Category绑定的属性
 - (void)vv_removeAssociatedValues;
 
 @end
@@ -22,21 +27,47 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (VinDevice)
 
+/// 获取Documents路径
 + (NSURL *)vv_documentsURL;
 + (NSString *)vv_documentsPath;
 
+/// 获取Caches路径
 + (NSURL *)vv_cachesURL;
 + (NSString *)vv_cachesPath;
 
+/// 获取Library路径
 + (NSURL *)vv_libraryURL;
 + (NSString *)vv_libraryPath;
 
-+ (NSString *)vv_appBuildVersion;
-+ (NSString *)vv_appBundleName;
-+ (NSString *)vv_appBundleID;
-+ (NSString *)vv_appVersion;
-
+/// 判断MainBundle是否存在该路径
 + (BOOL)vv_fileExistInMainBundle:(NSString *)name;
+
+/// App Build 版本
++ (NSString *)vv_appBuildVersion;
+/// App 项目名称
++ (NSString *)vv_appBundleName;
+/// App 名称
++ (NSString *)vv_appDisplayName;
+/// App Bundle ID
++ (NSString *)vv_appBundleID;
+/// App 版本
++ (NSString *)vv_appVersion;
+/// 设备类型，e.g. @"iPhone", @"iPod touch"
++ (NSString *)vv_userDeviceModel;
+/// 设备名称，用户定义的名称 e.g. "My iPhone"
++ (NSString *)vv_userDeviceName;
+/// 设备系统名称，e.g. @"iOS"
++ (NSString *)vv_systemName;
+/// 设备系统版本，e.g. @"4.0"
++ (NSString *)vv_systemVersion;
+/// 设备IDFV
++ (NSString *)vv_uuidForVendor;
+/// 生成的随机唯一标识符，每次生成都不同
++ (NSString *)vv_cfUUID;
+/// 设备具体类型，e.g. @"iPhone13,3", @"iPod9,1"
++ (NSString *)vv_deviceModel;
+/// 设备具体名称，e.g. @"iPhone 12 Pro", @"iPod touch 7"
++ (NSString *)vv_deviceName;
 
 @end
 
@@ -69,7 +100,14 @@ typedef void(^VinCaseBlock)(void);
  * }];
  *
  */
+
+/// Switch Case
+/// @param cases 条件
 - (void)vv_switch:(NSDictionary<id<NSCopying>, VinCaseBlock> *)cases;
+
+/// Switch Case
+/// @param cases 条件
+/// @param defaultBlock 不满足条件时，默认实现
 - (void)vv_switch:(NSDictionary<id<NSCopying>, VinCaseBlock> *)cases withDefault:(nullable VinCaseBlock)defaultBlock;
 
 @end
