@@ -5,34 +5,57 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: ensure_git_branch" time="0.015925">
+      <testcase classname="fastlane.lanes" name="00: ensure_git_branch" time="0.023841">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: version_bump_podspec" time="0.002141">
+      <testcase classname="fastlane.lanes" name="01: version_bump_podspec" time="0.002471">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: git_add" time="0.026199">
+      <testcase classname="fastlane.lanes" name="02: git_add" time="0.027076">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: git_commit" time="0.083435">
+      <testcase classname="fastlane.lanes" name="03: git_commit" time="0.092318">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: git_pull" time="5.286044">
+      <testcase classname="fastlane.lanes" name="04: git_pull" time="2.012437">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="5: push_to_git_remote" time="91.135292">
+      <testcase classname="fastlane.lanes" name="05: push_to_git_remote" time="1.622684">
         
-          <failure message="/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/actions/actions_helper.rb:67:in `execute_action&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:255:in `block in execute_action&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:229:in `chdir&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:229:in `execute_action&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing&apos;&#10;Fastfile:51:in `block in parsing_binding&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/lane.rb:33:in `call&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:45:in `chdir&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/runner.rb:45:in `execute&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/lane_manager.rb:47:in `cruise_lane&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/command_line_handler.rb:36:in `handle&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/commands_generator.rb:109:in `block (2 levels) in run&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/commander-4.6.0/lib/commander/command.rb:187:in `call&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/commander-4.6.0/lib/commander/command.rb:157:in `run&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/commander-4.6.0/lib/commander/runner.rb:444:in `run_active_command&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:76:in `run!&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/commander-4.6.0/lib/commander/delegates.rb:18:in `run!&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/commands_generator.rb:353:in `run&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/commands_generator.rb:42:in `start&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/fastlane/lib/fastlane/cli_tools_distributor.rb:122:in `take_off&apos;&#10;/usr/local/lib/ruby/gems/3.0.0/gems/fastlane-2.190.0/bin/fastlane:23:in `&lt;top (required)&gt;&apos;&#10;/usr/local/bin/fastlane:23:in `load&apos;&#10;/usr/local/bin/fastlane:23:in `&lt;main&gt;&apos;&#10;&#10;Exit status of command &apos;git push origin master:master --tags&apos; was 1 instead of 0.&#10;remote: warning: File Example/Pods/Realm/core/realm-monorepo.xcframework/ios-armv7_arm64/librealm-monorepo.a is 76.24 MB; this is larger than GitHub&apos;s recommended maximum file size of 50.00 MB        &#10;remote: warning: File Example/Pods/Realm/core/realm-monorepo.xcframework/watchos-armv7k_arm64_32/librealm-monorepo.a is 74.45 MB; this is larger than GitHub&apos;s recommended maximum file size of 50.00 MB        &#10;remote: warning: File Example/Pods/Realm/core/realm-monorepo.xcframework/ios-arm64_x86_64_i386-simulator/librealm-monorepo.a is 67.05 MB; this is larger than GitHub&apos;s recommended maximum file size of 50.00 MB        &#10;remote: warning: File Example/Pods/Realm/core/realm-monorepo.xcframework/tvos-arm64_x86_64-simulator/librealm-monorepo.a is 52.83 MB; this is larger than GitHub&apos;s recommended maximum file size of 50.00 MB        &#10;remote: error: Trace: 2ef25bc76f49057c6496002f2ffd1c29864d8e0aa605b43a668e198953055839        &#10;remote: error: See http://git.io/iEPt8g for more information.        &#10;remote: error: File Example/Pods/Realm/core/realm-monorepo.xcframework/watchos-arm64_i386_x86_64-simulator/librealm-monorepo.a is 114.50 MB; this exceeds GitHub&apos;s file size limit of 100.00 MB        &#10;remote: error: GH001: Large files detected. You may want to try Git Large File Storage - https://git-lfs.github.com.        &#10;To https://github.com/BinBear/VinBaseComponents.git&#10; ! [remote rejected] master -&gt; master (pre-receive hook declined)&#10;error: failed to push some refs to &apos;https://github.com/BinBear/VinBaseComponents.git&apos;&#10;" />
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="06: git_tag_exists" time="0.013781">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="07: add_git_tag" time="0.020827">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="08: push_git_tags" time="1.553447">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="09: pod_lib_lint" time="433.178294">
+        
+      </testcase>
+    
+      
+      <testcase classname="fastlane.lanes" name="10: pod_push" time="421.267165">
         
       </testcase>
     

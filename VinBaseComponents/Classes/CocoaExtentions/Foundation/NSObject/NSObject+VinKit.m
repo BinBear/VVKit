@@ -6,6 +6,8 @@
 //
 
 #import "NSObject+VinKit.h"
+#import "NSString+VinKit.h"
+#import "NSDecimalNumber+VinKit.h"
 #import <objc/objc.h>
 #import <objc/runtime.h>
 #import <sys/utsname.h>
@@ -380,7 +382,25 @@ static NSInteger _isSimulator = -1;
     if (!cases || ![cases isKindOfClass:NSDictionary.class] || ![self conformsToProtocol:@protocol(NSCopying)]) {
         return;
     }
-    VinCaseBlock caseBlock = cases[(id<NSCopying>)self];
+    VinCaseBlock caseBlock = nil;
+    if ([self isKindOfClass:NSNumber.class]) {
+        NSString *switchKey = vv_handleLossAccuracy(((NSNumber *)self).doubleValue);
+        NSNumber *caseKey;
+        for (id item in cases.allKeys) {
+            if ([item isKindOfClass:NSNumber.class]) {
+                NSString *itemKey = vv_handleLossAccuracy(((NSNumber *)item).doubleValue);
+                if ([switchKey isEqualToString:itemKey]) {
+                    caseKey = item;
+                    break;
+                }
+            }
+        }
+        if (caseKey) {
+            caseBlock = cases[caseKey];
+        }
+    } else {
+        caseBlock = cases[(id<NSCopying>)self];
+    }
     if (caseBlock) {
         caseBlock();
     } else if (defaultBlock) {
@@ -388,4 +408,49 @@ static NSInteger _isSimulator = -1;
     }
 }
 
+/// 处理精度丢失
+NSString *vv_handleLossAccuracy(double balance) {
+    NSInteger length = vv_getDecimalDigits(balance);
+    if (length >= 12) {
+        length = 12;
+    }
+    double total = pow(10, length);
+    long double rounded_up = round(balance * total) / total;
+    NSDecimalNumber *roundNum = [NSDecimalNumber vv_decimalNumberWithDouble:rounded_up roundingScale:length roundingMode:NSRoundDown];
+    NSString *str = [NSString vv_stringFromNumber:roundNum fractionDigits:length];
+    return vv_deleteZeroAfterDecimalPoint(str);
+}
+
+/// 获取小数位数精度
+NSInteger vv_getDecimalDigits(double number) {
+    if (number == (long)number) { return 0; }
+    NSInteger i = 0;
+    while (true){
+        i++;
+        double total = number * pow(10, i);
+        if (fmod(total,1) == 0) {
+            return i;
+        }
+    }
+}
+
+/// 删除小数点后面的0
+NSString *vv_deleteZeroAfterDecimalPoint(NSString *stringFloat){
+    NSInteger length = [stringFloat length];
+    if ([stringFloat containsString:@"."]) {
+        for(NSInteger i = length - 1; i >= 0; i--){
+            NSString *subString = [stringFloat substringFromIndex:i];
+            if(![subString isEqualToString:@"0"]){
+                if ([subString isEqualToString:@"."]) {
+                    return [stringFloat substringToIndex:[stringFloat length] - 1];
+                }else{
+                    return stringFloat;
+                }
+            }else{
+                stringFloat = [stringFloat substringToIndex:i];
+            }
+        }
+    }
+    return stringFloat;
+}
 @end
