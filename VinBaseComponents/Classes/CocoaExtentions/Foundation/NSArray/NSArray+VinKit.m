@@ -24,6 +24,30 @@
     return [result copy];
 }
 
+- (nullable NSString *)vv_jsonStringEncoded {
+    if ([NSJSONSerialization isValidJSONObject:self]) {
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:&error];
+        if (jsonData) {
+            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            return json;
+        }
+    }
+    return nil;
+}
+
+- (nullable NSString *)vv_jsonPrettyStringEncoded {
+    if ([NSJSONSerialization isValidJSONObject:self]) {
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingPrettyPrinted error:&error];
+        if (jsonData) {
+            NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+            return json;
+        }
+    }
+    return nil;
+}
+
 @end
 
 @implementation NSArray (VinSort)

@@ -14,6 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// 转换数组元素，将每个 item 都经过 block 转换成一遍 返回转换后的新数组
 - (NSArray *)vv_mapWithBlock:(id (NS_NOESCAPE^)(NSInteger index, id item))block;
 
+/// 将数组转换成json字符串
+- (nullable NSString *)vv_jsonStringEncoded;
+
+/// 将数组转换成json字符串，格式化输出，即输出后的字符串有换行符\n
+- (nullable NSString *)vv_jsonPrettyStringEncoded;
+
 @end
 
 
