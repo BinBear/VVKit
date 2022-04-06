@@ -1,6 +1,0 @@
-framework module VinBaseComponents {
-  umbrella header "VinBaseComponents-umbrella.h"
-
-  export *
-  module * { export * }
-}
