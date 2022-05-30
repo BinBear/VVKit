@@ -68,6 +68,10 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)vv_deviceModel;
 /// 设备具体名称，e.g. @"iPhone 12 Pro", @"iPod touch 7"
 + (NSString *)vv_deviceName;
+/// 设备地方型号（国际化区域名称）
++ (NSString *)vv_localizedModel;
+/// 设备运营商名称
++ (NSString *)vv_carrierName;
 
 @end
 

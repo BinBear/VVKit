@@ -11,6 +11,8 @@
 #import <objc/objc.h>
 #import <objc/runtime.h>
 #import <sys/utsname.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreTelephony/CTCarrier.h>
 
 @implementation NSObject (VinKit)
 
@@ -368,6 +370,22 @@ static NSInteger _isSimulator = -1;
     }
     return _isSimulator > 0;
 }
+
++ (NSString *)vv_localizedModel {
+    if ([[UIDevice currentDevice] respondsToSelector:@selector(localizedModel)]) {
+        NSString *localizedModel = [[UIDevice currentDevice] localizedModel];
+        return localizedModel;
+    } else {
+        return nil;
+    }
+}
+
++ (NSString *)vv_carrierName {
+    CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
+    CTCarrier *carrier = [info subscriberCellularProvider];
+    return [carrier carrierName];
+}
+
 @end
 
 
