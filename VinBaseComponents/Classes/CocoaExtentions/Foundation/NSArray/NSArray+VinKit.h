@@ -38,7 +38,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// 累加数组元素，将每个 item 都经过 block 累加 返回累加后的单元素
 - (id)vv_reduce:(id _Nullable)initial withBlock:(id (NS_NOESCAPE ^)(id _Nullable accumulator, id object))block;
 
-/// 将数组转换成json字符串
+/// 将数组转换成json字符串,key进行升序排序
 - (nullable NSString *)vv_jsonStringEncoded;
 
 /// 将数组转换成json字符串，格式化输出，即输出后的字符串有换行符\n

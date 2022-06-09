@@ -91,7 +91,7 @@
 - (nullable NSString *)vv_jsonStringEncoded {
     if ([NSJSONSerialization isValidJSONObject:self]) {
         NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:0 error:&error];
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingSortedKeys error:&error];
         if (jsonData) {
             NSString *json = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
             return json;
