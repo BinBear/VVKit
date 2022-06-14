@@ -56,6 +56,13 @@ NS_ASSUME_NONNULL_BEGIN
  @return 相除后的数
  */
 - (NSDecimalNumber *)vv_safeDecimalNumberByDividing:(NSDecimalNumber *)num;
+/**
+ 幂
+ 
+ @param num 次
+ @return 结果
+ */
+- (NSDecimalNumber *)vv_pow:(NSUInteger)num;
 @end
 
 NS_ASSUME_NONNULL_END

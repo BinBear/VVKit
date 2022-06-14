@@ -71,11 +71,11 @@
     return [NSString vv_stringFromNumber:decimalNumber fractionDigits:fractionDigits];
 }
 
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
     return [NSString vv_stringFromDouble:value roundingScale:scale roundingMode:NSRoundPlain fractionDigitsPadded:isPadded];
 }
 
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
     NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value roundingScale:scale roundingMode:mode];
     
     if (!isPadded) return [NSString stringWithFormat:@"%@", decimalNumber];
@@ -218,6 +218,33 @@
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedAscending;
+}
+
+- (NSString *)vv_min:(NSString *)stringNumer {
+    if ([self isEqualToString:vv_max]) return stringNumer;
+    if ([stringNumer isEqualToString:vv_max]) return self;
+    BOOL isVV_min = [self isEqualToString:vv_min] || [stringNumer isEqualToString:vv_min];
+    NSAssert(!isVV_min, @"使用vv_min比较无意义");
+    
+    BOOL isLess = [self vv_compareIsLess:stringNumer];
+    return isLess ? self : stringNumer;
+}
+
+- (NSString *)vv_max:(NSString *)stringNumer {
+    if ([self isEqualToString:vv_min]) return stringNumer;
+    if ([stringNumer isEqualToString:vv_min]) return self;
+    BOOL isVV_max = [self isEqualToString:vv_max] || [stringNumer isEqualToString:vv_max];
+    NSAssert(!isVV_max, @"使用vv_max比较无意义");
+    
+    BOOL isGreater = [self vv_compareIsGreater:stringNumer];
+    return isGreater ? self : stringNumer;
+}
+
+- (NSString *)vv_safePow:(NSUInteger)num {
+    NSString *safeSelf = [NSString _safeString:self];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *result = [num1 vv_pow:num];
+    return result.stringValue;
 }
 
 + (NSString *)_safeString:(NSString *)str {

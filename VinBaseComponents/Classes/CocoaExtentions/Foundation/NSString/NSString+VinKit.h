@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
+static NSString * const vv_max = @"vv_max";
+static NSString * const vv_min = @"vv_min";
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (VinKit)
@@ -74,7 +77,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param scale    The number of digits a rounded value should have after its decimal point.
  *  @param isPadded If YES, allows the rounded value be padded by zero to conform fraction digits to the scale.(1.399 -> 1.4 -> 1.40)
  */
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded;
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded;
 
 /**
  *  Return a string from the provided double value. The double value is rounded in the way specified by scale and roundingMode. The rounded value could be padded by zero to conform fraction digits to the scale.
@@ -84,7 +87,7 @@ NS_ASSUME_NONNULL_BEGIN
  *  @param mode     The rounding mode to use. There are four possible values: NSRoundUp, NSRoundDown, NSRoundPlain, and NSRoundBankers.
  *  @param isPadded If YES, allows the rounded value be padded by zero to conform fraction digits to the scale.(1.399 -> 1.4 -> 1.40)
  */
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded;
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded;
 
 /**
  *  Return a string containing the fraction digits of the provided double value. The double value is rounded in the way specified by scale and roundingMode.
@@ -190,6 +193,27 @@ NS_ASSUME_NONNULL_BEGIN
  * @return 比较结果
  */
 - (BOOL)vv_compareIsLess:(NSString *)stringNumer;
+/**
+ * 最小值
+ *
+ * @param stringNumer 比较的数
+ * @return 最小值
+ */
+- (NSString *)vv_min:(NSString *)stringNumer;
+/**
+ * 最大值
+ *
+ * @param stringNumer 比较的数
+ * @return 最大值
+ */
+- (NSString *)vv_max:(NSString *)stringNumer;
+/**
+ * 幂
+ *
+ * @param num 次
+ * @return 结果
+ */
+- (NSString *)vv_safePow:(NSUInteger)num;
 @end
 
 NS_ASSUME_NONNULL_END

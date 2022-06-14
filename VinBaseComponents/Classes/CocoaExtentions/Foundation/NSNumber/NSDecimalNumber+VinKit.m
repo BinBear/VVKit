@@ -76,4 +76,10 @@
     }
     return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
+- (NSDecimalNumber *)vv_pow:(NSUInteger)num {
+    if (![self isEqualToNumber:NSDecimalNumber.notANumber]) {
+        return [self decimalNumberByRaisingToPower:num];
+    }
+    return [NSDecimalNumber decimalNumberWithString:@"0"];
+}
 @end
