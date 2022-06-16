@@ -71,11 +71,11 @@
     return [NSString vv_stringFromNumber:decimalNumber fractionDigits:fractionDigits];
 }
 
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
     return [NSString vv_stringFromDouble:value roundingScale:scale roundingMode:NSRoundPlain fractionDigitsPadded:isPadded];
 }
 
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
++ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
     NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value roundingScale:scale roundingMode:mode];
     
     if (!isPadded) return [NSString stringWithFormat:@"%@", decimalNumber];
@@ -218,6 +218,13 @@
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
     return result == NSOrderedAscending;
+}
+
+- (NSString *)vv_safePow:(NSUInteger)num {
+    NSString *safeSelf = [NSString _safeString:self];
+    NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
+    NSDecimalNumber *result = [num1 vv_pow:num];
+    return result.stringValue;
 }
 
 + (NSString *)_safeString:(NSString *)str {
