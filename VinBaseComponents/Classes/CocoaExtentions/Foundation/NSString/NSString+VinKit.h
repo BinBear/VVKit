@@ -8,9 +8,6 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-static NSString * const vv_max = @"vv_max";
-static NSString * const vv_min = @"vv_min";
-
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (VinKit)
@@ -193,20 +190,6 @@ NS_ASSUME_NONNULL_BEGIN
  * @return 比较结果
  */
 - (BOOL)vv_compareIsLess:(NSString *)stringNumer;
-/**
- * 最小值
- *
- * @param stringNumer 比较的数
- * @return 最小值
- */
-- (NSString *)vv_min:(NSString *)stringNumer;
-/**
- * 最大值
- *
- * @param stringNumer 比较的数
- * @return 最大值
- */
-- (NSString *)vv_max:(NSString *)stringNumer;
 /**
  * 幂
  *
