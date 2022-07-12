@@ -116,4 +116,11 @@ typedef void(^VinCaseBlock)(void);
 
 @end
 
+@interface NSObject (UIKit)
+
+/// 获取keywindow
++ (UIWindow *)vv_keyWindow;
+
+@end
+
 NS_ASSUME_NONNULL_END

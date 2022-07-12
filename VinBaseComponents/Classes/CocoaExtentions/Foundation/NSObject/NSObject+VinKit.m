@@ -472,3 +472,26 @@ NSString *vv_deleteZeroAfterDecimalPoint(NSString *stringFloat){
     return stringFloat;
 }
 @end
+
+@implementation NSObject (UIKit)
+
++ (UIWindow *)vv_keyWindow {
+    if (@available(iOS 13.0, *)) {
+        NSSet<UIScene *> *connectedScenes = [UIApplication sharedApplication].connectedScenes;
+        for (UIScene *scene in connectedScenes) {
+            if (scene.activationState == UISceneActivationStateForegroundActive && [scene isKindOfClass:[UIWindowScene class]]) {
+                UIWindowScene *windowScene = (UIWindowScene *)scene;
+                for (UIWindow *window in windowScene.windows) {
+                    if (window.isKeyWindow) {
+                        return window;
+                    }
+                }
+            }
+        }
+    } else {
+        return [UIApplication sharedApplication].keyWindow;
+    }
+    return nil;
+}
+
+@end
