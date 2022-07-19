@@ -479,7 +479,7 @@ NSString *vv_deleteZeroAfterDecimalPoint(NSString *stringFloat){
     if (@available(iOS 13.0, *)) {
         NSSet<UIScene *> *connectedScenes = [UIApplication sharedApplication].connectedScenes;
         for (UIScene *scene in connectedScenes) {
-            if (scene.activationState == UISceneActivationStateForegroundActive && [scene isKindOfClass:[UIWindowScene class]]) {
+            if ([scene isKindOfClass:UIWindowScene.class] && scene.activationState == UISceneActivationStateForegroundActive) {
                 UIWindowScene *windowScene = (UIWindowScene *)scene;
                 for (UIWindow *window in windowScene.windows) {
                     if (window.isKeyWindow) {
@@ -488,10 +488,8 @@ NSString *vv_deleteZeroAfterDecimalPoint(NSString *stringFloat){
                 }
             }
         }
-    } else {
-        return [UIApplication sharedApplication].keyWindow;
     }
-    return nil;
+    return [UIApplication sharedApplication].keyWindow;
 }
 
 @end
