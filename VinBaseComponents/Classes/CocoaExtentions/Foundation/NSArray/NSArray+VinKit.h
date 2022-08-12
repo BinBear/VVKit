@@ -18,25 +18,25 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)vv_eachWithIndex:(void (NS_NOESCAPE ^)(id object, NSUInteger index))block;
 
 /// 转换数组元素，将每个 item 都经过 block 转换成一遍 返回转换后的新数组
-- (NSArray *)vv_map:(id (NS_NOESCAPE ^)(id object))block;
+- (nullable NSArray *)vv_map:(id (NS_NOESCAPE ^)(id object))block;
 
 /// 转换数组元素，将每个 item 都经过 block 转换成一遍 返回转换后的新数组
-- (NSArray *)vv_mapWithIndex:(id (NS_NOESCAPE ^)(NSInteger index, id item))block;
+- (nullable NSArray *)vv_mapWithIndex:(id (NS_NOESCAPE ^)(NSInteger index, id item))block;
 
 /// 过滤数组元素，将每个 item 都经过 block 过滤一遍 返回过滤后的新数组
-- (NSArray *)vv_filter:(BOOL (NS_NOESCAPE ^)(id object))block;
+- (nullable NSArray *)vv_filter:(BOOL (NS_NOESCAPE ^)(id object))block;
 
 /// 不需要过滤的数组元素，将每个 item 都经过 block 过滤一遍 返回过滤后的新数组
-- (NSArray *)vv_reject:(BOOL (NS_NOESCAPE ^)(id object))block;
+- (nullable NSArray *)vv_reject:(BOOL (NS_NOESCAPE ^)(id object))block;
 
 /// 过滤单个元素，将每个 item 都经过 block 过滤 返回过滤后的单元素
-- (id)vv_detect:(BOOL (NS_NOESCAPE ^)(id object))block;
+- (nullable id)vv_detect:(BOOL (NS_NOESCAPE ^)(id object))block;
 
 /// 累加数组元素，将每个 item 都经过 block 累加 返回累加后的单元素
-- (id)vv_reduce:(id (NS_NOESCAPE ^)(id accumulator, id object))block;
+- (nullable id)vv_reduce:(id (NS_NOESCAPE ^)(id accumulator, id object))block;
 
 /// 累加数组元素，将每个 item 都经过 block 累加 返回累加后的单元素
-- (id)vv_reduce:(id _Nullable)initial withBlock:(id (NS_NOESCAPE ^)(id _Nullable accumulator, id object))block;
+- (nullable id)vv_reduce:(id _Nullable)initial block:(id (NS_NOESCAPE ^)(id _Nullable accumulator, id object))block;
 
 /// 将数组转换成json字符串,key进行升序排序
 - (nullable NSString *)vv_jsonStringEncoded;

@@ -17,6 +17,7 @@
 #import "NSDecimalNumber+VinKit.h"
 #import "NSMethodSignature+VinKit.h"
 #import "NSArray+VinKit.h"
+#import "NSURL+VinKit.h"
 
 // UIKit
 #import "UIImage+VinKit.h"

@@ -21,8 +21,8 @@
     }];
 }
 
-- (NSArray *)vv_map:(id (NS_NOESCAPE ^)(id object))block {
-    if (!block) { return self; }
+- (nullable NSArray *)vv_map:(id (NS_NOESCAPE ^)(id object))block {
+    if (!block) return self;
     
     NSMutableArray *result = [NSMutableArray arrayWithCapacity:self.count];
     for (id object in self) {
@@ -34,8 +34,8 @@
     return result;
 }
 
-- (NSArray *)vv_mapWithIndex:(id (NS_NOESCAPE ^)(NSInteger index, id item))block {
-    if (!block) { return self; }
+- (nullable NSArray *)vv_mapWithIndex:(id (NS_NOESCAPE ^)(NSInteger index, id item))block {
+    if (!block) return self;
 
     NSMutableArray *result = [[NSMutableArray alloc] initWithCapacity:self.count];
     [self enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -47,24 +47,25 @@
     return [result copy];
 }
 
-- (NSArray *)vv_filter:(BOOL (NS_NOESCAPE ^)(id object))block {
-    if (!block) { return self; }
+- (nullable NSArray *)vv_filter:(BOOL (NS_NOESCAPE ^)(id object))block {
+    if (!block)  return self;
     
     return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         return block(evaluatedObject);
     }]];
 }
 
-- (NSArray *)vv_reject:(BOOL (NS_NOESCAPE ^)(id object))block {
-    if (!block) { return self; }
+
+- (nullable NSArray *)vv_reject:(BOOL (NS_NOESCAPE ^)(id object))block {
+    if (!block) return self;
     
     return [self filteredArrayUsingPredicate:[NSPredicate predicateWithBlock:^BOOL(id evaluatedObject, NSDictionary *bindings) {
         return !block(evaluatedObject);
     }]];
 }
 
-- (id)vv_detect:(BOOL (NS_NOESCAPE ^)(id object))block {
-    if (!block) { return nil; }
+- (nullable id)vv_detect:(BOOL (NS_NOESCAPE ^)(id object))block {
+    if (!block) return nil;
     
     for (id object in self) {
         if (block(object)) {
@@ -74,14 +75,14 @@
     return nil;
 }
 
-- (id)vv_reduce:(id (NS_NOESCAPE ^)(id accumulator, id object))block {
-    return [self vv_reduce:nil withBlock:block];
+- (nullable id)vv_reduce:(id (NS_NOESCAPE ^)(id accumulator, id object))block {
+    return [self vv_reduce:nil block:block];
 }
 
-- (id)vv_reduce:(id _Nullable)initial withBlock:(id (NS_NOESCAPE ^)(id _Nullable accumulator, id object))block {
-    if (!block) { return nil; }
-    id accumulator = initial;
+- (nullable id)vv_reduce:(id _Nullable)initial block:(id (NS_NOESCAPE ^)(id _Nullable accumulator, id object))block {
+    if (!block) return nil;
     
+    id accumulator = initial;
     for(id object in self) {
         accumulator = accumulator ? block(accumulator, object) : object;
     }
