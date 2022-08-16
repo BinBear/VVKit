@@ -1,6 +1,6 @@
 //
 //  NSArray+VinKit.m
-//  HotCoin
+//  VinBaseComponents
 //
 //  Created by vin on 2021/5/25.
 //
