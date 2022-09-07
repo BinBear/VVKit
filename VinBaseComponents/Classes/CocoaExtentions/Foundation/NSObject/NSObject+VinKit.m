@@ -402,11 +402,11 @@ static NSInteger _isSimulator = -1;
     }
     VinCaseBlock caseBlock = nil;
     if ([self isKindOfClass:NSNumber.class]) {
-        NSString *switchKey = vv_handleLossAccuracy(((NSNumber *)self).doubleValue);
+        NSString *switchKey = vv_handleLossPrecision(((NSNumber *)self).doubleValue);
         NSNumber *caseKey;
         for (id item in cases.allKeys) {
             if ([item isKindOfClass:NSNumber.class]) {
-                NSString *itemKey = vv_handleLossAccuracy(((NSNumber *)item).doubleValue);
+                NSString *itemKey = vv_handleLossPrecision(((NSNumber *)item).doubleValue);
                 if ([switchKey isEqualToString:itemKey]) {
                     caseKey = item;
                     break;
@@ -427,21 +427,21 @@ static NSInteger _isSimulator = -1;
 }
 
 /// 处理精度丢失
-NSString *vv_handleLossAccuracy(double balance) {
-    NSInteger length = vv_getDecimalDigits(balance);
-    if (length >= 12) {
-        length = 12;
-    }
-    double total = pow(10, length);
-    long double rounded_up = round(balance * total) / total;
-    NSDecimalNumber *roundNum = [NSDecimalNumber vv_decimalNumberWithDouble:rounded_up roundingScale:length roundingMode:NSRoundDown];
-    NSString *str = [NSString vv_stringFromNumber:roundNum fractionDigits:length];
-    return vv_deleteZeroAfterDecimalPoint(str);
+NSString *vv_handleLossPrecision(double value) {
+    NSInteger scale = vv_getDecimalDigits(value);
+    scale = scale >= 12 ? 12 : scale;
+    double total = pow(10, scale);
+    double rounded = round(value * total);
+    NSDecimalNumber *totalDeciaml = [NSDecimalNumber vv_decimalNumberWithDouble:total roundingScale:0 roundingMode:NSRoundDown];
+    NSDecimalNumber *roundedDeciaml = [NSDecimalNumber vv_decimalNumberWithDouble:rounded roundingScale:0 roundingMode:NSRoundDown];
+    NSDecimalNumber *rounded_up = [roundedDeciaml vv_dividing:totalDeciaml];
+    NSString *str = [NSString vv_stringRoundDownFromNumber:rounded_up fractionDigits:scale];
+    return [NSString vv_deleteSuffixAllZero:str];
 }
 
 /// 获取小数位数精度
 NSInteger vv_getDecimalDigits(double number) {
-    if (number == (long)number) { return 0; }
+    if (number == (long)number) return 0;
     NSInteger i = 0;
     while (true){
         i++;
@@ -452,25 +452,6 @@ NSInteger vv_getDecimalDigits(double number) {
     }
 }
 
-/// 删除小数点后面的0
-NSString *vv_deleteZeroAfterDecimalPoint(NSString *stringFloat){
-    NSInteger length = [stringFloat length];
-    if ([stringFloat containsString:@"."]) {
-        for(NSInteger i = length - 1; i >= 0; i--){
-            NSString *subString = [stringFloat substringFromIndex:i];
-            if(![subString isEqualToString:@"0"]){
-                if ([subString isEqualToString:@"."]) {
-                    return [stringFloat substringToIndex:[stringFloat length] - 1];
-                }else{
-                    return stringFloat;
-                }
-            }else{
-                stringFloat = [stringFloat substringToIndex:i];
-            }
-        }
-    }
-    return stringFloat;
-}
 @end
 
 @implementation NSObject (UIKit)

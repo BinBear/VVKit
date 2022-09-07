@@ -53,49 +53,84 @@
     return str;
 }
 
-#pragma mark - RoundNumber
-+ (NSString *)vv_stringFromFloat:(float)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
-    return [NSString vv_stringFromFloat:value roundingScale:scale roundingMode:NSRoundPlain fractionDigitsPadded:isPadded];
+@end
+
+
+@implementation NSString (RoundNumber)
+
++ (NSString *)vv_stringFromFloat:(float)value
+                   roundingScale:(short)scale
+            fractionDigitsPadded:(BOOL)isPadded {
+    return [NSString vv_stringFromFloat:value
+                          roundingScale:scale
+                           roundingMode:NSRoundPlain
+                   fractionDigitsPadded:isPadded];
 }
 
-+ (NSString *)vv_stringFromFloat:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
-    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithFloat:value roundingScale:scale roundingMode:mode];
++ (NSString *)vv_stringFromFloat:(float)value
+                   roundingScale:(short)scale
+                    roundingMode:(NSRoundingMode)mode
+            fractionDigitsPadded:(BOOL)isPadded {
+    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithFloat:value
+                                                                  roundingScale:scale
+                                                                   roundingMode:mode];
     
-    if (!isPadded) return [NSString stringWithFormat:@"%@", decimalNumber];
+    if (!isPadded) return [NSString vv_stringWithFormat:@"%@", decimalNumber];
     
-    return [NSString vv_stringFromNumber:decimalNumber fractionDigits:scale];
+    return [NSString vv_stringRoundDownFromNumber:decimalNumber fractionDigits:scale];
 }
 
-+ (NSString *)vv_stringFromFloat:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigits:(NSUInteger)fractionDigits {
-    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithFloat:value roundingScale:scale roundingMode:mode];
-    return [NSString vv_stringFromNumber:decimalNumber fractionDigits:fractionDigits];
++ (NSString *)vv_stringFromFloat:(float)value
+                   roundingScale:(short)scale
+                    roundingMode:(NSRoundingMode)mode
+                  fractionDigits:(NSUInteger)fractionDigits {
+    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithFloat:value
+                                                                  roundingScale:scale
+                                                                   roundingMode:mode];
+    return [NSString vv_stringRoundDownFromNumber:decimalNumber fractionDigits:fractionDigits];
 }
 
-+ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale fractionDigitsPadded:(BOOL)isPadded {
-    return [NSString vv_stringFromDouble:value roundingScale:scale roundingMode:NSRoundPlain fractionDigitsPadded:isPadded];
++ (NSString *)vv_stringFromDouble:(double)value
+                    roundingScale:(short)scale
+             fractionDigitsPadded:(BOOL)isPadded {
+    return [NSString vv_stringFromDouble:value
+                           roundingScale:scale
+                            roundingMode:NSRoundPlain
+                    fractionDigitsPadded:isPadded];
 }
 
-+ (NSString *)vv_stringFromDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigitsPadded:(BOOL)isPadded {
-    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value roundingScale:scale roundingMode:mode];
++ (NSString *)vv_stringFromDouble:(double)value
+                    roundingScale:(short)scale
+                     roundingMode:(NSRoundingMode)mode
+             fractionDigitsPadded:(BOOL)isPadded {
+    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value
+                                                                   roundingScale:scale
+                                                                    roundingMode:mode];
     
-    if (!isPadded) return [NSString stringWithFormat:@"%@", decimalNumber];
+    if (!isPadded) return [NSString vv_stringWithFormat:@"%@", decimalNumber];
     
-    return [NSString vv_stringFromNumber:decimalNumber fractionDigits:scale];
+    return [NSString vv_stringRoundDownFromNumber:decimalNumber fractionDigits:scale];
 }
 
-+ (NSString *)vv_stringFromDouble:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode fractionDigits:(NSUInteger)fractionDigits {
-    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value roundingScale:scale roundingMode:mode];
-    return [NSString vv_stringFromNumber:decimalNumber fractionDigits:fractionDigits];
++ (NSString *)vv_stringFromDouble:(double)value
+                    roundingScale:(short)scale
+                     roundingMode:(NSRoundingMode)mode
+                   fractionDigits:(NSUInteger)fractionDigits {
+    NSDecimalNumber *decimalNumber = [NSDecimalNumber vv_decimalNumberWithDouble:value
+                                                                   roundingScale:scale
+                                                                    roundingMode:mode];
+    return [NSString vv_stringRoundDownFromNumber:decimalNumber fractionDigits:fractionDigits];
 }
 
-+ (NSString *)vv_stringRoundUpFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
++ (NSString *)vv_stringRoundUpFromNumber:(NSNumber *)number
+                          fractionDigits:(NSUInteger)fractionDigits {
 
     NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
                                                                          roundingMode:NSNumberFormatterRoundUp];
     return [numberFormatter stringFromNumber:number];
 }
 
-+ (NSString *)vv_stringFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
++ (NSString *)vv_stringRoundDownFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
     NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
                                                                          roundingMode:NSNumberFormatterRoundDown];
     return [numberFormatter stringFromNumber:number];
@@ -123,17 +158,20 @@
     return numberFormatter;
 }
 
-+ (NSString *)vv_deleteSuffixAllZero:(NSString *) string {
-    NSArray * arrStr=[string componentsSeparatedByString:@"."];
-    NSString *str=arrStr.firstObject;
-    NSString *str1=arrStr.lastObject;
-    while ([str1 hasSuffix:@"0"]) {
-        str1=[str1 substringToIndex:(str1.length-1)];
++ (NSString *)vv_deleteSuffixAllZero:(NSString *)string {
+    if (![string isKindOfClass:NSString.class] || ![string containsString:@"."]) return string;
+    NSArray *arrStr = [string componentsSeparatedByString:@"."];
+    if (arrStr.count != 2) return string;
+    NSString *prefixStr = arrStr.firstObject;
+    NSString *suffixStr = arrStr.lastObject;
+    while ([suffixStr hasSuffix:@"0"]) {
+        suffixStr = [suffixStr substringToIndex:(suffixStr.length-1)];
     }
-    return (str1.length>0)?[NSString stringWithFormat:@"%@.%@",str,str1]:str;
+    return (suffixStr.length>0)?[NSString stringWithFormat:@"%@.%@",prefixStr,suffixStr]:prefixStr;
 }
 
 + (NSString *)vv_addZeroForString:(NSString *) string andLength:(NSInteger)length{
+    if (![string isKindOfClass:NSString.class]) return string;
     NSMutableString *mutableStr = [NSMutableString stringWithString:string];
     while (mutableStr.length < length) {
         [mutableStr insertString:@"0" atIndex:0];
@@ -141,7 +179,12 @@
     return mutableStr;
 }
 
-#pragma mark - Calculation
+
+@end
+
+
+@implementation NSString (Calculation)
+
 + (NSString *)vv_stringAbs:(NSString *)num {
     num = [NSString _safeString:num];
     NSDecimalNumber *absNum = [NSDecimalNumber vv_abs:[NSDecimalNumber decimalNumberWithString:num]];
@@ -153,7 +196,7 @@
     num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
-    NSDecimalNumber *addingNum = [num1 vv_safeDecimalNumberByAdding:num2];
+    NSDecimalNumber *addingNum = [num1 vv_adding:num2];
     return [addingNum stringValue];
 }
 
@@ -162,7 +205,7 @@
     num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
-    NSDecimalNumber *subtractingNum = [num1 vv_safeDecimalNumberBySubtracting:num2];
+    NSDecimalNumber *subtractingNum = [num1 vv_subtracting:num2];
     return [subtractingNum stringValue];
 }
 
@@ -171,7 +214,7 @@
     num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
-    NSDecimalNumber *multiplyingNum = [num1 vv_safeDecimalNumberByMultiplying:num2];
+    NSDecimalNumber *multiplyingNum = [num1 vv_multiplying:num2];
     return [multiplyingNum stringValue];
 }
 
@@ -180,7 +223,7 @@
     num = [NSString _safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
-    NSDecimalNumber *dividingNum = [num1 vv_safeDecimalNumberByDividing:num2];
+    NSDecimalNumber *dividingNum = [num1 vv_dividing:num2];
     return [dividingNum stringValue];
 }
 
@@ -233,4 +276,5 @@
     }
     return @"0";
 }
+
 @end

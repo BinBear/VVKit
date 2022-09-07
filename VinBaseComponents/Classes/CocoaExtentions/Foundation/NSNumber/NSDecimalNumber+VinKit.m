@@ -9,38 +9,41 @@
 
 @implementation NSDecimalNumber (VinKit)
 
-#pragma mark - RoundPlain
-+ (NSDecimalNumber *)vv_decimalNumberWithFloat:(float)value roundingScale:(short)scale
-{
++ (NSDecimalNumber *)vv_decimalNumberWithFloat:(float)value roundingScale:(short)scale{
     return [[[NSDecimalNumber alloc] initWithFloat:value] vv_roundToScale:scale];
 }
 
-+ (NSDecimalNumber *)vv_decimalNumberWithFloat:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode
-{
++ (NSDecimalNumber *)vv_decimalNumberWithFloat:(float)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode{
     return [[[NSDecimalNumber alloc] initWithFloat:value] vv_roundToScale:scale mode:mode];
 }
 
-+ (NSDecimalNumber *)vv_decimalNumberWithDouble:(double)value roundingScale:(short)scale
-{
++ (NSDecimalNumber *)vv_decimalNumberWithDouble:(double)value roundingScale:(short)scale{
     return [[[NSDecimalNumber alloc] initWithDouble:value] vv_roundToScale:scale];
 }
 
-+ (NSDecimalNumber *)vv_decimalNumberWithDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode
-{
++ (NSDecimalNumber *)vv_decimalNumberWithDouble:(double)value roundingScale:(short)scale roundingMode:(NSRoundingMode)mode{
     return [[[NSDecimalNumber alloc] initWithDouble:value] vv_roundToScale:scale mode:mode];
 }
-- (NSDecimalNumber *)vv_roundToScale:(short)scale
-{
+
+- (NSDecimalNumber *)vv_roundToScale:(short)scale{
     return [self vv_roundToScale:scale mode:NSRoundPlain];
 }
 
-- (NSDecimalNumber *)vv_roundToScale:(short)scale mode:(NSRoundingMode)roundingMode
-{
-    NSDecimalNumberHandler *handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:roundingMode scale:scale raiseOnExactness:NO raiseOnOverflow:YES raiseOnUnderflow:YES raiseOnDivideByZero:YES];
+- (NSDecimalNumber *)vv_roundToScale:(short)scale mode:(NSRoundingMode)roundingMode{
+    NSDecimalNumberHandler *handler = [NSDecimalNumberHandler decimalNumberHandlerWithRoundingMode:roundingMode
+                                                                                             scale:scale
+                                                                                  raiseOnExactness:NO
+                                                                                   raiseOnOverflow:YES
+                                                                                  raiseOnUnderflow:YES
+                                                                               raiseOnDivideByZero:YES];
     return [self decimalNumberByRoundingAccordingToBehavior:handler];
 }
 
-#pragma mark - Calculation
+@end
+
+
+@implementation NSDecimalNumber (Calculation)
+
 + (NSDecimalNumber *)vv_abs:(NSDecimalNumber *)num {
     if ([num compare:[NSDecimalNumber zero]] == NSOrderedAscending) {
         
@@ -52,25 +55,25 @@
         return num;
     }
 }
-- (NSDecimalNumber *)vv_safeDecimalNumberByAdding:(NSDecimalNumber *)num{
+- (NSDecimalNumber *)vv_adding:(NSDecimalNumber *)num{
     if (![num isEqualToNumber:NSDecimalNumber.notANumber] && ![self isEqualToNumber:NSDecimalNumber.notANumber]) {
         return  [self decimalNumberByAdding:num];
     }
     return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
-- (NSDecimalNumber *)vv_safeDecimalNumberBySubtracting:(NSDecimalNumber *)num{
+- (NSDecimalNumber *)vv_subtracting:(NSDecimalNumber *)num{
     if (![num isEqualToNumber:NSDecimalNumber.notANumber] && ![self isEqualToNumber:NSDecimalNumber.notANumber]) {
         return  [self decimalNumberBySubtracting:num];
     }
     return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
-- (NSDecimalNumber *)vv_safeDecimalNumberByMultiplying:(NSDecimalNumber *)num{
+- (NSDecimalNumber *)vv_multiplying:(NSDecimalNumber *)num{
     if (![num isEqualToNumber:NSDecimalNumber.notANumber] && ![self isEqualToNumber:NSDecimalNumber.notANumber]) {
         return  [self decimalNumberByMultiplyingBy:num];
     }
     return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
-- (NSDecimalNumber *)vv_safeDecimalNumberByDividing:(NSDecimalNumber *)num{
+- (NSDecimalNumber *)vv_dividing:(NSDecimalNumber *)num{
     if (![num isEqualToNumber:NSDecimalNumber.notANumber] && ![num isEqualToNumber:NSDecimalNumber.zero] && ![self isEqualToNumber:NSDecimalNumber.notANumber]) {
         return  [self decimalNumberByDividingBy:num];
     }
@@ -82,4 +85,5 @@
     }
     return [NSDecimalNumber decimalNumberWithString:@"0"];
 }
+
 @end

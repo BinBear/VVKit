@@ -114,6 +114,12 @@ typedef void(^VinCaseBlock)(void);
 /// @param defaultBlock 不满足条件时，默认实现
 - (void)vv_switch:(NSDictionary<id<NSCopying>, VinCaseBlock> *)cases withDefault:(nullable VinCaseBlock)defaultBlock;
 
+/// 处理精度丢失
+NSString *vv_handleLossPrecision(double value);
+
+/// 获取小数位数精度
+NSInteger vv_getDecimalDigits(double number);
+
 @end
 
 @interface NSObject (UIKit)
