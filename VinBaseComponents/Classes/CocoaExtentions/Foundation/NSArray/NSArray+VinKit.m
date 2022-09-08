@@ -31,7 +31,7 @@
             [result addObject:item];
         }
     }
-    return result;
+    return [result copy];
 }
 
 - (nullable NSArray *)vv_mapWithIndex:(id (NS_NOESCAPE ^)(NSInteger index, id item))block {
