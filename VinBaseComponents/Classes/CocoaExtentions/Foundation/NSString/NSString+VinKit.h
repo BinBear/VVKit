@@ -103,6 +103,16 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)vv_stringRoundPlainFromNumber:(NSNumber *)number
                              fractionDigits:(NSUInteger)fractionDigit;
 
+/// 数值按精度进行转换，按相应的方式舍入，舍入的值可以用零填充，以使小数位数符合比例。
+/// @param number           转换的值
+/// @param fractionDigits   精度
+/// @param mode             转换的方式
+/// @param separator        千分位的分隔符
++ (NSString *)vv_stringFromNumber:(NSNumber *)number
+                   fractionDigits:(NSUInteger)fractionDigits
+                     roundingMode:(NSNumberFormatterRoundingMode)mode
+                groupingSeparator:(NSString *)separator;
+
 /// 去除数字末尾的零
 /// @param string 需要去除尾部的0的字符串
 + (NSString *)vv_deleteSuffixAllZero:(NSString *)string;
@@ -113,6 +123,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param length 需要补充0的位数.
 + (NSString *)vv_addZeroForString:(NSString *)string
                         andLength:(NSInteger)length;
+
+/// 给数字字符串添加逗号分隔符
+/// @param string 需要添加逗号分隔符的字符串，可以是NSNumber
++ (NSString *)vv_addCommaSeparator:(id)string;
+
+/// 返回十进制字符串，去除科学计数法
+/// @param number 需要添加逗号分隔符的字符串，可以是NSNumber
++ (NSString *)vv_decimalStyleNumber:(id)number;
 
 @end
 

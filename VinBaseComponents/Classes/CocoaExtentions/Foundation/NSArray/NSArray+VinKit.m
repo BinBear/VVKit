@@ -113,6 +113,20 @@
     return nil;
 }
 
+- (NSArray *)vv_split:(NSInteger)subSize {
+    NSMutableArray *arrayOfArrays = @[].mutableCopy;
+    NSUInteger itemsRemaining = self.count;
+    NSInteger j = 0;
+    while(itemsRemaining) {
+        NSRange range = NSMakeRange(j, MIN(subSize, itemsRemaining));
+        NSArray *subLogArr = [self subarrayWithRange:range];
+        [arrayOfArrays addObject:subLogArr];
+        itemsRemaining -= range.length;
+        j += range.length;
+    }
+    return [arrayOfArrays copy];
+}
+
 @end
 
 @implementation NSArray (VinSort)

@@ -8,6 +8,7 @@
 #import "NSString+VinKit.h"
 #import "NSDecimalNumber+VinKit.h"
 #import <CommonCrypto/CommonRandom.h>
+#import "NSObject+VinKit.h"
 
 @implementation NSString (VinKit)
 
@@ -124,38 +125,34 @@
 
 + (NSString *)vv_stringRoundUpFromNumber:(NSNumber *)number
                           fractionDigits:(NSUInteger)fractionDigits {
-
-    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
-                                                                         roundingMode:NSNumberFormatterRoundUp];
-    return [numberFormatter stringFromNumber:number];
+    return [NSString vv_stringFromNumber:number
+                          fractionDigits:fractionDigits
+                            roundingMode:NSNumberFormatterRoundUp
+                       groupingSeparator:@""];
 }
 
 + (NSString *)vv_stringRoundDownFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
-    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
-                                                                         roundingMode:NSNumberFormatterRoundDown];
-    return [numberFormatter stringFromNumber:number];
-}
-+ (NSString *)vv_stringRoundPlainFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
-    NSNumberFormatter *numberFormatter = [NSString _numberFormatterWithFractionDigits:fractionDigits
-                                                                         roundingMode:NSNumberFormatterRoundCeiling];
-    return [numberFormatter stringFromNumber:number];
+    return [NSString vv_stringFromNumber:number
+                          fractionDigits:fractionDigits
+                            roundingMode:NSNumberFormatterRoundDown
+                       groupingSeparator:@""];
 }
 
-+ (NSNumberFormatter *)_numberFormatterWithFractionDigits:(NSInteger)fractionDigits
-                                             roundingMode:(NSNumberFormatterRoundingMode)mode{
-    static NSNumberFormatter *numberFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        numberFormatter = [NSNumberFormatter new];
-        numberFormatter.minimumIntegerDigits = 1;
-        numberFormatter.groupingSeparator = @"";
-        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-        numberFormatter.decimalSeparator = @".";
-    });
-    numberFormatter.minimumFractionDigits = fractionDigits;
-    numberFormatter.maximumFractionDigits = fractionDigits;
-    numberFormatter.roundingMode = mode;
-    return numberFormatter;
++ (NSString *)vv_stringRoundPlainFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
+    return [NSString vv_stringFromNumber:number
+                          fractionDigits:fractionDigits
+                            roundingMode:NSNumberFormatterRoundCeiling
+                       groupingSeparator:@""];
+}
+
++ (NSString *)vv_stringFromNumber:(NSNumber *)number
+                   fractionDigits:(NSUInteger)fractionDigits
+                     roundingMode:(NSNumberFormatterRoundingMode)mode
+                groupingSeparator:(NSString *)separator {
+    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:fractionDigits
+                                                                           roundingMode:mode
+                                                                      groupingSeparator:separator];
+    return [numberFormatter stringFromNumber:number];
 }
 
 + (NSString *)vv_deleteSuffixAllZero:(NSString *)string {
@@ -170,7 +167,7 @@
     return (suffixStr.length>0)?[NSString stringWithFormat:@"%@.%@",prefixStr,suffixStr]:prefixStr;
 }
 
-+ (NSString *)vv_addZeroForString:(NSString *) string andLength:(NSInteger)length{
++ (NSString *)vv_addZeroForString:(NSString *)string andLength:(NSInteger)length{
     if (![string isKindOfClass:NSString.class]) return string;
     NSMutableString *mutableStr = [NSMutableString stringWithString:string];
     while (mutableStr.length < length) {
@@ -179,6 +176,70 @@
     return mutableStr;
 }
 
++ (NSString *)vv_addCommaSeparator:(id)string {
+    NSDecimalNumber *formatterNum;
+    NSInteger suffixLen = 0;
+    if ([string isKindOfClass:NSNumber.class] ||
+        [string isKindOfClass:NSDecimalNumber.class]) {
+        suffixLen = vv_getDecimalDigits([string doubleValue]);
+        formatterNum = [NSDecimalNumber decimalNumberWithString:vv_handleLossPrecision([string doubleValue])];
+    }else if ([string isKindOfClass:NSString.class]){
+        NSString *replacedStr = [string stringByReplacingOccurrencesOfString:@"," withString:@"."];
+        suffixLen = [NSString vv_suffixLength:replacedStr];
+        formatterNum = [NSDecimalNumber decimalNumberWithString:replacedStr];
+    }
+    if (!formatterNum) return @"";
+    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:suffixLen
+                                                                           roundingMode:NSNumberFormatterRoundDown
+                                                                      groupingSeparator:@","];
+    return [numberFormatter stringFromNumber:formatterNum];
+}
+
++ (NSString *)vv_decimalStyleNumber:(id)number {
+    static NSNumberFormatter *formatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        formatter = [NSNumberFormatter new];
+        formatter.usesSignificantDigits = true;
+        formatter.maximumSignificantDigits = 100;
+        formatter.groupingSeparator = @"";
+        formatter.decimalSeparator = @".";
+        formatter.numberStyle = NSNumberFormatterNoStyle;
+    });
+    if ([number isKindOfClass:NSString.class]) {
+        NSNumber *stringValue = [formatter numberFromString:number];
+        return stringValue.stringValue;
+    }else if ([number isKindOfClass:NSNumber.class]){
+        return [formatter stringFromNumber:number];
+    }
+    return @"";
+}
+
++ (NSNumberFormatter *)vv_numberFormatterWithFractionDigits:(NSInteger)fractionDigits
+                                               roundingMode:(NSNumberFormatterRoundingMode)mode
+                                          groupingSeparator:(NSString *)separator {
+    static NSNumberFormatter *numberFormatter;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        numberFormatter = [NSNumberFormatter new];
+        numberFormatter.minimumIntegerDigits = 1;
+        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+        numberFormatter.decimalSeparator = @".";
+    });
+    numberFormatter.groupingSeparator = separator;
+    numberFormatter.minimumFractionDigits = fractionDigits;
+    numberFormatter.maximumFractionDigits = fractionDigits;
+    numberFormatter.roundingMode = mode;
+    return numberFormatter;
+}
+
++ (NSInteger)vv_suffixLength:(NSString *)string {
+    NSInteger result = 0;
+    if ([string containsString:@"."]) {
+        result = [string componentsSeparatedByString:@"."].lastObject.length;
+    }
+    return result;
+}
 
 @end
 
@@ -186,14 +247,14 @@
 @implementation NSString (Calculation)
 
 + (NSString *)vv_stringAbs:(NSString *)num {
-    num = [NSString _safeString:num];
+    num = [NSString vv_safeString:num];
     NSDecimalNumber *absNum = [NSDecimalNumber vv_abs:[NSDecimalNumber decimalNumberWithString:num]];
     return [absNum stringValue];
 }
 
 - (NSString *)vv_safeAdding:(NSString *)num {
-    NSString *safeSelf = [NSString _safeString:self];
-    num = [NSString _safeString:num];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    num = [NSString vv_safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *addingNum = [num1 vv_adding:num2];
@@ -201,8 +262,8 @@
 }
 
 - (NSString *)vv_safeSubtracting:(NSString *)num {
-    NSString *safeSelf = [NSString _safeString:self];
-    num = [NSString _safeString:num];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    num = [NSString vv_safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *subtractingNum = [num1 vv_subtracting:num2];
@@ -210,8 +271,8 @@
 }
 
 - (NSString *)vv_safeMultiplying:(NSString *)num {
-    NSString *safeSelf = [NSString _safeString:self];
-    num = [NSString _safeString:num];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    num = [NSString vv_safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *multiplyingNum = [num1 vv_multiplying:num2];
@@ -219,8 +280,8 @@
 }
 
 - (NSString *)vv_safeDividing:(NSString *)num {
-    NSString *safeSelf = [NSString _safeString:self];
-    num = [NSString _safeString:num];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    num = [NSString vv_safeString:num];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:num];
     NSDecimalNumber *dividingNum = [num1 vv_dividing:num2];
@@ -231,8 +292,8 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [NSString _safeString:self];
-    stringNumer = [NSString _safeString:stringNumer];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    stringNumer = [NSString vv_safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
@@ -243,8 +304,8 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [NSString _safeString:self];
-    stringNumer = [NSString _safeString:stringNumer];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    stringNumer = [NSString vv_safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
@@ -255,8 +316,8 @@
     if (![self isKindOfClass:NSString.class] || ![stringNumer isKindOfClass:NSString.class]) {
         return false;
     }
-    NSString *safeSelf = [NSString _safeString:self];
-    stringNumer = [NSString _safeString:stringNumer];
+    NSString *safeSelf = [NSString vv_safeString:self];
+    stringNumer = [NSString vv_safeString:stringNumer];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *num2 = [NSDecimalNumber decimalNumberWithString:stringNumer];
     NSComparisonResult result = [num1 compare:num2];
@@ -264,13 +325,13 @@
 }
 
 - (NSString *)vv_safePow:(NSUInteger)num {
-    NSString *safeSelf = [NSString _safeString:self];
+    NSString *safeSelf = [NSString vv_safeString:self];
     NSDecimalNumber *num1 = [NSDecimalNumber decimalNumberWithString:safeSelf];
     NSDecimalNumber *result = [num1 vv_pow:num];
     return result.stringValue;
 }
 
-+ (NSString *)_safeString:(NSString *)str {
++ (NSString *)vv_safeString:(NSString *)str {
     if ([str isKindOfClass:NSString.class] && str.length > 0) {
         return str;
     }

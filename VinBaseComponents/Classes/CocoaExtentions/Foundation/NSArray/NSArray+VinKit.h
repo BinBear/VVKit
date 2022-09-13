@@ -44,6 +44,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 将数组转换成json字符串，格式化输出，即输出后的字符串有换行符\n
 - (nullable NSString *)vv_jsonPrettyStringEncoded;
 
+/// 将数组按照个数分割成一个二维数组
+- (NSArray *)vv_split:(NSInteger)subSize;
+
 @end
 
 
