@@ -452,7 +452,7 @@ static NSInteger _isSimulator = -1;
 /// 处理精度丢失
 NSString *vv_handleLossPrecision(double value) {
     NSInteger scale = vv_getDecimalDigits(value);
-    scale = scale >= 12 ? 12 : scale;
+    scale = scale >= 16 ? 16 : scale;
     double total = pow(10, scale);
     double rounded = round(value * total);
     NSDecimalNumber *totalDeciaml = [NSDecimalNumber vv_decimalNumberWithDouble:total roundingScale:0 roundingMode:NSRoundDown];

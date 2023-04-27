@@ -141,7 +141,7 @@
 + (NSString *)vv_stringRoundPlainFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
     return [NSString vv_stringFromNumber:number
                           fractionDigits:fractionDigits
-                            roundingMode:NSNumberFormatterRoundCeiling
+                            roundingMode:NSNumberFormatterRoundHalfDown
                        groupingSeparator:@""];
 }
 
@@ -149,10 +149,79 @@
                    fractionDigits:(NSUInteger)fractionDigits
                      roundingMode:(NSNumberFormatterRoundingMode)mode
                 groupingSeparator:(NSString *)separator {
-    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:fractionDigits
-                                                                           roundingMode:mode
+    
+    // NumberFormatter 使用的是 IEEE 754 格式，该格式支持的最大有效数字位数为 17 位，因此超出这个范围的数字将被舍入或填充
+    
+    NSString *numberString = [number stringValue];
+    NSArray *numberArr = [numberString componentsSeparatedByString:@"."];
+    
+    NSString *prffixStr = [numberArr objectAtIndex:0];
+    NSString *suffixStr = @"0";
+    if (numberArr.count == 2) {
+        suffixStr = [suffixStr stringByAppendingFormat:@".%@",[numberArr objectAtIndex:1]];
+    }
+
+    NSDecimalNumber *suffixDecimal = [NSDecimalNumber decimalNumberWithString:suffixStr];
+    NSRoundingMode roundMode = NSRoundDown;
+    switch (mode) {
+        case NSNumberFormatterRoundDown:
+        case NSNumberFormatterRoundFloor:
+            roundMode = NSRoundDown;
+            break;
+            
+        case NSNumberFormatterRoundUp:
+        case NSNumberFormatterRoundCeiling:
+            roundMode = NSRoundUp;
+            break;
+            
+        case NSNumberFormatterRoundHalfEven:
+            roundMode = NSRoundBankers;
+            break;
+            
+        case NSNumberFormatterRoundHalfDown:
+            roundMode = NSRoundPlain;
+            break;
+            
+        default:
+            break;
+    }
+    
+    suffixDecimal = [suffixDecimal vv_roundToScale:fractionDigits mode:roundMode];
+    suffixStr = [suffixDecimal stringValue];
+    // 处理小数位向整数位进1
+    if (![suffixStr vv_compareIsLess:@"1"]) {
+        prffixStr = [prffixStr vv_compareIsLess:@"0"] ? [prffixStr vv_safeSubtracting:@"1"] : [prffixStr vv_safeAdding:@"1"];
+        suffixStr = [suffixStr vv_safeSubtracting:@"1"];
+        suffixDecimal = [NSDecimalNumber decimalNumberWithString:suffixStr];
+        suffixDecimal = [suffixDecimal vv_roundToScale:fractionDigits mode:roundMode];
+        suffixStr = [suffixDecimal stringValue];
+    }
+    
+    NSInteger len;
+    if ([suffixStr containsString:@"."]) {
+        len = suffixStr.length - 2;
+    } else { // suffixStr = @"0"
+        len = 0;
+        suffixStr = @"0.";
+    }
+    
+    if (fractionDigits > len) {
+        NSInteger count = fractionDigits - len;
+        for (NSInteger i = 0; i < count; i++) {
+            suffixStr = [suffixStr stringByAppendingString:@"0"];
+        }
+    }
+    
+    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:0
+                                                                           roundingMode:NSNumberFormatterRoundDown
                                                                       groupingSeparator:separator];
-    return [numberFormatter stringFromNumber:number];
+    NSDecimalNumber *prffixDecimal = [NSDecimalNumber decimalNumberWithString:prffixStr];
+    NSString *result = [numberFormatter stringFromNumber:prffixDecimal];
+    if (suffixStr.length > 0 && fractionDigits > 0) {
+        suffixStr = [suffixStr stringByReplacingOccurrencesOfString:@"0." withString:@""];
+        result = [result stringByAppendingFormat:@".%@",suffixStr];
+    }
+    return result;
 }
 
 + (NSString *)vv_deleteSuffixAllZero:(NSString *)string {
