@@ -160,18 +160,18 @@
     if (numberArr.count == 2) {
         suffixStr = [suffixStr stringByAppendingFormat:@".%@",[numberArr objectAtIndex:1]];
     }
-
+    BOOL isMinus = [prffixStr hasPrefix:@"-"];
     NSDecimalNumber *suffixDecimal = [NSDecimalNumber decimalNumberWithString:suffixStr];
     NSRoundingMode roundMode = NSRoundDown;
     switch (mode) {
         case NSNumberFormatterRoundDown:
         case NSNumberFormatterRoundFloor:
-            roundMode = NSRoundDown;
+            roundMode = isMinus ? NSRoundUp : NSRoundDown;
             break;
             
         case NSNumberFormatterRoundUp:
         case NSNumberFormatterRoundCeiling:
-            roundMode = NSRoundUp;
+            roundMode = isMinus ? NSRoundDown : NSRoundUp;
             break;
             
         case NSNumberFormatterRoundHalfEven:
@@ -190,7 +190,7 @@
     suffixStr = [suffixDecimal stringValue];
     // 处理小数位向整数位进1
     if (![suffixStr vv_compareIsLess:@"1"]) {
-        prffixStr = [prffixStr vv_compareIsLess:@"0"] ? [prffixStr vv_safeSubtracting:@"1"] : [prffixStr vv_safeAdding:@"1"];
+        prffixStr = isMinus ? [prffixStr vv_safeSubtracting:@"1"] : [prffixStr vv_safeAdding:@"1"];
         suffixStr = [suffixStr vv_safeSubtracting:@"1"];
         suffixDecimal = [NSDecimalNumber decimalNumberWithString:suffixStr];
         suffixDecimal = [suffixDecimal vv_roundToScale:fractionDigits mode:roundMode];
@@ -218,6 +218,9 @@
     NSDecimalNumber *prffixDecimal = [NSDecimalNumber decimalNumberWithString:prffixStr];
     NSString *result = [numberFormatter stringFromNumber:prffixDecimal];
     if (suffixStr.length > 0 && fractionDigits > 0) {
+        if ([prffixStr hasPrefix:@"-"] && ![result hasPrefix:@"-"]) { // 特殊处理 -0.xx 这种情况的数字
+            result = [@"-" stringByAppendingString:result];
+        }
         suffixStr = [suffixStr stringByReplacingOccurrencesOfString:@"0." withString:@""];
         result = [result stringByAppendingFormat:@".%@",suffixStr];
     }
