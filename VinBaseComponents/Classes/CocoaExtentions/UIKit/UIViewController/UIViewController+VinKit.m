@@ -91,6 +91,23 @@
     return vc;
 }
 
+- (nullable UIViewController *)vv_topViewController {
+    UIViewController *vc = self;
+    while (true) {
+        if ([vc isKindOfClass:[UITabBarController class]]) {
+            vc = ((UITabBarController*)vc).selectedViewController;
+        }
+        if ([vc isKindOfClass:[UINavigationController class]]) {
+            vc = ((UINavigationController*)vc).topViewController;
+        }
+        if (![vc isKindOfClass:[UITabBarController class]] &&
+            ![vc isKindOfClass:[UINavigationController class]]) {
+            break;
+        }
+    }
+    return vc;
+}
+
 - (nullable UIViewController *)vv_childViewControllerWithName:(NSString *)name {
     __block UIViewController *vc;
     [self.childViewControllers enumerateObjectsUsingBlock:^(__kindof UIViewController * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
