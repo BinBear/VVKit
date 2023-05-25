@@ -22,6 +22,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 + (nullable UIViewController *)vv_currentViewController;
+- (nullable UIViewController *)vv_visibleViewController;
 - (nullable UIViewController *)vv_childViewControllerWithName:(NSString *)name;
 
 @end

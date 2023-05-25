@@ -53,8 +53,7 @@
     });
 }
 
-
-+ (UIViewController *)vv_currentViewController {
++ (nullable UIViewController *)vv_currentViewController {
     UIViewController *vc = [UIApplication sharedApplication].delegate.window.rootViewController;
     while (true) {
       if ([vc isKindOfClass:[UITabBarController class]]) {
@@ -71,6 +70,23 @@
               break;
           }
       }
+    }
+    return vc;
+}
+
+- (nullable UIViewController *)vv_visibleViewController {
+    UIViewController *vc = self;
+    while (true) {
+        if ([vc isKindOfClass:[UITabBarController class]]) {
+            vc = ((UITabBarController*)vc).selectedViewController;
+        }
+        if ([vc isKindOfClass:[UINavigationController class]]) {
+            vc = ((UINavigationController*)vc).visibleViewController;
+        }
+        if (![vc isKindOfClass:[UITabBarController class]] &&
+            ![vc isKindOfClass:[UINavigationController class]]) {
+            break;
+        }
     }
     return vc;
 }
