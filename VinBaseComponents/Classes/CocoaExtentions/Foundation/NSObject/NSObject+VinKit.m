@@ -406,7 +406,15 @@ static NSInteger _isSimulator = -1;
 + (NSString *)vv_carrierName {
     CTTelephonyNetworkInfo *info = [[CTTelephonyNetworkInfo alloc] init];
     CTCarrier *carrier = [info subscriberCellularProvider];
-    return [carrier carrierName];
+    if (@available(iOS 12.1, *)) {
+        if (info && [info respondsToSelector:@selector(serviceSubscriberCellularProviders)]) {
+            NSDictionary *dic = [info serviceSubscriberCellularProviders];
+            if (dic.allKeys.count) {
+                carrier = [dic objectForKey:dic.allKeys[0]];
+            }
+        }
+    }
+    return carrier.carrierName;
 }
 
 @end
