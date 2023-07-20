@@ -129,7 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)vv_addCommaSeparator:(id)string;
 
 /// 返回十进制字符串，去除科学计数法
-/// @param number 需要添加逗号分隔符的字符串，可以是NSNumber
+/// @param number 需要格式化的数字
 + (NSString *)vv_decimalStyleNumber:(id)number;
 
 @end
