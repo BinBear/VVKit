@@ -276,8 +276,8 @@ NSCalendarUnit const CalendarUnit_FLAGS = (NSCalendarUnitYear| NSCalendarUnitMon
 
 
 #pragma mark - 日期信息
-/// 获取某个日期的开始时间戳，精确到毫秒
-- (NSString *)vv_startOfDate {
+/// 获取某个日期的开始时间（00:00:00）
+- (NSDate *)vv_startOfDate {
     NSCalendar *calendar = [NSDate vv_currentCalendar];
     // 获取该日期的开始时间（00:00:00）
     NSDateComponents *startOfDayComponents = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:self];
@@ -285,11 +285,16 @@ NSCalendarUnit const CalendarUnit_FLAGS = (NSCalendarUnitYear| NSCalendarUnitMon
     [startOfDayComponents setMinute:0];
     [startOfDayComponents setSecond:0];
     NSDate *startOfDay = [calendar dateFromComponents:startOfDayComponents];
-    NSTimeInterval startTimestamp = [startOfDay timeIntervalSince1970]*1000;
-    return [NSString stringWithFormat:@"%.0f", startTimestamp];;
+    return startOfDay;
 }
-/// 获取某个日期的结束时间戳，精确到毫秒
-- (NSString *)vv_endOfDate {
+/// 获取某个日期的开始时间戳（00:00:00），精确到毫秒
+- (NSString *)vv_startOfTimestamp {
+    NSDate *date = [self vv_startOfDate];
+    NSTimeInterval startTimestamp = [date timeIntervalSince1970]*1000;
+    return [NSString stringWithFormat:@"%.0f", startTimestamp];
+}
+/// 获取某个日期的结束时间（23:59:59）
+- (NSDate *)vv_endOfDate {
     NSCalendar *calendar = [NSDate vv_currentCalendar];
     // 获取该日期的结束时间（23:59:59）
     NSDateComponents *endOfDayComponents = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:self];
@@ -297,8 +302,13 @@ NSCalendarUnit const CalendarUnit_FLAGS = (NSCalendarUnitYear| NSCalendarUnitMon
     [endOfDayComponents setMinute:59];
     [endOfDayComponents setSecond:59];
     NSDate *endOfDay = [calendar dateFromComponents:endOfDayComponents];
-    NSTimeInterval endTimestamp = [endOfDay timeIntervalSince1970]*1000;
-    return [NSString stringWithFormat:@"%.0f", endTimestamp];;
+    return endOfDay;
+}
+/// 获取某个日期的开始时间戳（23:59:59），精确到毫秒
+- (NSString *)vv_endOfTimestamp {
+    NSDate *date = [self vv_endOfDate];
+    NSTimeInterval endTimestamp = [date timeIntervalSince1970]*1000;
+    return [NSString stringWithFormat:@"%.0f", endTimestamp];
 }
 /// 获取日期中的年
 - (NSUInteger)vv_year {
