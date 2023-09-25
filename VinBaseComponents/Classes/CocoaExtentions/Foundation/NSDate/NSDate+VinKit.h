@@ -116,6 +116,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 #pragma mark - 日期信息
+/// 获取某个日期的开始时间戳，精确到毫秒
+- (NSString *)vv_startOfDate;
+/// 获取某个日期的结束时间戳，精确到毫秒
+- (NSString *)vv_endOfDate;
 /// 获取日期中的年
 - (NSUInteger)vv_year;
 /// 获取日期中的月

@@ -276,6 +276,30 @@ NSCalendarUnit const CalendarUnit_FLAGS = (NSCalendarUnitYear| NSCalendarUnitMon
 
 
 #pragma mark - 日期信息
+/// 获取某个日期的开始时间戳，精确到毫秒
+- (NSString *)vv_startOfDate {
+    NSCalendar *calendar = [NSDate vv_currentCalendar];
+    // 获取该日期的开始时间（00:00:00）
+    NSDateComponents *startOfDayComponents = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:self];
+    [startOfDayComponents setHour:0];
+    [startOfDayComponents setMinute:0];
+    [startOfDayComponents setSecond:0];
+    NSDate *startOfDay = [calendar dateFromComponents:startOfDayComponents];
+    NSTimeInterval startTimestamp = [startOfDay timeIntervalSince1970]*1000;
+    return [NSString stringWithFormat:@"%.0f", startTimestamp];;
+}
+/// 获取某个日期的结束时间戳，精确到毫秒
+- (NSString *)vv_endOfDate {
+    NSCalendar *calendar = [NSDate vv_currentCalendar];
+    // 获取该日期的结束时间（23:59:59）
+    NSDateComponents *endOfDayComponents = [calendar components:NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay fromDate:self];
+    [endOfDayComponents setHour:23];
+    [endOfDayComponents setMinute:59];
+    [endOfDayComponents setSecond:59];
+    NSDate *endOfDay = [calendar dateFromComponents:endOfDayComponents];
+    NSTimeInterval endTimestamp = [endOfDay timeIntervalSince1970]*1000;
+    return [NSString stringWithFormat:@"%.0f", endTimestamp];;
+}
 /// 获取日期中的年
 - (NSUInteger)vv_year {
     NSDateComponents *dayComponents = [[NSDate vv_currentCalendar] components:NSCalendarUnitYear fromDate:self];
