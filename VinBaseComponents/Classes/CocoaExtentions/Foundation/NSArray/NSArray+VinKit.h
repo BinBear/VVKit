@@ -47,6 +47,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// 将数组按照个数分割成一个二维数组
 - (NSArray *)vv_split:(NSInteger)subSize;
 
+/// 将数组打乱重排，然后重排后的数组
+- (NSArray *)vv_shuffle;
 @end
 
 

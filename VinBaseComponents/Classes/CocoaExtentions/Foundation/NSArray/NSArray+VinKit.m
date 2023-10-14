@@ -127,6 +127,16 @@
     return [arrayOfArrays copy];
 }
 
+- (NSArray *)vv_shuffle {
+    NSMutableArray *tempArr = [NSMutableArray arrayWithArray:self];
+    if (tempArr.count < 2) return tempArr;
+    for (NSInteger i = tempArr.count - 1; i > 0; i--) {
+        NSInteger j = arc4random_uniform((uint32_t)(i + 1));
+        [tempArr exchangeObjectAtIndex:i withObjectAtIndex:j];
+    }
+    return [tempArr copy];
+}
+
 @end
 
 @implementation NSArray (VinSort)
