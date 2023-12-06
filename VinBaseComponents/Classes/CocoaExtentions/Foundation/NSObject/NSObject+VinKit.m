@@ -421,6 +421,15 @@ static NSInteger _isSimulator = -1;
     return carrier.carrierName;
 }
 
++ (CGFloat)vv_statusBarHeight {
+    if (@available(iOS 13.0, *)) {
+        NSArray *array = UIApplication.sharedApplication.connectedScenes.allObjects;
+        UIWindowScene *scene = array.firstObject;
+        return scene.statusBarManager.statusBarFrame.size.height;
+    }
+    return [UIApplication sharedApplication].statusBarFrame.size.height;
+}
+
 @end
 
 
