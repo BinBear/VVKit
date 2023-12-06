@@ -73,6 +73,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设备运营商名称
 + (NSString *)vv_carrierName;
 
+/// 状态栏高度，包括安全区域
++ (CGFloat)vv_statusBarHeight;
+
 @end
 
 typedef void(^VinCaseBlock)(void);
