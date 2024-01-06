@@ -50,7 +50,11 @@
 }
 
 - (NSDictionary *)vv_omit:(NSArray *)keys {
-    NSMutableDictionary *omitted = [[NSMutableDictionary alloc] initWithCapacity:([self allKeys].count - keys.count)];
+    NSInteger count = ([self allKeys].count - keys.count);
+    if (count <= 0) {
+        count = [self allKeys].count;
+    }
+    NSMutableDictionary *omitted = [[NSMutableDictionary alloc] initWithCapacity:count];
     [self enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         if (![keys containsObject:key]) {
             omitted[key] = obj;
