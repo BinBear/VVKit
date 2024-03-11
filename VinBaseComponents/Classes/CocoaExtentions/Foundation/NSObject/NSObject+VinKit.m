@@ -423,11 +423,21 @@ static NSInteger _isSimulator = -1;
 
 + (CGFloat)vv_statusBarHeight {
     if (@available(iOS 13.0, *)) {
-        NSArray *array = UIApplication.sharedApplication.connectedScenes.allObjects;
-        UIWindowScene *scene = array.firstObject;
-        return scene.statusBarManager.statusBarFrame.size.height;
+        NSSet *set = [UIApplication sharedApplication].connectedScenes;
+        UIWindowScene *windowScene = [set anyObject];
+        UIStatusBarManager *statusBarManager = windowScene.statusBarManager;
+        CGFloat statusBarHeight = statusBarManager.statusBarFrame.size.height;
+        if(@available(iOS 16.0, *)) {
+            BOOL needAdjust = (statusBarHeight == 44);
+            if(windowScene.windows.firstObject.safeAreaInsets.top == 59 && needAdjust) {
+                statusBarHeight = 59;
+            }
+        }
+        return statusBarHeight;
     }
-    return [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat statusBarHeight = [UIApplication sharedApplication].statusBarFrame.size.height;
+    CGFloat safeAreaTop = UIApplication.sharedApplication.windows.firstObject.safeAreaInsets.top;
+    return MAX(statusBarHeight, safeAreaTop);
 }
 
 @end
