@@ -141,7 +141,7 @@
 + (NSString *)vv_stringRoundPlainFromNumber:(NSNumber *)number fractionDigits:(NSUInteger)fractionDigits {
     return [NSString vv_stringFromNumber:number
                           fractionDigits:fractionDigits
-                            roundingMode:NSNumberFormatterRoundHalfDown
+                            roundingMode:NSNumberFormatterRoundHalfUp
                        groupingSeparator:@""];
 }
 
@@ -165,11 +165,17 @@
     NSRoundingMode roundMode = NSRoundDown;
     switch (mode) {
         case NSNumberFormatterRoundDown:
+            roundMode = NSRoundDown;
+            break;
+            
+        case NSNumberFormatterRoundUp:
+            roundMode = NSRoundUp;
+            break;
+            
         case NSNumberFormatterRoundFloor:
             roundMode = isMinus ? NSRoundUp : NSRoundDown;
             break;
             
-        case NSNumberFormatterRoundUp:
         case NSNumberFormatterRoundCeiling:
             roundMode = isMinus ? NSRoundDown : NSRoundUp;
             break;
@@ -178,7 +184,27 @@
             roundMode = NSRoundBankers;
             break;
             
-        case NSNumberFormatterRoundHalfDown:
+        case NSNumberFormatterRoundHalfDown: {
+            if (numberArr.count != 2) {
+                roundMode = NSRoundDown;
+                break;
+            }
+            
+            // 被舍弃小数部分>0.5时入，否则舍
+            NSString *originSuffixStr = [numberArr objectAtIndex:1];
+            NSInteger compareIndex = fractionDigits + 1;
+            NSString *compareString;
+            if (originSuffixStr.length < compareIndex) {
+                compareString = @"0";
+            } else {
+                compareString = [originSuffixStr substringFromIndex:fractionDigits];
+            }
+            compareString = [@"0." stringByAppendingString:compareString];
+            roundMode = [compareString vv_compareIsGreater:@"0.5"] ? NSRoundUp : NSRoundDown;
+        }
+            break;
+            
+        case NSNumberFormatterRoundHalfUp: // 被舍弃小数部分>=0.5时入，否则舍
             roundMode = NSRoundPlain;
             break;
             
