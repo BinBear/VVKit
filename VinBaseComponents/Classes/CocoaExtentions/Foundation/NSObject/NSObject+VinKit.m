@@ -182,7 +182,7 @@
         }
         
         NSDictionary *dict = @{
-            // See https://www.theiphonewiki.com/wiki/Models
+            // See https://gist.github.com/adamawolf/3048717
             @"iPhone1,1" : @"iPhone 1G",
             @"iPhone1,2" : @"iPhone 3G",
             @"iPhone2,1" : @"iPhone 3GS",
@@ -236,6 +236,10 @@
             @"iPhone15,5" : @"iPhone 15 Plus",
             @"iPhone16,1" : @"iPhone 15 Pro",
             @"iPhone16,2" : @"iPhone 15 Pro Max",
+            @"iPhone17,1" : @"iPhone 16 Pro",
+            @"iPhone17,2" : @"iPhone 16 Pro Max",
+            @"iPhone17,3" : @"iPhone 16",
+            @"iPhone17,4" : @"iPhone 16 Plus",
             
             @"iPad1,1" : @"iPad 1",
             @"iPad2,1" : @"iPad 2 (WiFi)",
@@ -312,6 +316,18 @@
             @"iPad13,17" : @"iPad Air (5th generation)",
             @"iPad14,1" : @"iPad mini (6th generation)",
             @"iPad14,2" : @"iPad mini (6th generation)",
+            @"iPad14,3" : @"iPad Pro 11 inch 4th Gen",
+            @"iPad14,4" : @"iPad Pro 11 inch 4th Gen",
+            @"iPad14,5" : @"iPad Pro 12.9 inch 6th Gen",
+            @"iPad14,6" : @"iPad Pro 12.9 inch 6th Gen",
+            @"iPad14,8" : @"iPad Air 6th Gen",
+            @"iPad14,9" : @"iPad Air 6th Gen",
+            @"iPad14,10" : @"iPad Air 7th Gen",
+            @"iPad14,11" : @"iPad Air 7th Gen",
+            @"iPad16,3" : @"iPad Pro 11 inch 5th Gen",
+            @"iPad16,4" : @"iPad Pro 11 inch 5th Gen",
+            @"iPad16,5" : @"iPad Pro 12.9 inch 7th Gen",
+            @"iPad16,6" : @"iPad Pro 12.9 inch 7th Gen",
             
             @"iPod1,1" : @"iPod touch 1",
             @"iPod2,1" : @"iPod touch 2",
@@ -354,6 +370,20 @@
             @"Watch6,7"  : @"Apple Watch Series 7 45mm",
             @"Watch6,8"  : @"Apple Watch Series 7 41mm",
             @"Watch6,9"  : @"Apple Watch Series 7 45mm",
+            @"Watch6,10" : @"Apple Watch SE 40mm case (GPS)",
+            @"Watch6,11" : @"Apple Watch SE 44mm case (GPS)",
+            @"Watch6,12" : @"Apple Watch SE 40mm case (GPS+Cellular)",
+            @"Watch6,13" : @"Apple Watch SE 44mm case (GPS+Cellular)",
+            @"Watch6,14" : @"Apple Watch Series 8 41mm case (GPS)",
+            @"Watch6,15" : @"Apple Watch Series 8 45mm case (GPS)",
+            @"Watch6,16" : @"Apple Watch Series 8 41mm case (GPS+Cellular)",
+            @"Watch6,17" : @"Apple Watch Series 8 45mm case (GPS+Cellular)",
+            @"Watch6,18" : @"Apple Watch Ultra",
+            @"Watch7,1" : @"Apple Watch Series 9 41mm case (GPS)",
+            @"Watch7,2" : @"Apple Watch Series 9 45mm case (GPS)",
+            @"Watch7,3" : @"Apple Watch Series 9 41mm case (GPS+Cellular)",
+            @"Watch7,4" : @"Apple Watch Series 9 45mm case (GPS+Cellular)",
+            @"Watch7,5" : @"Apple Watch Ultra 2",
             
             @"AudioAccessory1,1" : @"HomePod",
             @"AudioAccessory1,2" : @"HomePod",
