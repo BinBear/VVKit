@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// @param length 长度
 + (NSString *)vv_randomString:(NSInteger)length;
 
+/// 将多个字符串拼接
+/// @param first 首个字符串
++ (instancetype)vv_strJoin:(NSString *)first, ... NS_REQUIRES_NIL_TERMINATION;
+
 @end
 
 
