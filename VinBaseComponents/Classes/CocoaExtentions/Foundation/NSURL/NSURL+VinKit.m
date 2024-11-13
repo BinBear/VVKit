@@ -25,4 +25,31 @@
     return parm;
 }
 
+/// 删除URL参数中某个参数
+- (NSString *)vv_removeParaKey:(NSString *)key {
+    if (!self || ![self isKindOfClass:NSURL.class]) return nil;
+    NSString *finalStr = [NSString string];
+    NSArray *strArray = [self.absoluteString componentsSeparatedByString:key];
+    NSMutableString *firstStr = strArray.firstObject;
+    NSMutableString *lastStr = strArray.lastObject;
+    NSRange characterRange = [lastStr rangeOfString:@"&"];
+    if (characterRange.location != NSNotFound) {
+        NSArray *lastArray = [lastStr componentsSeparatedByString:@"&"];
+        NSMutableArray *mutArray = [NSMutableArray arrayWithArray:lastArray];
+        if (mutArray.count > 1) {
+            [mutArray removeObjectAtIndex:0];
+        }
+        NSString *modifiedStr = [mutArray componentsJoinedByString:@"&"];
+        finalStr = [firstStr stringByAppendingString:modifiedStr];
+    } else {
+        // 以'?'、'&'结尾
+        if (firstStr.length > 1) {
+            finalStr = [firstStr substringToIndex:firstStr.length - 1];
+        } else {
+            finalStr = firstStr;
+        }
+    }
+    return finalStr;
+}
+
 @end
