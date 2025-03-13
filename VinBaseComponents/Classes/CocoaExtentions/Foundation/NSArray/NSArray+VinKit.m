@@ -84,7 +84,7 @@
     
     id accumulator = initial;
     for(id object in self) {
-        accumulator = accumulator ? block(accumulator, object) : object;
+        accumulator = block(accumulator, object);
     }
     return accumulator;
 }
