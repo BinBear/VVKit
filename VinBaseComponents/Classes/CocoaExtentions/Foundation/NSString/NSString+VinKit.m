@@ -286,22 +286,105 @@
 }
 
 + (NSString *)vv_addCommaSeparator:(id)string {
-    NSDecimalNumber *formatterNum;
-    NSInteger suffixLen = 0;
+    // 处理原始数据
+    NSString *numberString = @"";
     if ([string isKindOfClass:NSNumber.class] ||
         [string isKindOfClass:NSDecimalNumber.class]) {
-        suffixLen = vv_getDecimalDigits([string doubleValue]);
-        formatterNum = [NSDecimalNumber decimalNumberWithString:vv_handleLossPrecision([string doubleValue])];
+        numberString = vv_handleLossPrecision([string doubleValue]);
     }else if ([string isKindOfClass:NSString.class]){
-        NSString *replacedStr = [string stringByReplacingOccurrencesOfString:@"," withString:@"."];
-        suffixLen = [NSString vv_suffixLength:replacedStr];
-        formatterNum = [NSDecimalNumber decimalNumberWithString:replacedStr];
+        numberString = [string stringByReplacingOccurrencesOfString:@"," withString:@""];
     }
-    if (!formatterNum) return @"";
-    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:suffixLen
-                                                                           roundingMode:NSNumberFormatterRoundDown
-                                                                      groupingSeparator:@","];
-    return [numberFormatter stringFromNumber:formatterNum];
+
+    if (numberString.length == 0) return numberString;
+    
+    // 处理符号
+    NSString *sign = @"";
+    unichar firstChar = [numberString characterAtIndex:0];
+    if (firstChar == '+' || firstChar == '-') {
+        sign = [numberString substringToIndex:1];
+        numberString = [numberString substringFromIndex:1];
+        if (numberString.length == 0) return [sign stringByAppendingString:@"0"];
+    }
+    
+    // 分离整数和小数部分
+    NSArray *parts = [numberString componentsSeparatedByString:@"."];
+    if (parts.count > 2) return @"";  // 多个小数点，非法数字
+    
+    NSString *integerPart = parts.firstObject;
+    NSString *decimalPart = (parts.count > 1) ? parts[1] : nil;
+    
+    // 处理纯小数情况（如 ".45" -> "0.45"）
+    if (integerPart.length == 0) integerPart = @"0";
+    
+    // 添加千位分隔符
+    NSUInteger integerLength = integerPart.length;
+    NSUInteger commaCount = (integerLength - 1) / 3; // 计算逗号数量
+    NSUInteger newLength = integerLength + commaCount;
+    
+    // 缓冲区安全校验
+    if (newLength == 0 || newLength > 1024 * 1024) {  // 限制最大1MB
+        return @"";
+    }
+    
+    unichar *origBuffer = malloc(integerLength * sizeof(unichar));
+    if (!origBuffer) return @"";
+    [integerPart getCharacters:origBuffer range:NSMakeRange(0, integerLength)];
+    
+    unichar *newBuffer = malloc(newLength * sizeof(unichar));
+    if (!newBuffer) {
+        free(origBuffer);
+        return @"";
+    }
+    
+    NSInteger newIndex = newLength - 1;
+    NSUInteger counter = 0;
+    BOOL formatSuccess = YES;
+    
+    // 逆向遍历填充字符
+    for (NSInteger i = integerLength - 1; i >= 0; i--) {
+        // 数字字符写入检查
+        if (newIndex < 0) {
+            formatSuccess = NO;
+            break;
+        }
+        newBuffer[newIndex--] = origBuffer[i];
+        counter++;
+        
+        // 逗号插入检查
+        if (counter % 3 == 0 && i > 0) {
+            if (newIndex < 0) {
+                formatSuccess = NO;
+                break;
+            }
+            newBuffer[newIndex--] = ',';
+        }
+    }
+    
+    // 最终状态验证
+    if (!formatSuccess || newIndex != -1) {
+        free(origBuffer);
+        free(newBuffer);
+        return @"";
+    }
+    
+    // 构建格式化字符串
+    NSString *formattedInteger = [NSString stringWithCharacters:newBuffer length:newLength];
+    free(origBuffer);
+    free(newBuffer);
+    
+    // 组合最终结果
+    NSMutableString *result = [NSMutableString stringWithString:sign];
+    [result appendString:formattedInteger];
+    if (decimalPart) {
+        [result appendFormat:@".%@", decimalPart];
+    }
+    
+    // 二次验证结果有效性
+    if (result.length == 0) {
+        return @"";
+    }
+    
+    return [result copy];
 }
 
 + (NSString *)vv_decimalStyleNumber:(id)number {
