@@ -398,13 +398,14 @@
         formatter.decimalSeparator = @".";
         formatter.numberStyle = NSNumberFormatterNoStyle;
     });
+    NSString *result = @"";
     if ([number isKindOfClass:NSString.class]) {
         NSNumber *stringValue = [formatter numberFromString:number];
-        return stringValue.stringValue;
+        result = stringValue.stringValue;
     }else if ([number isKindOfClass:NSNumber.class]){
-        return [formatter stringFromNumber:number];
+        result = [formatter stringFromNumber:number];
     }
-    return @"";
+    return ([result isKindOfClass:NSString.class] && result.length > 0) ? result : @"";
 }
 
 + (NSNumberFormatter *)vv_numberFormatterWithFractionDigits:(NSInteger)fractionDigits
@@ -517,7 +518,10 @@
 
 + (NSString *)vv_safeString:(NSString *)str {
     if ([str isKindOfClass:NSString.class] && str.length > 0) {
-        return str;
+        NSString *decimalNumber = [NSString vv_decimalStyleNumber:str];
+        if (decimalNumber.length > 0) {
+            return str;
+        }
     }
     return @"0";
 }
