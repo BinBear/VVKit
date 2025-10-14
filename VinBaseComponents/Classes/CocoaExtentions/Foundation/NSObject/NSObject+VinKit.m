@@ -240,6 +240,11 @@
             @"iPhone17,2" : @"iPhone 16 Pro Max",
             @"iPhone17,3" : @"iPhone 16",
             @"iPhone17,4" : @"iPhone 16 Plus",
+            @"iPhone17,5" : @"iPhone 16e",
+            @"iPhone18,3" : @"iPhone 17",
+            @"iPhone18,1" : @"iPhone 17 Pro",
+            @"iPhone18,2" : @"iPhone 17 Pro Max",
+            @"iPhone18,4" : @"iPhone Air",
             
             @"iPad1,1" : @"iPad 1",
             @"iPad2,1" : @"iPad 2 (WiFi)",
@@ -339,6 +344,7 @@
             
             @"i386" : @"Simulator x86",
             @"x86_64" : @"Simulator x64",
+            @"arm64" : @"Simulator arm64",
             
             @"Watch1,1" : @"Apple Watch 38mm",
             @"Watch1,2" : @"Apple Watch 42mm",
@@ -384,6 +390,19 @@
             @"Watch7,3" : @"Apple Watch Series 9 41mm case (GPS+Cellular)",
             @"Watch7,4" : @"Apple Watch Series 9 45mm case (GPS+Cellular)",
             @"Watch7,5" : @"Apple Watch Ultra 2",
+            @"Watch7,8" : @"Apple Watch Series 10 42mm",
+            @"Watch7,10" : @"Apple Watch Series 10 42mm",
+            @"Watch7,9" : @"Apple Watch Series 10 46mm",
+            @"Watch7,11" : @"Apple Watch Series 10 46mm",
+            @"Watch7,12" : @"Apple Watch Ultra 3",
+            @"Watch7,13" : @"Apple Watch SE 3 40mm",
+            @"Watch7,14" : @"Apple Watch SE 3 44mm",
+            @"Watch7,15" : @"Apple Watch SE 3 40mm (GPS+Cellular)",
+            @"Watch7,16" : @"Apple Watch SE 3 44mm (GPS+Cellular)",
+            @"Watch7,17" : @"Apple Watch Series 11 42mm",
+            @"Watch7,18" : @"Apple Watch Series 11 46mm",
+            @"Watch7,19" : @"Apple Watch Series 11 42mm (GPS+Celllular)",
+            @"Watch7,20" : @"Apple Watch Series 11 46mm (GPS+Celllular)",
             
             @"AudioAccessory1,1" : @"HomePod",
             @"AudioAccessory1,2" : @"HomePod",
@@ -408,6 +427,7 @@
             @"AppleTV5,3"   : @"Apple TV 4",
             @"AppleTV6,2"   : @"Apple TV 4K",
             @"AppleTV11,1"  : @"Apple TV 4K (2nd generation)",
+            @"AppleTV14,1"  : @"Apple TV 4K (3rd generation)"
         };
         name = dict[model];
         if (!name) name = model;
