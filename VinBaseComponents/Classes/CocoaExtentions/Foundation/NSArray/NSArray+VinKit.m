@@ -137,6 +137,47 @@
     return [tempArr copy];
 }
 
+- (NSString *)vv_joinWithKey:(NSString *)key separator:(NSString *)separator {
+    NSMutableArray *values = [NSMutableArray array];
+    NSString *sep = separator ?: @",";
+    
+    for (id element in self) {
+        if (![element isKindOfClass:[NSDictionary class]]) {
+            continue;
+        }
+        
+        NSDictionary *dict = (NSDictionary *)element;
+        id value = dict[key];
+        
+        if (value && ![value isKindOfClass:[NSNull class]]) {
+            NSString *stringValue = [NSString stringWithFormat:@"%@", value];
+            if (stringValue.length > 0) {
+                [values addObject:stringValue];
+            }
+        }
+    }
+    
+    return [values componentsJoinedByString:sep];
+}
+
+- (NSString *)vv_joinWithKeyPath:(NSString *)keyPath separator:(NSString *)separator {
+    NSMutableArray *values = [NSMutableArray array];
+    NSString *sep = separator ?: @",";
+    
+    for (id element in self) {
+        if (![element isKindOfClass:[NSDictionary class]]) {
+            continue;
+        }
+        
+        id value = [element valueForKeyPath:keyPath];
+        if (value && ![value isKindOfClass:[NSNull class]]) {
+            [values addObject:[NSString stringWithFormat:@"%@", value]];
+        }
+    }
+    
+    return [values componentsJoinedByString:sep];
+}
+
 @end
 
 @implementation NSArray (VinSort)
