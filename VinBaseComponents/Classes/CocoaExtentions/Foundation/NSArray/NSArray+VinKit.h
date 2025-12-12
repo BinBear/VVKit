@@ -49,6 +49,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// 将数组打乱重排，然后重排后的数组
 - (NSArray *)vv_shuffle;
+
+/// 数组里面为字典元素时，将字典里面某个key进行拼接
+- (NSString *)vv_joinWithKey:(NSString *)key separator:(NSString *)separator;
+
+/// 数组里面为字典元素时，将字典里面某个keyPath进行拼接，支持嵌套
+- (NSString *)vv_joinWithKeyPath:(NSString *)keyPath separator:(NSString *)separator;
+
 @end
 
 
