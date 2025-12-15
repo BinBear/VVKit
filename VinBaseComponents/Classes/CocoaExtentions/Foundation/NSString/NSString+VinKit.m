@@ -13,30 +13,154 @@
 @implementation NSString (VinKit)
 
 + (instancetype)vv_stringWithFormat:(NSString *)format, ... NS_FORMAT_FUNCTION(1,2){
-    va_list arglist;
-    va_start(arglist, format);
-    NSString *outStr = [[NSString alloc] initWithFormat:format arguments:arglist];
-    va_end(arglist);
+
+    va_list args;
+    va_start(args, format);
+    NSMutableString *outStr = [[NSMutableString alloc] initWithFormat:format arguments:args];
+    va_end(args);
     
-    outStr = [outStr stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
-    outStr = [outStr stringByReplacingOccurrencesOfString:@"<null>" withString:@""];
+    // 只在必要时做替换，使用 NSLiteralSearch 更快（逐字匹配）
+    if (([outStr rangeOfString:@"(null)" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, outStr.length);
+        [outStr replaceOccurrencesOfString:@"(null)"
+                                withString:@""
+                                   options:NSLiteralSearch
+                                     range:wholeRange];
+    }
     
-    return outStr;
+    if (([outStr rangeOfString:@"<null>" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, outStr.length);
+        [outStr replaceOccurrencesOfString:@"<null>"
+                                withString:@""
+                                   options:NSLiteralSearch
+                                     range:wholeRange];
+    }
+    
+    return [outStr copy];
+    
+//    if (format == nil) return @"";
+//    
+//    va_list args;
+//    va_start(args, format);
+//    // 使用 CFStringCreateWithFormatAndArguments 来格式化（比 ObjC 消息稍轻）
+//    CFStringRef cfFormatted = CFStringCreateWithFormatAndArguments(NULL, NULL, (__bridge CFStringRef)format, args);
+//    va_end(args);
+//    
+//    if (!cfFormatted) {
+//        return @"";
+//    }
+//    
+//    // 计算用于存放 UTF-8 字节的最大字节数并分配输入缓冲
+//    CFIndex cfLen = CFStringGetLength(cfFormatted);
+//    CFIndex maxBytes = CFStringGetMaximumSizeForEncoding(cfLen, kCFStringEncodingUTF8) + 1;
+//    char *inBuf = (char *)malloc((size_t)maxBytes);
+//    if (!inBuf) {
+//        CFRelease(cfFormatted);
+//        return (__bridge_transfer NSString *)cfFormatted; // 回退到直接返回格式化结果
+//    }
+//    
+//    // 将 CFString 写为 UTF-8 bytes
+//    CFIndex usedBytes = CFStringGetBytes(cfFormatted,
+//                                         CFRangeMake(0, cfLen),
+//                                         kCFStringEncodingUTF8,
+//                                         0,
+//                                         false,
+//                                         (UInt8 *)inBuf,
+//                                         maxBytes,
+//                                         NULL);
+//    size_t inLen = (size_t)usedBytes;
+//    
+//    // 为输出分配缓冲（长度不会超过输入长度）
+//    char *outBuf = (char *)malloc(inLen + 1);
+//    if (!outBuf) {
+//        free(inBuf);
+//        CFRelease(cfFormatted);
+//        return (__bridge_transfer NSString *)cfFormatted;
+//    }
+//    
+//    // 要移除的字面串（ASCII 安全）
+//    const char *pat1 = "(null)";
+//    const char *pat2 = "<null>";
+//    size_t pat1len = strlen(pat1); // 6
+//    size_t pat2len = strlen(pat2); // 6
+//    
+//    // 单遍扫描并拷贝（跳过匹配片段）
+//    size_t i = 0, o = 0;
+//    while (i < inLen) {
+//        // 快速首字节判断减少 memcmp 次数
+//        if (inBuf[i] == '(' && i + pat1len <= inLen && memcmp(inBuf + i, pat1, pat1len) == 0) {
+//            i += pat1len;
+//            continue;
+//        }
+//        if (inBuf[i] == '<' && i + pat2len <= inLen && memcmp(inBuf + i, pat2, pat2len) == 0) {
+//            i += pat2len;
+//            continue;
+//        }
+//        outBuf[o++] = inBuf[i++];
+//    }
+//    outBuf[o] = '\0';
+//    
+//    // 清理中间资源
+//    free(inBuf);
+//    CFRelease(cfFormatted);
+//    
+//    // 从输出字节创建不可变 CFString / NSString
+//    CFStringRef outCF = CFStringCreateWithBytes(NULL, (const UInt8 *)outBuf, (CFIndex)o, kCFStringEncodingUTF8, false);
+//    free(outBuf);
+//    
+//    if (!outCF) {
+//        return @""; // 如果编码失败，返回空串（或选择其他回退）
+//    }
+//    
+//    // __bridge_transfer 负责释放 outCF
+//    NSString *result = (__bridge_transfer NSString *)outCF;
+//    return result;
 }
 - (instancetype)vv_stringByAppendingString:(NSString *)format {
     
-    NSString *outStr = @"";
-    NSString *formatStr = @"";
+    // 只清理 self 中可能的 (null)/<null>
+    if (self.length == 0) return self;
+    NSMutableString *outStr = [self mutableCopy];
+    if (([outStr rangeOfString:@"(null)" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, outStr.length);
+        [outStr replaceOccurrencesOfString:@"(null)"
+                                withString:@""
+                                   options:NSLiteralSearch
+                                     range:wholeRange];
+    }
     
-    formatStr = [format stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
-    formatStr = [formatStr stringByReplacingOccurrencesOfString:@"<null>" withString:@""];
+    if (([outStr rangeOfString:@"<null>" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, outStr.length);
+        [outStr replaceOccurrencesOfString:@"<null>"
+                                withString:@""
+                                   options:NSLiteralSearch
+                                     range:wholeRange];
+    }
+
+    if (format == nil || format.length == 0) {
+        return [outStr copy];
+    }
     
-    outStr = [self stringByReplacingOccurrencesOfString:@"(null)" withString:@""];
-    outStr = [self stringByReplacingOccurrencesOfString:@"<null>" withString:@""];
+    NSMutableString *formatStr = [format mutableCopy];
+    if (([formatStr rangeOfString:@"(null)" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, formatStr.length);
+        [formatStr replaceOccurrencesOfString:@"(null)"
+                                   withString:@""
+                                      options:NSLiteralSearch
+                                        range:wholeRange];
+    }
     
-    outStr = [outStr stringByAppendingString:formatStr];
+    if (([formatStr rangeOfString:@"<null>" options:NSLiteralSearch].location != NSNotFound)) {
+        NSRange wholeRange = NSMakeRange(0, formatStr.length);
+        [formatStr replaceOccurrencesOfString:@"<null>"
+                                   withString:@""
+                                      options:NSLiteralSearch
+                                        range:wholeRange];
+    }
     
-    return outStr;
+    [outStr appendString:formatStr];
+    
+    return [outStr copy];
 }
 + (NSString *)vv_randomString:(NSInteger)length {
     NSInteger len = length * 0.5;
@@ -166,10 +290,10 @@
     NSString *numberString = [number stringValue];
     NSArray *numberArr = [numberString componentsSeparatedByString:@"."];
     
-    NSString *prffixStr = [numberArr objectAtIndex:0];
+    NSString *prffixStr = numberArr.firstObject;
     NSString *suffixStr = @"0";
     if (numberArr.count == 2) {
-        suffixStr = [suffixStr stringByAppendingFormat:@".%@",[numberArr objectAtIndex:1]];
+        suffixStr = [suffixStr stringByAppendingFormat:@".%@",numberArr.lastObject];
     }
     BOOL isMinus = [prffixStr hasPrefix:@"-"];
     NSDecimalNumber *suffixDecimal = [NSDecimalNumber decimalNumberWithString:suffixStr];
@@ -202,7 +326,7 @@
             }
             
             // 被舍弃小数部分>0.5时入，否则舍
-            NSString *originSuffixStr = [numberArr objectAtIndex:1];
+            NSString *originSuffixStr = numberArr.lastObject;
             NSInteger compareIndex = fractionDigits + 1;
             NSString *compareString;
             if (originSuffixStr.length < compareIndex) {
@@ -249,17 +373,16 @@
         }
     }
     
-    NSNumberFormatter *numberFormatter = [NSString vv_numberFormatterWithFractionDigits:0
-                                                                           roundingMode:NSNumberFormatterRoundDown
-                                                                      groupingSeparator:separator];
-    NSDecimalNumber *prffixDecimal = [NSDecimalNumber decimalNumberWithString:prffixStr];
-    NSString *result = [numberFormatter stringFromNumber:prffixDecimal];
+    NSString *result = prffixStr;
     if (suffixStr.length > 0 && fractionDigits > 0) {
         if ([prffixStr hasPrefix:@"-"] && ![result hasPrefix:@"-"]) { // 特殊处理 -0.xx 这种情况的数字
             result = [@"-" stringByAppendingString:result];
         }
         suffixStr = [suffixStr stringByReplacingOccurrencesOfString:@"0." withString:@""];
         result = [result stringByAppendingFormat:@".%@",suffixStr];
+    }
+    if ([separator isKindOfClass:NSString.class] && separator.length > 0) {
+        result = [self vv_addCommaSeparator:result groupingSeparator:separator];
     }
     return result;
 }
@@ -286,6 +409,11 @@
 }
 
 + (NSString *)vv_addCommaSeparator:(id)string {
+    return [self vv_addCommaSeparator:string groupingSeparator:@","];
+}
+
++ (NSString *)vv_addCommaSeparator:(id)string groupingSeparator:(NSString *)sep {
+
     // 处理原始数据
     NSString *numberString = @"";
     if ([string isKindOfClass:NSNumber.class] ||
@@ -336,8 +464,14 @@
         return @"";
     }
     
+    NSString *separator = @","; // 默认分隔符
+    if ([sep isKindOfClass:NSString.class] && sep.length > 0) {
+        separator = sep;
+    }
+    
     NSInteger newIndex = newLength - 1;
     NSUInteger counter = 0;
+    NSUInteger sepLen = separator.length;
     BOOL formatSuccess = YES;
     
     // 逆向遍历填充字符
@@ -350,14 +484,19 @@
         newBuffer[newIndex--] = origBuffer[i];
         counter++;
         
-        // 逗号插入检查
-        if (counter % 3 == 0 && i > 0) {
-            if (newIndex < 0) {
-                formatSuccess = NO;
-                break;
+        // 插入分隔符
+        if (counter % 3 == 0 && i > 0 && sepLen > 0) {
+            // 逆序写入分隔符
+            for (NSInteger j = sepLen - 1; j >= 0; j--) {
+                if (newIndex < 0) { // 确保有足够空间写入分隔符
+                    formatSuccess = NO;
+                    break;
+                }
+                newBuffer[newIndex--] = [separator characterAtIndex:j];
             }
-            newBuffer[newIndex--] = ',';
+            if (!formatSuccess) break;
         }
+
     }
     
     // 最终状态验证
@@ -388,16 +527,7 @@
 }
 
 + (NSString *)vv_decimalStyleNumber:(id)number {
-    static NSNumberFormatter *formatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        formatter = [NSNumberFormatter new];
-        formatter.usesSignificantDigits = true;
-        formatter.maximumSignificantDigits = 100;
-        formatter.groupingSeparator = @"";
-        formatter.decimalSeparator = @".";
-        formatter.numberStyle = NSNumberFormatterNoStyle;
-    });
+    NSNumberFormatter *formatter = [self vv_threadLocalFormatter];
     NSString *result = @"";
     if ([number isKindOfClass:NSString.class]) {
         NSNumber *stringValue = [formatter numberFromString:number];
@@ -408,22 +538,42 @@
     return ([result isKindOfClass:NSString.class] && result.length > 0) ? result : @"";
 }
 
+
++ (NSNumberFormatter *)vv_threadLocalFormatter {
+    NSMutableDictionary *td = NSThread.currentThread.threadDictionary;
+    static NSString * const kFormatterKey = @"com.NSSting.vv_decimal_formatter";
+    NSNumberFormatter *fmt = td[kFormatterKey];
+    if (!fmt) {
+        fmt = [NSNumberFormatter new];
+        fmt.usesSignificantDigits = YES;
+        fmt.maximumSignificantDigits = 100;
+        fmt.groupingSeparator = @"";
+        fmt.decimalSeparator = @".";
+        fmt.numberStyle = NSNumberFormatterNoStyle;
+        td[kFormatterKey] = fmt;
+    }
+    return fmt;
+}
+
 + (NSNumberFormatter *)vv_numberFormatterWithFractionDigits:(NSInteger)fractionDigits
                                                roundingMode:(NSNumberFormatterRoundingMode)mode
                                           groupingSeparator:(NSString *)separator {
-    static NSNumberFormatter *numberFormatter;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        numberFormatter = [NSNumberFormatter new];
-        numberFormatter.minimumIntegerDigits = 1;
-        numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
-        numberFormatter.decimalSeparator = @".";
-    });
-    numberFormatter.groupingSeparator = separator;
-    numberFormatter.minimumFractionDigits = fractionDigits;
-    numberFormatter.maximumFractionDigits = fractionDigits;
-    numberFormatter.roundingMode = mode;
-    return numberFormatter;
+    NSString *sep = separator ?: @"";
+    NSString *key = [NSString stringWithFormat:@"com.NSSting.vv_%@_%ld_%ld", sep, fractionDigits, mode];
+    NSMutableDictionary *td = NSThread.currentThread.threadDictionary;
+    NSNumberFormatter *fmt = td[key];
+    if (!fmt) {
+        fmt = [NSNumberFormatter new];
+        fmt.minimumIntegerDigits = 1;
+        fmt.numberStyle = NSNumberFormatterDecimalStyle;
+        fmt.decimalSeparator = @".";
+        fmt.groupingSeparator = sep;
+        fmt.minimumFractionDigits = fractionDigits;
+        fmt.maximumFractionDigits = fractionDigits;
+        fmt.roundingMode = mode;
+        td[key] = fmt;
+    }
+    return fmt;
 }
 
 + (NSInteger)vv_suffixLength:(NSString *)string {
