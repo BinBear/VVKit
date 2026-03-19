@@ -43,7 +43,7 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextDrawImage(context, rect, subImageRef);
-    UIImage *smallImage = [UIImage imageWithCGImage:subImageRef];
+    UIImage *smallImage = [UIImage imageWithCGImage:subImageRef scale:scale orientation:image.imageOrientation];
     CGImageRelease(subImageRef);
     UIGraphicsEndImageContext();
     return smallImage;
